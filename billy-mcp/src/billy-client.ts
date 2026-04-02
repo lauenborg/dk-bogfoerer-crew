@@ -135,6 +135,10 @@ export async function getBill(id: string): Promise<unknown> {
   return billyFetch(`/bills/${id}`);
 }
 
+export async function deleteBill(id: string): Promise<unknown> {
+  return billyFetch(`/bills/${id}`, { method: "DELETE" });
+}
+
 // ─── Banklinjer ───
 // Billy bankLines: KRÆVER accountId parameter.
 // Hver banklinje har et matchId (Billy opretter automatisk en match per linje).
