@@ -67,6 +67,24 @@ Uanset om det er /bogfoer, /bankafstem, /match-bilag eller en anden handling der
 
 Denne regel gælder for ALT der bogføres — banklinjer, fakturaer, manuelle posteringer. Spring den aldrig over.
 
+### SPØRG når du er i tvivl (KRITISK)
+
+Gæt ALDRIG på kontering. Hvis du ikke kan afgøre hvad en banklinje, faktura eller udgift præcist dækker:
+
+**Spørg brugeren.** Typiske situationer:
+
+- **Tvetydig beskrivelse:** "Amazon" kan være kontorartikler (4100), IT/software (4400), eller varekøb (2000) — spørg hvad der blev købt
+- **Samlet beløb for flere ting:** Én Amazon-ordre med blandet indhold (noget privat, noget erhverv) — spørg om opdeling
+- **Ukendt leverandør:** Hvis du ikke genkender leverandøren og beskrivelsen er uklar — spørg
+- **Privat vs. erhverv:** "Transfer", "MobilePay", "Swipp" kan være begge dele — spørg
+- **Blandet brug:** Telefon, internet, bil kan have privat andel — spørg om fordelingsnøgle
+- **Repræsentation vs. intern:** Spisning kan være repræsentation (25% fradrag) eller intern forplejning (0%) — spørg om deltagere
+
+Formulér spørgsmålet konkret:
+> "Banklinjen viser 'Amazon 1.177,67 kr.' — hvad blev der købt? (kontorartikler, software, privat, eller blandet?)"
+
+Gem svaret i `memory/leverandoerer.json` så du ikke spørger igen næste gang.
+
 ### Øvrige regler
 
 - **Slå ALTID regler op** via MCP-tools — stol ikke på hukommelsen
