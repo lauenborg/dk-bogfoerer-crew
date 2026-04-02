@@ -285,16 +285,36 @@ For ALLE andre banklinjer (køb, abonnementer, leverandører):
 
 ### Bankafstemning — korrekt API-brug (KRITISK)
 
-**Subject associations** virker KUN med `invoice:ID` og `bill:ID` — ALDRIG med `daybookTransaction:ID` (giver fejl i Billy UI).
+**Subject associations** virker KUN med `invoice:ID` og `bill:ID` — ALDRIG med `daybookTransaction:ID`.
 
-For simple udgifter uden faktura/regning i Billy:
-1. Opret dagbogstransaktion (`billy_bogfoer`)
-2. Godkend transaktionen (`billy_transaktion_godkend`)
-3. Godkend bankmatchen (`billy_bankmatch_godkend`) — **UDEN subject association**
+**Korrekt flow for bilag-afstemning (verificeret):**
+1. Opret regning (`billy_regning_opret` med `attachmentId` + `contactId`)
+2. Link regning til bankmatch (`billy_bankafstem_link` med `bill:REGNINGS_ID`)
+3. Godkend bankmatch (`billy_bankmatch_godkend`)
 
-For udgifter med eksisterende faktura/regning i Billy:
-1. Brug `billy_bankafstem_link` med `invoice:ID` eller `bill:ID`
-2. Godkend bankmatchen
+**VIGTIGE REGLER for regning-oprettelse:**
+- Regning SKAL være i DKK (bankens valuta) — ellers fejler bankmatch
+- `currencyId` hører på bill-niveau, IKKE på linjer
+- Udelad `paymentDate` (kræver `paymentAccountId`)
+
+### Momssatser i Billy — brug `billy_momssatser` til at slå op (KRITISK)
+
+Gæt ALDRIG momssats. Slå den op med `billy_momssatser` og vælg den korrekte:
+
+| Situation | Billy momssats | Forkortelse |
+|-----------|---------------|-------------|
+| Normalt dansk køb | 25% | — |
+| Restaurant/repræsentation | 6.25% Representation | — |
+| EU services-køb (reverse charge) | **0% Services EU (KYE)** | KYE |
+| EU vare-køb (reverse charge) | **0% Goods EU (KVE)** | KVE |
+| Indenlandsk reverse charge | 0% Reverse Charge (KOB) | KOB |
+| Køb fra ikke-EU (services) | 0% Services Rest of World | — |
+| Køb fra ikke-EU (varer) | 0% Goods Rest of World | — |
+| Momsfrit (forsikring, bank) | 0% | — |
+
+**Typiske EU-leverandører:**
+- Apify (CZ), GitHub (US→IE), AWS (IE), Google Cloud (IE), Adobe (IE), Stripe (IE) → **KYE (Services EU)**
+- Amazon.de varer → **KVE (Goods EU)**
 
 Hvis du har lavet en fejl (afstemt uden bilag):
 - `billy_bankmatch_fortryd` → sætter banklinjen til uafstemt igen
