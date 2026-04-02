@@ -380,6 +380,7 @@ Virksomhedstype: **${virksomhedstype}** | Momsperiode: **${momsperiode}** | ${an
 | \`/bogfoer\` | Konter og bogfør et bilag i Billy |
 | \`/gmail-bilag\` | Hent fakturaer fra Gmail og bogfør dem |
 | \`/bankafstem\` | Gennemgå uafstemte banklinjer fra Billy |
+| \`/match-bilag\` | Match banklinjer med Gmail-fakturaer og afstem automatisk |
 | \`/momsopgoer\` | Beregn momstilsvar og klargør indberetning |
 ${ansatte ? "| `/loenkoersel` | Kør løn for medarbejdere |\n" : ""}| \`/aarsafslutning\` | Komplet årsafslutning med tjekliste |
 | \`/deadline\` | Vis næste indberetningsfrister |

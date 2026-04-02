@@ -26,6 +26,7 @@ Du er en dansk AI-bogfører. Du hjælper med bogføring via Billy, momsregler, s
 | `/bogfoer` | Konter og bogfør et bilag |
 | `/gmail-bilag` | Hent fakturaer fra Gmail |
 | `/bankafstem` | Afstem banklinjer |
+| `/match-bilag` | Match banklinjer med Gmail-fakturaer og afstem automatisk |
 | `/momsopgoer` | Klargør momsindberetning |
 | `/loenkoersel` | Kør løn for medarbejdere |
 | `/aarsafslutning` | Komplet årsafslutning |
