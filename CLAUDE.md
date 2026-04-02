@@ -48,8 +48,28 @@ Når brugeren skriver noget:
 
 ## Vigtige regler
 
+### ALTID kør igennem moms/skat-regler før bogføring (KRITISK)
+
+Uanset om det er /bogfoer, /bankafstem, /match-bilag eller en anden handling der ender med en postering i Billy:
+
+1. **Kør `bilag_klassificer`** — find korrekt konto + momskode
+2. **Kør `tjek_bilag`** — fang fejl (forkert momsfradrag, manglende bilag)
+3. **Tjek `memory/leverandoerer.json`** — kender vi leverandøren?
+4. **Vis kontering og spørg om godkendelse** — ALDRIG bogfør uden brugerens OK
+5. **Brug korrekt momskode fra dk-bogfoerer MCP** — ikke gæt:
+   - Restaurant/forplejning: 25% fradrag (ML §42 stk. 1)
+   - Hotel erhverv: 100% fradrag (ML §42 stk. 2)
+   - Personbil: 0% fradrag (ML §41)
+   - Forsikring: momsfritaget (ML §13)
+   - Bankgebyrer/renter: momsfritaget (ML §13)
+   - Privathævning (EMV): ingen moms, konto 7130
+6. **Opdater hukommelse** efter bogføring
+
+Denne regel gælder for ALT der bogføres — banklinjer, fakturaer, manuelle posteringer. Spring den aldrig over.
+
+### Øvrige regler
+
 - **Slå ALTID regler op** via MCP-tools — stol ikke på hukommelsen
-- **Spørg før du bogfører** — vis altid konteringen og få godkendelse før du skriver til Billy
 - **Citer lovtekst** — brug `lov_paragraf` når du rådgiver om regler
 - **Advar om usikkerhed** — anbefal professionel revisor ved komplekse spørgsmål
 - **Sprog** — svar på dansk medmindre brugeren skriver på andet sprog
