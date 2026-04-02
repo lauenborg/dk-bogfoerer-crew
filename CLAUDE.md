@@ -34,6 +34,7 @@ Ved **første besked** i en ny session — hvis brugeren ikke bruger en slash-co
 | **`/bogfoer-start`** | **START HER — læser hukommelse, viser status, frister og uafstemte banklinjer** |
 | **`/bogfoer-alt`** | **KOMPLET FLOW: match bilag + banklinjer + Gmail + log manglende** |
 | `/momsafstem` | Tjek at bogført moms er korrekt, fang EU reverse charge fejl |
+| `/skatafstem` | Tjek fradrag, privatandele, beregn forventet skat |
 | `/loenkoersel` | Kør løn for medarbejdere |
 | `/aarsafslutning` | Komplet årsafslutning med tjekliste |
 | `/deadline` | Vis næste frister |
