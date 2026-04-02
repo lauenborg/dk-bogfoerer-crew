@@ -314,9 +314,12 @@ async function main(): Promise<void> {
 
   server.tool(
     "skat_sats",
-    "Skattesats for indkomsttype: personlig, selskab, aktie, kapital.",
-    { income_type: z.string().describe("'personlig', 'selskab', 'aktie' eller 'kapital'") },
+    "Skattesats for indkomsttype: personlig, selskab, aktie, kapital. Uden input: alle satser.",
+    { income_type: z.string().optional().describe("'personlig', 'selskab', 'aktie' eller 'kapital'. Udelad for alle.") },
     async ({ income_type }) => {
+      if (!income_type) {
+        return textResult(`**Alle skattesatser:**\n\nPersonlig indkomst:\n${jsonText(skatDb.income_tax)}\n\nSelskab:\n${jsonText(skatDb.corporate_tax)}\n\nAktie:\n${jsonText(skatDb.share_income)}\n\nKapital:\n${jsonText(skatDb.capital_income)}`);
+      }
       const n = income_type.toLowerCase();
       if (n.includes("personlig") || n.includes("person")) {
         return textResult(`**Personlig indkomstskat:**\n\n${jsonText(skatDb.income_tax)}`);
