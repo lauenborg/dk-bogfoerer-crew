@@ -28,10 +28,17 @@ Når en matchende email er fundet:
 
 **A) Email har vedhæftet PDF/billede:**
 1. Læs emailen med `gmail_read_message`
-2. Ekstraher vedhæftningens info (filnavn, størrelse)
-3. Download vedhæftningen
-4. Upload til Billy med `billy_bogfoer` (via dagbogstransaktion)
-5. Link til banklinjen og afstem
+2. Ekstraher: leverandør, beløb, moms, dato fra emailen/fakturaen
+3. **Kør igennem konterer-agenten:**
+   - `bilag_klassificer` → korrekt konto + momskode (restaurant=25% fradrag, forsikring=momsfri, osv.)
+   - `tjek_bilag` → fang fejl før bogføring
+   - Tjek `memory/leverandoerer.json` → kender vi leverandøren?
+4. Vis kontering og spørg brugeren om godkendelse
+5. Opret dagbogstransaktion via `billy_bogfoer` med korrekt momskode
+6. Godkend transaktion via `billy_transaktion_godkend`
+7. Link til banklinjen via `billy_bankafstem_link`
+8. Godkend match via `billy_bankmatch_godkend`
+9. Opdater `memory/leverandoerer.json` med leverandør → konto + momskode
 
 **B) Email har "download faktura"-link (ingen vedhæftning):**
 1. Læs emailen
