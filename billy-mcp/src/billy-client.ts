@@ -136,43 +136,30 @@ export async function getBill(id: string): Promise<unknown> {
 }
 
 // ─── Banklinjer ───
-// NOTE: Billy API docs do NOT document filter params for bankLines.
-// We fetch all and let the MCP tool layer filter client-side.
-// Each bankLine has a `match` (belongs-to bankLineMatch) — if the match
-// has isApproved=false, the line is "unreconciled".
+// Billy bankLines: KRAEVER accountId parameter.
+// Hver banklinje har et matchId (Billy opretter automatisk en match per linje).
+// "Uafstemt" = matchens isApproved er false.
+// Felt-navne: accountId, feeAccountId (IKKE account/feeAccount).
 
-export async function getBankLines(params?: {
-  readonly accountId?: string;
+export async function getBankLines(params: {
+  readonly accountId: string;
   readonly pageSize?: number;
   readonly page?: number;
+  readonly sortProperty?: string;
+  readonly sortDirection?: string;
 }): Promise<unknown> {
-  return billyFetch("/bankLines", { params: { ...params, pageSize: params?.pageSize ?? 200 } });
+  return billyFetch("/bankLines", { params: { ...params, pageSize: params.pageSize ?? 200 } });
 }
 
 export async function getBankLine(id: string): Promise<unknown> {
   return billyFetch(`/bankLines/${id}`);
 }
 
-// Billy bankLineMatch: the reconciliation container.
-// Required fields: account, feeAccount, entryDate, amount, side.
-// `lines` is a has-many of bankLine IDs.
-// isApproved=true finalizes the reconciliation.
-export async function createBankLineMatch(data: {
-  readonly account: string;
-  readonly feeAccount: string;
-  readonly entryDate: string;
-  readonly amount: number;
-  readonly side: string;
-  readonly lines: readonly string[];
-  readonly isApproved?: boolean;
-  readonly subjectAssociations?: readonly Record<string, unknown>[];
-}): Promise<unknown> {
-  return billyFetch("/bankLineMatches", {
-    method: "POST",
-    body: { bankLineMatch: data },
-  });
+export async function getBankLineMatch(id: string): Promise<unknown> {
+  return billyFetch(`/bankLineMatches/${id}`);
 }
 
+// Godkend en eksisterende match (isApproved: true finaliserer afstemningen)
 export async function updateBankLineMatch(
   id: string,
   data: Record<string, unknown>,
@@ -191,10 +178,6 @@ export async function getBankLineMatches(params?: {
   return billyFetch("/bankLineMatches", { params: { ...params, pageSize: params?.pageSize ?? 100 } });
 }
 
-export async function getBankLineMatch(id: string): Promise<unknown> {
-  return billyFetch(`/bankLineMatches/${id}`);
-}
-
 export async function createSubjectAssociation(data: {
   readonly bankLineMatchId: string;
   readonly subjectReference: string;
@@ -206,28 +189,48 @@ export async function createSubjectAssociation(data: {
   });
 }
 
-// ─── Hjaelpefunktion: find uafstemte banklinjer ───
-// Hent banklinjer + deres matches, filtrer paa isApproved=false
-export async function getUnreconciledBankLines(accountId?: string): Promise<unknown> {
-  // Hent alle banklinjer
-  const linesResult = await billyFetch("/bankLines", {
-    params: { accountId, pageSize: 200 },
-  }) as Record<string, unknown>;
-  const allLines = (linesResult.bankLines ?? []) as Array<Record<string, unknown>>;
+// ─── Find uafstemte banklinjer ───
+// Hent banklinjer, tjek hver linjes match for isApproved=false.
+export async function getUnreconciledBankLines(accountId: string): Promise<unknown> {
+  // Hent alle banklinjer (op til 500 fordelt paa sider)
+  const allLines: Array<Record<string, unknown>> = [];
+  let page = 1;
+  let hasMore = true;
+  while (hasMore && page <= 5) {
+    const result = await billyFetch("/bankLines", {
+      params: { accountId, pageSize: 200, page, sortProperty: "entryDate", sortDirection: "DESC" },
+    }) as Record<string, unknown>;
+    const lines = (result.bankLines ?? []) as Array<Record<string, unknown>>;
+    allLines.push(...lines);
+    const paging = (result.meta as Record<string, unknown>)?.paging as Record<string, unknown> | undefined;
+    hasMore = page < (paging?.pageCount as number ?? 1);
+    page++;
+  }
 
-  // Hent uafsluttede matches
-  const matchesResult = await billyFetch("/bankLineMatches", {
-    params: { isApproved: false, pageSize: 200 },
-  }) as Record<string, unknown>;
-  const unapprovedMatches = (matchesResult.bankLineMatches ?? []) as Array<Record<string, unknown>>;
-  const unapprovedMatchIds = new Set(unapprovedMatches.map((m) => m.id as string));
+  // Tjek hver linjes match
+  const unreconciled: Array<Record<string, unknown>> = [];
+  const checked = new Set<string>();
 
-  // Filtrer banklinjer der har en uafsluttet match (eller ingen match)
-  const unreconciled = allLines.filter((line) => {
-    const matchId = line.match as string | null;
-    if (!matchId) return true; // Ingen match = uafstemt
-    return unapprovedMatchIds.has(matchId); // Match ikke godkendt = uafstemt
-  });
+  for (const line of allLines) {
+    const matchId = line.matchId as string | null;
+    if (!matchId) {
+      unreconciled.push(line);
+      continue;
+    }
+    if (checked.has(matchId)) continue;
+    checked.add(matchId);
+
+    try {
+      const matchResult = await billyFetch(`/bankLineMatches/${matchId}`) as Record<string, unknown>;
+      const match = matchResult.bankLineMatch as Record<string, unknown> | undefined;
+      if (match && match.isApproved === false) {
+        unreconciled.push(line);
+      }
+    } catch {
+      // Kan ikke hente match — antag uafstemt
+      unreconciled.push(line);
+    }
+  }
 
   return {
     bankLines: unreconciled,

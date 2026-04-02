@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, createBankLineMatch, updateBankLineMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
   getDaybookTransactions, createDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -193,13 +193,16 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_banklinjer",
-    "Hent alle banklinjer fra Billy.",
+    "Hent banklinjer fra Billy. KRAEVER accountId (brug billy_kontoplan for at finde bankkonti med isBankAccount=true).",
     {
-      accountId: z.string().optional().describe("Bank-konto-ID"),
+      accountId: z.string().describe("Bank-konto-ID (paakreevet — brug billy_kontoplan for at finde bankkonti)"),
       page: z.number().optional().describe("Sidetal"),
+      sortDirection: z.string().optional().describe("'ASC' (aeldste foerst) eller 'DESC' (nyeste foerst)"),
     },
-    async ({ accountId, page }) => {
-      const { data, error } = await safeCall(() => getBankLines({ accountId, page }));
+    async ({ accountId, page, sortDirection }) => {
+      const { data, error } = await safeCall(() =>
+        getBankLines({ accountId, page, sortProperty: "entryDate", sortDirection: sortDirection ?? "DESC" }),
+      );
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Banklinjer:**\n\n${jsonText(data)}`);
     },
@@ -207,34 +210,12 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_banklinjer_uafstemte",
-    "Hent uafstemte banklinjer (linjer med uafsluttet eller manglende match). Brug denne til bankafsteming.",
-    { accountId: z.string().optional().describe("Bank-konto-ID (valgfrit)") },
+    "Hent uafstemte banklinjer (matches med isApproved=false). Brug denne til bankafsteming.",
+    { accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan for at finde bankkonti)") },
     async ({ accountId }) => {
       const { data, error } = await safeCall(() => getUnreconciledBankLines(accountId));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Uafstemte banklinjer:**\n\n${jsonText(data)}`);
-    },
-  );
-
-  server.tool(
-    "billy_bankmatch",
-    "Opret en banklinjeafsteming (match). Kraever account (modkonto), feeAccount, og banklinjeID'er.",
-    {
-      account: z.string().describe("Modkonto-ID (den konto udgiften/indtaegten bogfoeres paa)"),
-      feeAccount: z.string().describe("Gebyr-konto-ID (ofte samme som bankkontoen)"),
-      entryDate: z.string().describe("Dato YYYY-MM-DD"),
-      amount: z.number().describe("Beloeb"),
-      side: z.string().describe("'debit' eller 'credit'"),
-      lines: z.string().describe("Banklinje-ID'er som JSON-array: [\"id1\", \"id2\"]"),
-      isApproved: z.boolean().optional().describe("Godkend med det samme? (default false)"),
-    },
-    async ({ account, feeAccount, entryDate, amount, side, lines, isApproved }) => {
-      const parsedLines = JSON.parse(lines) as string[];
-      const { data, error } = await safeCall(() =>
-        createBankLineMatch({ account, feeAccount, entryDate, amount, side, lines: parsedLines, isApproved }),
-      );
-      if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Bankmatch oprettet:**\n\n${jsonText(data)}`);
     },
   );
 
