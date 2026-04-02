@@ -9,17 +9,27 @@ Gennemgaa uafstemte banklinjer og match dem.
 
 ## Trin
 
-1. Brug `billy_banklinjer` med `isMatched: false` for at hente uafstemte linjer
-2. For hver banklinje:
+1. Brug `billy_banklinjer_uafstemte` for at hente uafstemte linjer
+2. For hver uafstemt banklinje:
    a. Vis: dato, beloeb, beskrivelse
-   b. Foreslaa match baseret paa beskrivelsen (brug `bilag_klassificer`)
-   c. Spoerg brugeren om godkendelse
-   d. Brug `billy_bankmatch` til at matche linjen
+   b. Tjek `memory/leverandoerer.json` — kender vi afsender/modtager?
+   c. Foreslaa match baseret paa beskrivelsen (brug `bilag_klassificer`)
+   d. Spoerg brugeren om godkendelse
+   e. Brug `billy_bankmatch` til at oprette match (kraever account + feeAccount + lines)
+   f. Hvis det skal linkes til en faktura/regning: brug `billy_bankafstem_link`
+   g. Brug `billy_bankmatch_godkend` til at finalisere
 3. Opsummer: antal matchede, resterende uafstemte
+
+## Vigtige parametre for billy_bankmatch
+
+- `account`: Modkonto-ID (udgifts-/indtaegtskonto)
+- `feeAccount`: Gebyr-konto-ID (typisk bankens konto)
+- `lines`: JSON-array af banklinje-ID'er: ["id1"]
+- `entryDate`, `amount`, `side`: Fra banklinjen
 
 ## Typiske matches
 
-- "Rente" → konto 7000 (Renteudgifter) eller 6000 (Renteindtaegter), momsfri
-- "Gebyr" → konto 7200 (Bankgebyrer), momsfri
-- Leverandoernavn → match med regning (bill)
-- Kundenavn → match med faktura (invoice)
+- "Rente" → modkonto 7000 (Renteudgifter), momsfri
+- "Gebyr" → modkonto 7200 (Bankgebyrer), momsfri
+- Leverandoernavn → match med regning via billy_bankafstem_link
+- Kundenavn → match med faktura via billy_bankafstem_link
