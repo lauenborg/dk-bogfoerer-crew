@@ -139,6 +139,14 @@ export async function deleteBill(id: string): Promise<unknown> {
   return billyFetch(`/bills/${id}`, { method: "DELETE" });
 }
 
+// Fjern bilag fra en bill INDEN sletning — ellers slettes bilaget med!
+export async function detachAttachmentsFromBill(billId: string): Promise<unknown> {
+  return billyFetch(`/bills/${billId}`, {
+    method: "PUT",
+    body: { bill: { attachmentIds: [] } },
+  });
+}
+
 // ─── Banklinjer ───
 // Billy bankLines: KRÆVER accountId parameter.
 // Hver banklinje har et matchId (Billy opretter automatisk en match per linje).

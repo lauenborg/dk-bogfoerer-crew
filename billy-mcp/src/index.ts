@@ -5,7 +5,7 @@ import {
   getOrganization, getAccounts, getAccountGroups,
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
-  getBills, getBill, deleteBill,
+  getBills, getBill, deleteBill, detachAttachmentsFromBill,
   getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, createBill, getFile,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
@@ -403,8 +403,10 @@ async function main(): Promise<void> {
             parts.push(voidErr ? `✗ Void transaktion: ${voidErr}` : `✓ Transaktion voided: ${txId}`);
           } else if (ref.startsWith("bill:")) {
             const billId = ref.split(":")[1];
+            // VIGTIGT: Fjern bilag fra bill FØR sletning — ellers slettes bilaget med!
+            await safeCall(() => detachAttachmentsFromBill(billId));
             const { error: delBillErr } = await safeCall(() => deleteBill(billId));
-            parts.push(delBillErr ? `✗ Slet regning: ${delBillErr}` : `✓ Regning slettet: ${billId}`);
+            parts.push(delBillErr ? `✗ Slet regning: ${delBillErr}` : `✓ Regning slettet (bilag bevaret): ${billId}`);
           } else if (ref.startsWith("posting:")) {
             parts.push(`  (posting ${ref} — kan ikke slettes, men match er frigivet)`);
           }
