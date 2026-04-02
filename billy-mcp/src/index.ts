@@ -19,7 +19,13 @@ function jsonText(data: unknown): string {
   return typeof data === "string" ? data : JSON.stringify(data, null, 2);
 }
 
+const MAX_RESPONSE = 15_000; // Maks tegn i MCP-respons — undgå token overflow
+
 function textResult(text: string) {
+  if (text.length > MAX_RESPONSE) {
+    const truncated = text.slice(0, MAX_RESPONSE);
+    return { content: [{ type: "text" as const, text: truncated + `\n\n--- (afkortet fra ${text.length} tegn. Brug filtre eller paginering for mindre resultat) ---` }] };
+  }
   return { content: [{ type: "text" as const, text }] };
 }
 
@@ -338,17 +344,28 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_posteringer_list",
-    "Hent bogføringsposteringer fra Billy. Filtrer på konto og datointerval.",
+    "Hent bogføringsposteringer fra Billy (kompakt format). Filtrer på konto og datointerval.",
     {
       accountId: z.string().optional().describe("Konto-ID"),
       minEntryDate: z.string().optional().describe("Fra dato YYYY-MM-DD"),
       maxEntryDate: z.string().optional().describe("Til dato YYYY-MM-DD"),
-      page: z.number().optional().describe("Sidetal"),
+      page: z.number().optional().describe("Sidetal (20 pr. side)"),
     },
     async ({ accountId, minEntryDate, maxEntryDate, page }) => {
-      const { data, error } = await safeCall(() => getPostings({ accountId, minEntryDate, maxEntryDate, page }));
+      const { data, error } = await safeCall(() => getPostings({ accountId, minEntryDate, maxEntryDate, page, pageSize: 20 }));
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Posteringer:**\n\n${jsonText(data)}`);
+
+      const result = data as Record<string, unknown>;
+      const postings = (result.postings ?? []) as Array<Record<string, unknown>>;
+      const paging = (result.meta as Record<string, unknown>)?.paging as Record<string, unknown> | undefined;
+
+      const compact = postings.map((p) =>
+        `${p.entryDate} | ${String(p.amount).padStart(10)} | ${String(p.side).padStart(6)} | ${String(p.text ?? "").slice(0, 40)} | acc:${p.accountId} | tax:${p.taxRateId ?? "—"}`,
+      ).join("\n");
+
+      return textResult(
+        `**Posteringer** (side ${paging?.page ?? "?"} af ${paging?.pageCount ?? "?"}, total: ${paging?.total ?? "?"}):\n\n${compact}`,
+      );
     },
   );
 

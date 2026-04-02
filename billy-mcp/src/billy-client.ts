@@ -300,7 +300,7 @@ export async function getPostings(params?: {
   readonly pageSize?: number;
   readonly page?: number;
 }): Promise<unknown> {
-  return billyFetch("/postings", { params: { ...params, pageSize: params?.pageSize ?? 100 } });
+  return billyFetch("/postings", { params: { ...params, pageSize: params?.pageSize ?? 20 } });
 }
 
 // ─── Moms (Sales Tax) ───
