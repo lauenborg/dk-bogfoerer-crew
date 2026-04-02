@@ -68,13 +68,21 @@ Du kan IKKE uploade filer direkte til Billy via API. I stedet:
 
 **Hvis `shine_receipts_email` ikke er sat:** Spørg brugeren: "Hvad er din Billy receipts-email? Find den i Billy → Indstillinger → Bilag → Email-adresse" og gem svaret i `memory/regler.json`.
 
+**Begrænsning:** Gmail MCP har IKKE send-funktion — kun `gmail_create_draft`. Claude kan oprette drafts, men brugeren skal sende dem.
+
 ### Eksempel-flow
 ```
-1. Gmail: finder faktura fra Adobe
-2. gmail_create_draft: to=shine-email, subject="Fwd: Adobe Invoice", body=original email
-3. Brugeren sender draften
+1. Gmail: finder faktura-email fra Adobe (gmail_search_messages + gmail_read_message)
+2. Opret draft: gmail_create_draft(to=shine-email, subject="Fwd: Adobe Invoice #123", body="Se vedhæftet faktura")
+3. Fortæl brugeren: "Jeg har oprettet X drafts i Gmail → åbn Gmail → Kladder → send dem alle"
 4. Shine opretter bilag i Billy automatisk
 ```
+
+### Batch-flow (mange fakturaer)
+Når du matcher mange banklinjer på én gang:
+1. Opret ALLE drafts først (én per faktura)
+2. Vis brugeren en samlet liste: "Oprettet 8 drafts — åbn Gmail Kladder og send dem"
+3. Brugeren sender dem samlet i Gmail
 
 ## Vigtige regler
 
