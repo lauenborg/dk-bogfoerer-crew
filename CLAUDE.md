@@ -91,20 +91,20 @@ Du kan IKKE uploade filer direkte til Billy via API. I stedet:
 ### Batch-flow (mange fakturaer)
 Når du matcher mange banklinjer med emails:
 1. Søg og find alle matchende emails
-2. Vis brugeren en kompakt liste:
+2. Vis brugeren en kompakt liste med **direkte Gmail-links**:
    ```
-   Fandt 8 faktura-emails der skal videresendes til Shine:
+   Fandt 8 faktura-emails — videresend til Shine:
 
-     1. Adobe faktura #123 — 237,96 kr. — email fra 28/3
-     2. Simply.com — 972,73 kr. — email fra 27/3
-     3. Amazon ordre — 1.177,67 kr. — email fra 25/3
+     1. Adobe 237,96 kr. — https://mail.google.com/mail/u/0/#inbox/MSG_ID_1
+     2. Simply.com 972,73 kr. — https://mail.google.com/mail/u/0/#inbox/MSG_ID_2
+     3. Amazon 1.177,67 kr. — https://mail.google.com/mail/u/0/#inbox/MSG_ID_3
      ...
 
-   Shine-adresse: [læs fra memory/regler.json]
+   Shine: [læs fra memory/regler.json]
 
-   Åbn Gmail og videresend disse 8 emails til Shine-adressen.
-   Sig "færdig" når du har gjort det.
+   Klik hvert link → videresend til Shine → sig "færdig"
    ```
+   Gmail-link format: `https://mail.google.com/mail/u/0/#inbox/{messageId}`
 3. **VENT på bekræftelse** — spørg: "Har du videresendt alle emails til Shine?"
 4. Først når brugeren bekræfter → fortsæt med bogføring og afstemning
 5. Dokumentér i referat
