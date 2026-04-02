@@ -77,34 +77,39 @@ Du kan IKKE uploade filer direkte til Billy via API. I stedet:
 
 **Hvis `shine_receipts_email` ikke er sat:** Spørg brugeren: "Hvad er din Billy receipts-email? Find den i Billy → Indstillinger → Bilag → Email-adresse" og gem svaret i `memory/regler.json`.
 
-**Begrænsning:** Gmail MCP har IKKE send-funktion — kun `gmail_create_draft`. Claude kan oprette drafts, men brugeren skal sende dem.
+**Begrænsning:** Gmail MCP kan IKKE videresende emails med vedhæftninger. Claude kan kun søge og læse emails — ikke flytte filer.
 
-### Eksempel-flow
+### Flow: brugeren videresender manuelt
 ```
-1. Gmail: finder faktura-email fra Adobe (gmail_search_messages + gmail_read_message)
-2. Opret draft: gmail_create_draft(to=shine-email, subject="Fwd: Adobe Invoice #123", body="Se vedhæftet faktura")
-3. Fortæl brugeren: "Jeg har oprettet X drafts i Gmail → åbn Gmail → Kladder → send dem alle"
-4. Shine opretter bilag i Billy automatisk
+1. Claude finder faktura-emails via gmail_search_messages
+2. Claude viser en liste med links/emnelinjer
+3. Brugeren videresender dem selv i Gmail til Shine-adressen
+4. Brugeren bekræfter "færdig"
+5. Claude fortsætter med bogføring
 ```
 
 ### Batch-flow (mange fakturaer)
-Når du matcher mange banklinjer på én gang:
-1. Opret ALLE drafts først (én per faktura)
-2. Vis brugeren en samlet liste:
+Når du matcher mange banklinjer med emails:
+1. Søg og find alle matchende emails
+2. Vis brugeren en kompakt liste:
    ```
-   Oprettet 8 drafts til Shine:
-     1. Adobe faktura #123 — 237,96 kr.
-     2. Simply.com faktura — 972,73 kr.
-     3. Amazon ordre — 1.177,67 kr.
-     ...
-   
-   → Åbn Gmail → Kladder → send dem alle
-   ```
-3. **VENT på bekræftelse:** Spørg brugeren: "Har du sendt alle drafts i Gmail? (ja/nej)"
-4. Først når brugeren bekræfter → fortsæt med bogføring og afstemning
-5. Dokumentér i referat: "8 fakturaer videresendt til Shine den 2/4-2026"
+   Fandt 8 faktura-emails der skal videresendes til Shine:
 
-**VIGTIGT:** Bogfør IKKE banklinjer som "med bilag" før brugeren har bekræftet at drafts er sendt. Ellers matcher Billy posteringen uden bilag.
+     1. Adobe faktura #123 — 237,96 kr. — email fra 28/3
+     2. Simply.com — 972,73 kr. — email fra 27/3
+     3. Amazon ordre — 1.177,67 kr. — email fra 25/3
+     ...
+
+   Shine-adresse: [læs fra memory/regler.json]
+
+   Åbn Gmail og videresend disse 8 emails til Shine-adressen.
+   Sig "færdig" når du har gjort det.
+   ```
+3. **VENT på bekræftelse** — spørg: "Har du videresendt alle emails til Shine?"
+4. Først når brugeren bekræfter → fortsæt med bogføring og afstemning
+5. Dokumentér i referat
+
+**VIGTIGT:** Afstem IKKE banklinjer der kræver bilag før brugeren har bekræftet videresendelse.
 
 ## Vigtige regler
 
