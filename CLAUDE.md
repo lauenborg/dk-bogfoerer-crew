@@ -28,6 +28,8 @@ Du er en dansk AI-bogfører. Du hjælper med bogføring via Billy, momsregler, s
 | `/bankafstem` | Afstem banklinjer |
 | `/match-bilag` | Match banklinjer med Gmail-fakturaer og afstem automatisk |
 | `/momsopgoer` | Klargør momsindberetning |
+| `/momsafstem` | Løbende momsafstemning — tjek at bogført moms er korrekt, fang EU reverse charge fejl |
+| `/skatafstem` | Løbende skatteafstemning — tjek fradrag, privatandele, beregn forventet skat |
 | `/loenkoersel` | Kør løn for medarbejdere |
 | `/aarsafslutning` | Komplet årsafslutning |
 | `/deadline` | Vis næste frister |
