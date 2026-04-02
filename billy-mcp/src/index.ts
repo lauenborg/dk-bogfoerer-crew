@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -531,6 +531,42 @@ async function main(): Promise<void> {
       const { data, error } = await safeCall(() => getAttachments({ ownerId }));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Bilag:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_bilag_uknyttede",
+    "Find bilag i Billy der IKKE er knyttet til en faktura/regning (f.eks. sendt via Shine men ikke matchet). Brug til at matche bilag med banklinjer.",
+    {},
+    async () => {
+      const { data, error } = await safeCall(getUnlinkedAttachments);
+      if (error) return textResult(`Fejl: ${error}`);
+
+      const result = data as { attachments: Array<Record<string, unknown>>; total: number; allTotal: number };
+
+      if (result.total === 0) {
+        return textResult("Ingen uknyttede bilag fundet. Alle bilag er matchet.");
+      }
+
+      const compact = result.attachments.map((a) =>
+        `${a.documentDate ?? "—"} | ${a.amount ?? "—"} ${a.currencyId ?? ""} | ${a.supplier ?? "ukendt"} | ${a.comment ?? ""} | ID:${a.id}`,
+      ).join("\n");
+
+      return textResult(`**Uknyttede bilag** (${result.total} af ${result.allTotal} total):\n\n${compact}`);
+    },
+  );
+
+  server.tool(
+    "billy_bilag_knyt",
+    "Knyt et uknyttet bilag til en regning (bill) i Billy.",
+    {
+      attachmentId: z.string().describe("Bilag-ID (fra billy_bilag_uknyttede)"),
+      billId: z.string().describe("Regnings-ID (bill) at knytte til"),
+    },
+    async ({ attachmentId, billId }) => {
+      const { data, error } = await safeCall(() => linkAttachmentToBill(attachmentId, billId));
+      if (error) return textResult(`Fejl: ${error}`);
+      return textResult(`**Bilag knyttet til regning:**\n\n${jsonText(data)}`);
     },
   );
 

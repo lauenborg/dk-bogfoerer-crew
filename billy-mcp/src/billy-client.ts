@@ -196,6 +196,22 @@ export async function deleteSubjectAssociation(id: string): Promise<unknown> {
   return billyFetch(`/bankLineSubjectAssociations/${id}`, { method: "DELETE" });
 }
 
+// Hent uknyttede bilag (ownerReference=null — sendt via Shine men ikke matchet)
+export async function getUnlinkedAttachments(): Promise<unknown> {
+  const result = await billyFetch("/attachments", { params: { pageSize: 100 } }) as Record<string, unknown>;
+  const all = (result.attachments ?? []) as Array<Record<string, unknown>>;
+  const unlinked = all.filter((a) => !a.ownerId);
+  return { attachments: unlinked, total: unlinked.length, allTotal: all.length };
+}
+
+// Knyt et bilag til en regning (bill)
+export async function linkAttachmentToBill(attachmentId: string, billId: string): Promise<unknown> {
+  return billyFetch(`/attachments/${attachmentId}`, {
+    method: "PUT",
+    body: { attachment: { ownerId: billId, ownerReference: `bill:${billId}` } },
+  });
+}
+
 export async function getBankLineMatches(params?: {
   readonly isApproved?: boolean;
   readonly pageSize?: number;
