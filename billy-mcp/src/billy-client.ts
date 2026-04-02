@@ -267,6 +267,7 @@ export async function getBankLineMatches(params?: {
   readonly isApproved?: boolean;
   readonly pageSize?: number;
   readonly page?: number;
+  readonly accountId?: string;
 }): Promise<unknown> {
   return billyFetch("/bankLineMatches", { params: { ...params, pageSize: params?.pageSize ?? 100 } });
 }
@@ -297,41 +298,37 @@ export async function approveDaybookTransaction(id: string): Promise<unknown> {
 }
 
 // ─── Find uafstemte banklinjer ───
-// Hent banklinjer, tjek hver linjes match for isApproved=false.
+// Hent banklinjer + tjek matches i batches af 5 parallelt.
+// Billy's isApproved filter virker ikke — vi tjekker individuelt.
 export async function getUnreconciledBankLines(accountId: string): Promise<unknown> {
-  // Effektiv metode: hent unapproved matches først, derefter find tilhørende banklinjer
-  // Undgår N+1 query-problem
-
-  // Trin 1: Hent alle unapproved matches (2 kald i stedet for N)
-  const unapprovedMatchIds = new Set<string>();
-  const matchResult = await billyFetch("/bankLineMatches", {
-    params: { isApproved: false, pageSize: 500 },
+  const result = await billyFetch("/bankLines", {
+    params: { accountId, pageSize: 50, sortProperty: "entryDate", sortDirection: "DESC" },
   }) as Record<string, unknown>;
-  const matches = (matchResult.bankLineMatches ?? []) as Array<Record<string, unknown>>;
-  for (const m of matches) {
-    unapprovedMatchIds.add(m.id as string);
+  const allLines = (result.bankLines ?? []) as Array<Record<string, unknown>>;
+
+  // Tjek matches i batches af 5
+  const matchCache = new Map<string, boolean>();
+  const uniqueMatchIds = [...new Set(
+    allLines.map((l) => l.matchId as string).filter(Boolean),
+  )];
+
+  for (let i = 0; i < uniqueMatchIds.length; i += 5) {
+    const batch = uniqueMatchIds.slice(i, i + 5);
+    const results = await Promise.allSettled(
+      batch.map(async (mid) => {
+        const r = await billyFetch(`/bankLineMatches/${mid}`) as Record<string, unknown>;
+        return { mid, approved: (r.bankLineMatch as Record<string, unknown>)?.isApproved === true };
+      }),
+    );
+    for (const r of results) {
+      if (r.status === "fulfilled") matchCache.set(r.value.mid, r.value.approved);
+    }
   }
 
-  // Trin 2: Hent banklinjer (paginated)
-  const allLines: Array<Record<string, unknown>> = [];
-  let page = 1;
-  let hasMore = true;
-  while (hasMore && page <= 5) {
-    const result = await billyFetch("/bankLines", {
-      params: { accountId, pageSize: 200, page, sortProperty: "entryDate", sortDirection: "DESC" },
-    }) as Record<string, unknown>;
-    const lines = (result.bankLines ?? []) as Array<Record<string, unknown>>;
-    allLines.push(...lines);
-    const paging = (result.meta as Record<string, unknown>)?.paging as Record<string, unknown> | undefined;
-    hasMore = page < (paging?.pageCount as number ?? 1);
-    page++;
-  }
-
-  // Trin 3: Filtrer banklinjer der har en unapproved match
   const unreconciled = allLines.filter((line) => {
     const matchId = line.matchId as string | null;
     if (!matchId) return true;
-    return unapprovedMatchIds.has(matchId);
+    return !matchCache.get(matchId);
   });
 
   return {

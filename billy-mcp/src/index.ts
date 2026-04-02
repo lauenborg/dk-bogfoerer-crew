@@ -422,13 +422,14 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bankmatches",
-    "List bankmatches. Brug isApproved=false for at se uafsluttede afstemninger.",
+    "List bankmatches. Brug isApproved=false for at se uafsluttede afstemninger. KRÆVER accountId.",
     {
+      accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan med bankOnly=true)"),
       isApproved: z.boolean().optional().describe("Kun godkendte/ikke-godkendte?"),
       page: z.number().optional().describe("Sidetal"),
     },
-    async ({ isApproved, page }) => {
-      const { data, error } = await safeCall(() => getBankLineMatches({ isApproved, page }));
+    async ({ accountId, isApproved, page }) => {
+      const { data, error } = await safeCall(() => getBankLineMatches({ accountId, isApproved, page }));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Bankmatches:**\n\n${jsonText(data)}`);
     },
