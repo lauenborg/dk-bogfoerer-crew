@@ -32,16 +32,10 @@ Ved **første besked** i en ny session — hvis brugeren ikke bruger en slash-co
 | Skill | Beskrivelse |
 |-------|-------------|
 | **`/bogfoer-start`** | **START HER — læser hukommelse, viser status, frister og uafstemte banklinjer** |
-| **`/bogfoer-alt`** | **KOMPLET FLOW: match banklinjer + Gmail + afstem moms/skat + opdater indberetningstal** |
-| `/bogfoer` | Konter og bogfør ét enkelt bilag |
-| `/match-bilag` | Match banklinjer med Gmail-fakturaer |
-| `/bankafstem` | Afstem resterende banklinjer |
+| **`/bogfoer-alt`** | **KOMPLET FLOW: match bilag + banklinjer + Gmail + log manglende** |
 | `/momsafstem` | Tjek at bogført moms er korrekt, fang EU reverse charge fejl |
-| `/skatafstem` | Tjek fradrag, privatandele, beregn forventet skat |
-| `/momsopgoer` | Klargør momsindberetning (rubrikker klar til udfyldning) |
-| `/gmail-bilag` | Hent fakturaer fra Gmail |
 | `/loenkoersel` | Kør løn for medarbejdere |
-| `/aarsafslutning` | Komplet årsafslutning (alle felter klar) |
+| `/aarsafslutning` | Komplet årsafslutning med tjekliste |
 | `/deadline` | Vis næste frister |
 | `/onboarding` | Opsæt ny bogføringsklient |
 
