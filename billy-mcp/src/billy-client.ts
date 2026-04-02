@@ -221,11 +221,16 @@ export async function getBankLineMatches(params?: {
 }
 
 // Felt hedder "matchId" (IKKE "bankLineMatchId") — verificeret via live API test.
+// ALDRIG brug daybookTransaction som subjectReference — crasher Billy UI.
+// KUN invoice:ID eller bill:ID er gyldige.
 export async function createSubjectAssociation(data: {
   readonly matchId: string;
   readonly subjectReference: string;
   readonly amount?: number;
 }): Promise<unknown> {
+  if (data.subjectReference.includes("daybookTransaction")) {
+    throw new Error("⛔ daybookTransaction kan IKKE bruges som subject reference — crasher Billy UI. Brug invoice:ID eller bill:ID.");
+  }
   return billyFetch("/bankLineSubjectAssociations", {
     method: "POST",
     body: { bankLineSubjectAssociation: data },

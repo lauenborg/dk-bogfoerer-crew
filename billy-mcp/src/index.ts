@@ -274,13 +274,17 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bankafstem_link",
-    "Knyt en bankmatch til en faktura, regning eller dagbogstransaktion via subject association. Dagbogstransaktion SKAL være godkendt først (brug billy_transaktion_godkend).",
+    "Knyt en bankmatch til en faktura (invoice) eller regning (bill). ALDRIG daybookTransaction — det crasher Billy.",
     {
       matchId: z.string().describe("Match-ID (banklinjeMatchId fra banklinjen)"),
-      subjectReference: z.string().describe("Reference: 'invoice:ID', 'bill:ID' eller 'daybookTransaction:ID'"),
+      subjectReference: z.string().describe("KUN 'invoice:ID' eller 'bill:ID' — ALDRIG daybookTransaction"),
       amount: z.number().optional().describe("Beløb (valgfrit, ved delbetaling)"),
     },
     async ({ matchId, subjectReference, amount }) => {
+      // HARD BLOCK: afvis daybookTransaction references
+      if (subjectReference.includes("daybookTransaction")) {
+        return textResult("⛔ FEJL: daybookTransaction kan IKKE bruges som subject reference — det crasher Billy UI.\n\nBrug KUN 'invoice:ID' eller 'bill:ID'.\n\nFor simple udgifter uden faktura/regning: brug billy_bankmatch_godkend UDEN subject association.");
+      }
       const { data, error } = await safeCall(() =>
         createSubjectAssociation({ matchId, subjectReference, amount }),
       );
