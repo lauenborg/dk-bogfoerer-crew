@@ -56,6 +56,15 @@ Når brugeren skriver noget:
 7. Hvis det handler om årsafslutning → brug **aarsafslutter**
 8. Ellers → svar direkte med de relevante MCP-tools
 
+## Bilag via Shine receipts-email
+
+Når du har en faktura-email (fra Gmail) der skal vedhæftes som bilag i Billy:
+1. **Videresend emailen** til virksomhedens Shine receipts-adresse
+2. Shine opretter automatisk bilaget i Billy og matcher det
+
+Receipts-adressen gemmes i `memory/regler.json` under nøglen `shine_receipts_email`.
+Brug `gmail_create_draft` til at oprette en videresendelses-draft, eller bed brugeren videresende manuelt.
+
 ## Vigtige regler
 
 ### ALTID kør igennem moms/skat-regler før bogføring (KRITISK)

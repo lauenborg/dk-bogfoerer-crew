@@ -121,7 +121,7 @@ async function cmdSetup(): Promise<void> {
 
   // ─── Trin 1: Billy API token ───
 
-  console.log("  ── Trin 1/6: Billy API token ──\n");
+  console.log("  ── Trin 1/8: Billy API token ──\n");
   console.log("  For at forbinde til dit regnskabsprogram (Billy) skal du bruge et API token.");
   console.log("  Find det i Billy: Indstillinger → Adgangstokens → Opret nyt token\n");
 
@@ -143,7 +143,7 @@ async function cmdSetup(): Promise<void> {
 
   // ─── Trin 2: Gmail ───
 
-  console.log("  ── Trin 2/7: Gmail (faktura-indhentning) ──\n");
+  console.log("  ── Trin 2/8: Gmail (faktura-indhentning) ──\n");
 
   // Tjek om Gmail MCP er konfigureret
   let gmailConfigured = false;
@@ -177,7 +177,7 @@ async function cmdSetup(): Promise<void> {
 
   // ─── Trin 3: Virksomhedsinfo ───
 
-  console.log("  ── Trin 3/7: Virksomhedsinfo ──\n");
+  console.log("  ── Trin 3/8: Virksomhedsinfo ──\n");
 
   let firmanavn = "";
   let cvr = "";
@@ -202,7 +202,7 @@ async function cmdSetup(): Promise<void> {
 
   // ─── Trin 3: Momsperiode ───
 
-  console.log("\n  ── Trin 4/7: Momsperiode ──\n");
+  console.log("\n  ── Trin 4/8: Momsperiode ──\n");
   console.log("  Afhænger af din omsætning:");
   console.log("    Under 5 mio. kr.   → Halvår");
   console.log("    5-50 mio. kr.      → Kvartal");
@@ -217,21 +217,28 @@ async function cmdSetup(): Promise<void> {
 
   // ─── Trin 4: Har du ansatte? ───
 
-  console.log("\n  ── Trin 5/7: Ansatte ──\n");
+  console.log("\n  ── Trin 5/8: Ansatte ──\n");
   const harAnsatte = await askChoice(rl, "Har virksomheden ansatte?", ["Ja", "Nej"]);
   const ansatte = harAnsatte === "Ja";
 
   const branche = await ask(rl, "Branche (f.eks. 'konsulent', 'handel', 'håndværker')", "generel");
 
-  // ─── Trin 5: Bogføringsmappe ───
+  // ─── Trin 5: Shine receipts ───
 
-  console.log("\n  ── Trin 6/7: Bogføringsmappe ──\n");
+  console.log("\n  ── Trin 6/8: Bilag via email (Shine) ──\n");
+  console.log("  Billy/Shine kan modtage fakturaer via email og oprette bilag automatisk.");
+  console.log("  Find din receipts-adresse i Billy: Indstillinger → Bilag → Email-adresse\n");
+  const shineEmail = await ask(rl, "Shine receipts-email (eller tryk Enter for at springe over)");
+
+  // ─── Trin 6: Bogføringsmappe ───
+
+  console.log("\n  ── Trin 7/8: Bogføringsmappe ──\n");
   const defaultPath = join(process.cwd(), firmanavn ? firmanavn.toLowerCase().replace(/[^a-z0-9æøåäöü]/g, "-").replace(/-+/g, "-") : "bogfoering");
   const bogfoeringsSti = await ask(rl, "Hvor skal bogføringsmappen oprettes?", defaultPath);
 
   // ─── Trin 6: Installer ───
 
-  console.log("\n  ── Trin 7/7: Installation ──\n");
+  console.log("\n  ── Trin 8/8: Installation ──\n");
   console.log("  Installerer...\n");
 
   // 6a: Hent/opdater crew fra GitHub + byg MCP-servere
@@ -348,8 +355,23 @@ async function cmdSetup(): Promise<void> {
     regnskabsaar: "kalenderår",
     oprettet: new Date().toISOString().slice(0, 10),
     billy_token_sat: !!billyToken,
+    shine_receipts_email: shineEmail || null,
   };
   await writeFile(join(target, "config.json"), JSON.stringify(config, null, 2), "utf-8");
+
+  // Gem Shine email i regler.json (kun hvis den ikke allerede eksisterer eller er ny)
+  if (shineEmail) {
+    const reglerPath = join(target, "memory", "regler.json");
+    if (existsSync(reglerPath)) {
+      try {
+        const existing = JSON.parse(await readFile(reglerPath, "utf-8")) as Record<string, unknown>;
+        existing.shine_receipts_email = shineEmail;
+        await writeFile(reglerPath, JSON.stringify(existing, null, 2), "utf-8");
+      } catch {
+        // Ignorer parse-fejl
+      }
+    }
+  }
 
   // CLAUDE.md — dispatcher-instruktioner tilpasset denne virksomhed
   const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører
@@ -505,15 +527,33 @@ Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør
   await writeFile(join(target, "CLAUDE.md"), claudeMd, "utf-8");
   console.log("  ✓ CLAUDE.md genereret (tilpasset din virksomhed)");
 
-  // Opret memory-mappe med tomme filer
+  // Opret memory-mappe — ALDRIG overskriv eksisterende filer (bevar brugerens data)
   await mkdir(join(target, "memory"), { recursive: true });
-  await writeFile(join(target, "memory", "leverandoerer.json"), JSON.stringify({ leverandoerer: {} }, null, 2), "utf-8");
-  await writeFile(join(target, "memory", "konteringer.json"), JSON.stringify({ konteringer: [] }, null, 2), "utf-8");
-  await writeFile(join(target, "memory", "regler.json"), JSON.stringify({ regler: [] }, null, 2), "utf-8");
-  await writeFile(join(target, "memory", "log.json"), JSON.stringify({ poster: [] }, null, 2), "utf-8");
-  await writeFile(join(target, "memory", "referat.md"), `# Bogføringsreferat — ${firmanavn || "Virksomhed"}\n\nLøbende revisionslog med begrundelser for alle posteringer og beslutninger.\n\n---\n\n`, "utf-8");
-  await writeFile(join(target, "memory", "manuelle_downloads.json"), JSON.stringify({ downloads: [] }, null, 2), "utf-8");
-  console.log("  ✓ Hukommelse oprettet (memory/)");
+  const memoryFiles: Array<[string, string]> = [
+    ["leverandoerer.json", JSON.stringify({ leverandoerer: {} }, null, 2)],
+    ["konteringer.json", JSON.stringify({ konteringer: [] }, null, 2)],
+    ["regler.json", JSON.stringify({ regler: [] }, null, 2)],
+    ["log.json", JSON.stringify({ poster: [] }, null, 2)],
+    ["referat.md", `# Bogføringsreferat — ${firmanavn || "Virksomhed"}\n\nLøbende revisionslog med begrundelser for alle posteringer og beslutninger.\n\n---\n\n`],
+    ["manuelle_downloads.json", JSON.stringify({ downloads: [] }, null, 2)],
+    ["indberetning.json", JSON.stringify({ moms: {}, skat: {} }, null, 2)],
+  ];
+  let memoryCreated = 0;
+  let memorySkipped = 0;
+  for (const [filename, content] of memoryFiles) {
+    const filePath = join(target, "memory", filename);
+    if (existsSync(filePath)) {
+      memorySkipped++;
+    } else {
+      await writeFile(filePath, content, "utf-8");
+      memoryCreated++;
+    }
+  }
+  if (memorySkipped > 0) {
+    console.log(`  ✓ Hukommelse: ${memoryCreated} nye filer, ${memorySkipped} bevaret (eksisterende data intakt)`);
+  } else {
+    console.log("  ✓ Hukommelse oprettet (memory/)");
+  }
 
   // Hent data fra Billy
   if (billyToken) {
@@ -595,6 +635,7 @@ Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør
   Ansatte:         ${ansatte ? "Ja" : "Nej"}
   Billy:           ${billyToken ? "✓ Forbundet" : "✗ Ikke forbundet"}
   Gmail:           ${gmailConfigured ? "✓ Aktiv" : "○ Ikke aktiveret (brug /mcp i Claude Code)"}
+  Shine bilag:     ${shineEmail ? `✓ ${shineEmail}` : "○ Ikke konfigureret"}
 
   Bogføringsmappe: ${target}
 
