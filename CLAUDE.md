@@ -252,9 +252,22 @@ Afstem ALDRIG en banklinje uden bilag — **undtagen** disse typer:
 
 For ALLE andre banklinjer (køb, abonnementer, leverandører):
 1. Find faktura-email i Gmail
-2. Opret draft til Shine receipts-email
-3. VENT på brugerbekræftelse at drafts er sendt
+2. Gem i afventer_bilag.json
+3. Brugeren videresender til Shine / lægger i dump
 4. Først da → afstem
+
+### Bankafstemning — korrekt API-brug (KRITISK)
+
+**Subject associations** virker KUN med `invoice:ID` og `bill:ID` — ALDRIG med `daybookTransaction:ID` (giver fejl i Billy UI).
+
+For simple udgifter uden faktura/regning i Billy:
+1. Opret dagbogstransaktion (`billy_bogfoer`)
+2. Godkend transaktionen (`billy_transaktion_godkend`)
+3. Godkend bankmatchen (`billy_bankmatch_godkend`) — **UDEN subject association**
+
+For udgifter med eksisterende faktura/regning i Billy:
+1. Brug `billy_bankafstem_link` med `invoice:ID` eller `bill:ID`
+2. Godkend bankmatchen
 
 Hvis du har lavet en fejl (afstemt uden bilag):
 - `billy_bankmatch_fortryd` → sætter banklinjen til uafstemt igen
