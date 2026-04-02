@@ -217,32 +217,33 @@ export async function linkAttachmentToBill(attachmentId: string, billId: string)
   });
 }
 
-// Opret en regning (purchase invoice/bill) med valgfri bilag
+// Opret en regning (purchase invoice/bill) med valgfri bilag.
+// VIGTIGT: currencyId hører på bill-niveau, IKKE på linjer.
+// paymentDate kræver paymentAccountId — udelad begge for upbetalte.
+// Regning SKAL være i DKK for at matche banklinjer.
 export async function createBill(data: {
   readonly contactId: string;
   readonly entryDate: string;
-  readonly paymentDate?: string;
   readonly lines: readonly {
     readonly accountId: string;
     readonly amount: number;
     readonly taxRateId?: string;
     readonly description?: string;
-    readonly currencyId?: string;
   }[];
   readonly attachmentIds?: readonly { readonly id: string }[];
   readonly suppliersInvoiceNo?: string;
+  readonly currencyId?: string;
 }): Promise<unknown> {
-  const linesWithCurrency = data.lines.map((line) => ({
-    ...line,
-    currencyId: line.currencyId ?? "DKK",
-  }));
   return billyFetch("/bills", {
     method: "POST",
     body: {
       bill: {
-        ...data,
-        paymentDate: data.paymentDate ?? data.entryDate,
-        lines: linesWithCurrency,
+        contactId: data.contactId,
+        entryDate: data.entryDate,
+        currencyId: data.currencyId ?? "DKK",
+        suppliersInvoiceNo: data.suppliersInvoiceNo,
+        lines: data.lines,
+        attachmentIds: data.attachmentIds,
       },
     },
   });
