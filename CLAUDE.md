@@ -231,8 +231,26 @@ Gæt ALDRIG på kontering. Hvis du ikke kan afgøre hvad en banklinje, faktura e
 - **Blandet brug:** Telefon, internet, bil kan have privat andel — spørg om fordelingsnøgle
 - **Repræsentation vs. intern:** Spisning kan være repræsentation (25% fradrag) eller intern forplejning (0%) — spørg om deltagere
 
-Formulér spørgsmålet konkret:
-> "Banklinjen viser 'Amazon 1.177,67 kr.' — hvad blev der købt? (kontorartikler, software, privat, eller blandet?)"
+### Stil ÉT spørgsmål ad gangen (KRITISK)
+
+Stil ALDRIG flere spørgsmål på én gang. Stil ét, vent på svar, afstem, stil næste.
+
+**FORKERT:**
+```
+Før jeg går videre:
+1. Apple 779 kr. — hvad er det?
+2. "153" 15.625 kr. — fakturabetaling?
+3. Humble Bundle 145 kr. — erhverv eller privat?
+```
+
+**KORREKT:**
+```
+Banklinjen viser "Apple 779 kr." — hvad blev der købt?
+(software, hardware, privat, eller blandet?)
+```
+→ Bruger svarer → afstem → næste spørgsmål.
+
+Dette gør det nemmere at svare og mindsker fejl. Afstem hver linje efter svar før du går videre til næste.
 
 Gem svaret i `memory/leverandoerer.json` så du ikke spørger igen næste gang.
 
