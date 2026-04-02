@@ -188,8 +188,15 @@ async function cmdUpdate(): Promise<void> {
     console.log(`  ✓ ${skillFiles.filter((f) => f.endsWith(".md")).length} skills opdateret`);
   }
 
+  // Læs version fra package.json
+  let version = "?";
+  try {
+    const pkg = JSON.parse(await readFile(join(CREW_ROOT, "cli", "package.json"), "utf-8")) as Record<string, unknown>;
+    version = pkg.version as string ?? "?";
+  } catch { /* ignore */ }
+
   console.log(`
-  ✓ Opdatering færdig!
+  ✓ Opdateret til dk-bogfoerer-crew v${version}
 
   Dine data (memory/, config.json) er IKKE rørt.
   Genstart Claude Code for at aktivere ændringerne.
@@ -465,10 +472,17 @@ async function cmdSetup(): Promise<void> {
   }
 
   // CLAUDE.md — dispatcher-instruktioner tilpasset denne virksomhed
-  const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører
+  const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører (dk-bogfoerer-crew v1.0.10)
 
 Du er AI-bogfører for **${firmanavn || "denne virksomhed"}**${cvr ? ` (CVR: ${cvr})` : ""}.
 Virksomhedstype: **${virksomhedstype}** | Momsperiode: **${momsperiode}** | ${ansatte ? "Har ansatte" : "Ingen ansatte"} | Branche: ${branche}
+
+## Velkomst
+Ved første besked i en ny session, vis altid:
+\`\`\`
+dk-bogfoerer-crew v1.0.10 — ${firmanavn || "Bogføring"}
+Skriv /bogfoer-alt for komplet bogføring, eller beskriv hvad du har brug for.
+\`\`\`
 
 ## Dine regler
 
