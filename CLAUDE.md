@@ -85,6 +85,45 @@ Formulér spørgsmålet konkret:
 
 Gem svaret i `memory/leverandoerer.json` så du ikke spørger igen næste gang.
 
+### DOKUMENTÉR alt løbende (KRITISK)
+
+Skriv et løbende referat i `memory/referat.md` efter HVER handling. Det er din revisionslog.
+
+**Hvornår:** Efter hver bogføring, afstemning, rådgivning eller beslutning.
+
+**Format:**
+```markdown
+## 2026-04-02
+
+### Bankafstemning
+- **Amazon 1.177,67 kr.** → Konto 4400 (IT/software), momskode koeb_25
+  - Begrundelse: Bruger oplyste det var en skærm til kontoret
+  - Momsfradrag: 235,53 kr. (100% fradrag, ML §37)
+  - Billy match godkendt
+
+- **Transfer 5.000 kr.** → Konto 7130 (Privat), ingen moms
+  - Begrundelse: Privathævning til ejers private konto
+  - EMV-regel: Hævning fra virksomheden, påvirker egenkapital
+
+### Momsrådgivning
+- Bruger spurgte om momsfradrag på firmabil
+  - Svar: 0% fradrag på personbil (ML §41 stk. 1)
+  - Varebil med gule plader: 100% fradrag
+
+### Beslutninger
+- Bruger besluttede: "Amazon-køb bogføres som 4400 medmindre andet oplyses"
+```
+
+**Hvad der dokumenteres:**
+- Hvad der blev bogført (beløb, konto, momskode)
+- **Begrundelse** — hvorfor denne konto/momskode (lovhenvisning)
+- **Brugerens input** — hvad sagde brugeren der afgjorde konteringen
+- **Beslutninger** — aftaler om fremtidig praksis
+- **Advarsler** — ting brugeren bør være opmærksom på
+- **Korrektioner** — hvis noget blev rettet og hvorfor
+
+Referatet er dit revisionsbelæg. Det skal kunne forklare enhver postering.
+
 ### Øvrige regler
 
 - **Slå ALTID regler op** via MCP-tools — stol ikke på hukommelsen

@@ -453,13 +453,15 @@ Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør
 | \`memory/konteringer.json\` | Typiske konteringer og korrektioner |
 | \`memory/regler.json\` | Virksomhedsspecifikke regler og beslutninger |
 | \`memory/log.json\` | Kronologisk log over bogførte poster |
+| \`memory/referat.md\` | **Løbende referat** — revisionslog med begrundelser for alle posteringer |
 
 ### Sådan bruger du hukommelsen
 
 1. **Før kontering:** Læs \`memory/leverandoerer.json\` — kender du leverandøren? Brug den gemte kontering.
-2. **Efter kontering:** Opdater \`memory/leverandoerer.json\` med nye leverandører og \`memory/log.json\` med posteringen.
-3. **Ved korrektioner:** Opdater \`memory/konteringer.json\` med den korrekte kontering.
-4. **Ved nye regler:** Opdater \`memory/regler.json\`.
+2. **Efter kontering:** Opdater \`memory/leverandoerer.json\`, \`memory/log.json\`, og **tilføj til \`memory/referat.md\`** med begrundelse og lovhenvisning.
+3. **Ved korrektioner:** Opdater \`memory/konteringer.json\` + dokumentér i referat.
+4. **Ved nye regler:** Opdater \`memory/regler.json\` + dokumentér i referat.
+5. **Ved rådgivning:** Dokumentér spørgsmål og svar i referat.
 
 ### Format: leverandoerer.json
 \`\`\`json
@@ -509,6 +511,8 @@ Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør
   await writeFile(join(target, "memory", "konteringer.json"), JSON.stringify({ konteringer: [] }, null, 2), "utf-8");
   await writeFile(join(target, "memory", "regler.json"), JSON.stringify({ regler: [] }, null, 2), "utf-8");
   await writeFile(join(target, "memory", "log.json"), JSON.stringify({ poster: [] }, null, 2), "utf-8");
+  await writeFile(join(target, "memory", "referat.md"), `# Bogføringsreferat — ${firmanavn || "Virksomhed"}\n\nLøbende revisionslog med begrundelser for alle posteringer og beslutninger.\n\n---\n\n`, "utf-8");
+  await writeFile(join(target, "memory", "manuelle_downloads.json"), JSON.stringify({ downloads: [] }, null, 2), "utf-8");
   console.log("  ✓ Hukommelse oprettet (memory/)");
 
   // Hent data fra Billy
