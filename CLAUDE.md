@@ -81,8 +81,21 @@ Du kan IKKE uploade filer direkte til Billy via API. I stedet:
 ### Batch-flow (mange fakturaer)
 Når du matcher mange banklinjer på én gang:
 1. Opret ALLE drafts først (én per faktura)
-2. Vis brugeren en samlet liste: "Oprettet 8 drafts — åbn Gmail Kladder og send dem"
-3. Brugeren sender dem samlet i Gmail
+2. Vis brugeren en samlet liste:
+   ```
+   Oprettet 8 drafts til Shine:
+     1. Adobe faktura #123 — 237,96 kr.
+     2. Simply.com faktura — 972,73 kr.
+     3. Amazon ordre — 1.177,67 kr.
+     ...
+   
+   → Åbn Gmail → Kladder → send dem alle
+   ```
+3. **VENT på bekræftelse:** Spørg brugeren: "Har du sendt alle drafts i Gmail? (ja/nej)"
+4. Først når brugeren bekræfter → fortsæt med bogføring og afstemning
+5. Dokumentér i referat: "8 fakturaer videresendt til Shine den 2/4-2026"
+
+**VIGTIGT:** Bogfør IKKE banklinjer som "med bilag" før brugeren har bekræftet at drafts er sendt. Ellers matcher Billy posteringen uden bilag.
 
 ## Vigtige regler
 
