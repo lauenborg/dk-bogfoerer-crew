@@ -178,14 +178,23 @@ export async function getBankLineMatches(params?: {
   return billyFetch("/bankLineMatches", { params: { ...params, pageSize: params?.pageSize ?? 100 } });
 }
 
+// Felt hedder "matchId" (IKKE "bankLineMatchId") — verificeret via live API test.
 export async function createSubjectAssociation(data: {
-  readonly bankLineMatchId: string;
+  readonly matchId: string;
   readonly subjectReference: string;
   readonly amount?: number;
 }): Promise<unknown> {
   return billyFetch("/bankLineSubjectAssociations", {
     method: "POST",
     body: { bankLineSubjectAssociation: data },
+  });
+}
+
+// Godkend en dagbogstransaktion (state: "approved") — SKAL ske foer bankmatch godkendes.
+export async function approveDaybookTransaction(id: string): Promise<unknown> {
+  return billyFetch(`/daybookTransactions/${id}`, {
+    method: "PUT",
+    body: { daybookTransaction: { state: "approved" } },
   });
 }
 
@@ -253,6 +262,7 @@ export async function getDaybookTransactions(params?: {
   return billyFetch("/daybookTransactions", { params: { ...params, pageSize: params?.pageSize ?? 50 } });
 }
 
+// VIGTIGT: Hver linje SKAL have currencyId (typisk "DKK").
 export async function createDaybookTransaction(data: {
   readonly daybookId: string;
   readonly entryDate: string;
@@ -263,9 +273,18 @@ export async function createDaybookTransaction(data: {
     readonly side: string;
     readonly text?: string;
     readonly taxRateId?: string;
+    readonly currencyId?: string;
   }[];
 }): Promise<unknown> {
-  return billyFetch("/daybookTransactions", { method: "POST", body: { daybookTransaction: data } });
+  // Tilfoej currencyId=DKK paa linjer der mangler det
+  const linesWithCurrency = data.lines.map((line) => ({
+    ...line,
+    currencyId: line.currencyId ?? "DKK",
+  }));
+  return billyFetch("/daybookTransactions", {
+    method: "POST",
+    body: { daybookTransaction: { ...data, lines: linesWithCurrency } },
+  });
 }
 
 export async function getDaybooks(): Promise<unknown> {

@@ -7,7 +7,7 @@ import {
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
   getBankLines, getUnreconciledBankLines, updateBankLineMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
-  getDaybookTransactions, createDaybookTransaction, getDaybooks,
+  getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
   uploadFile, createAttachment, getAttachments,
@@ -221,18 +221,29 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bankafstem_link",
-    "Knyt en bankmatch til en faktura, regning eller dagbogstransaktion via subject association.",
+    "Knyt en bankmatch til en faktura, regning eller dagbogstransaktion via subject association. Dagbogstransaktion SKAL vaere godkendt foerst (brug billy_transaktion_godkend).",
     {
-      bankLineMatchId: z.string().describe("Match-ID fra billy_bankmatch"),
+      matchId: z.string().describe("Match-ID (banklinjeMatchId fra banklinjen)"),
       subjectReference: z.string().describe("Reference: 'invoice:ID', 'bill:ID' eller 'daybookTransaction:ID'"),
       amount: z.number().optional().describe("Beloeb (valgfrit, ved delbetaling)"),
     },
-    async ({ bankLineMatchId, subjectReference, amount }) => {
+    async ({ matchId, subjectReference, amount }) => {
       const { data, error } = await safeCall(() =>
-        createSubjectAssociation({ bankLineMatchId, subjectReference, amount }),
+        createSubjectAssociation({ matchId, subjectReference, amount }),
       );
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Subject association oprettet:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_transaktion_godkend",
+    "Godkend en dagbogstransaktion (state → approved). SKAL goeres foer bankmatch kan godkendes.",
+    { id: z.string().describe("Dagbogstransaktion-ID") },
+    async ({ id }) => {
+      const { data, error } = await safeCall(() => approveDaybookTransaction(id));
+      if (error) return textResult(`Fejl: ${error}`);
+      return textResult(`**Transaktion godkendt:**\n\n${jsonText(data)}`);
     },
   );
 
