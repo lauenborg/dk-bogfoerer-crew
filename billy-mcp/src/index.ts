@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -332,6 +332,52 @@ async function main(): Promise<void> {
       const { data, error } = await safeCall(() => voidDaybookTransaction(id));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Transaktion annulleret:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_bankmatch_ryd_op",
+    "Komplet oprydning af en forkert bankafstemning: unapprove → slet subject associations → void transaktion. Banklinjen bliver uafstemt igen.",
+    { matchId: z.string().describe("Match-ID fra banklinjen") },
+    async ({ matchId }) => {
+      const parts: string[] = [];
+
+      // 1. Unapprove
+      const { error: unapproveErr } = await safeCall(() => unapproveMatch(matchId));
+      if (unapproveErr) {
+        parts.push(`✗ Unapprove fejl: ${unapproveErr}`);
+      } else {
+        parts.push("✓ Match unapproved");
+      }
+
+      // 2. Find og slet subject associations
+      const { data: assocData } = await safeCall(() => getSubjectAssociations(matchId));
+      const assocResult = assocData as Record<string, unknown> | undefined;
+      const assocs = (assocResult?.bankLineSubjectAssociations ?? []) as Array<Record<string, unknown>>;
+
+      for (const assoc of assocs) {
+        const assocId = assoc.id as string;
+        const ref = assoc.subjectReference as string;
+        const { error: delErr } = await safeCall(() => deleteSubjectAssociation(assocId));
+        if (delErr) {
+          parts.push(`✗ Slet association ${ref}: ${delErr}`);
+        } else {
+          parts.push(`✓ Slettet association: ${ref}`);
+
+          // 3. Void dagbogstransaktion hvis det er en
+          if (ref.startsWith("daybookTransaction:")) {
+            const txId = ref.split(":")[1];
+            const { error: voidErr } = await safeCall(() => voidDaybookTransaction(txId));
+            parts.push(voidErr ? `✗ Void transaktion: ${voidErr}` : `✓ Transaktion voided: ${txId}`);
+          }
+        }
+      }
+
+      if (assocs.length === 0) {
+        parts.push("  (ingen subject associations at slette)");
+      }
+
+      return textResult(`**Oprydning af match ${matchId}:**\n\n${parts.join("\n")}\n\nBanklinjen er nu uafstemt igen.`);
     },
   );
 

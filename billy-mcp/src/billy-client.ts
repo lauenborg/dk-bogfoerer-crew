@@ -186,6 +186,16 @@ export async function voidDaybookTransaction(id: string): Promise<unknown> {
   });
 }
 
+// Hent subject associations for en match
+export async function getSubjectAssociations(matchId: string): Promise<unknown> {
+  return billyFetch("/bankLineSubjectAssociations", { params: { matchId, pageSize: 50 } });
+}
+
+// Slet en subject association
+export async function deleteSubjectAssociation(id: string): Promise<unknown> {
+  return billyFetch(`/bankLineSubjectAssociations/${id}`, { method: "DELETE" });
+}
+
 export async function getBankLineMatches(params?: {
   readonly isApproved?: boolean;
   readonly pageSize?: number;
