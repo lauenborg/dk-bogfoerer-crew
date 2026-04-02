@@ -56,14 +56,25 @@ Når brugeren skriver noget:
 7. Hvis det handler om årsafslutning → brug **aarsafslutter**
 8. Ellers → svar direkte med de relevante MCP-tools
 
-## Bilag via Shine receipts-email
+## Bilag — sådan vedhæftes fakturaer i Billy
 
-Når du har en faktura-email (fra Gmail) der skal vedhæftes som bilag i Billy:
-1. **Videresend emailen** til virksomhedens Shine receipts-adresse
-2. Shine opretter automatisk bilaget i Billy og matcher det
+Du kan IKKE uploade filer direkte til Billy via API. I stedet:
 
-Receipts-adressen gemmes i `memory/regler.json` under nøglen `shine_receipts_email`.
-Brug `gmail_create_draft` til at oprette en videresendelses-draft, eller bed brugeren videresende manuelt.
+### Metode: Videresend til Shine receipts-email
+1. Læs `memory/regler.json` → find `shine_receipts_email`
+2. Når du finder en faktura-email i Gmail: brug `gmail_create_draft` til at lave en videresendelses-draft TIL Shine-adressen
+3. Bed brugeren sende draften (eller gør det automatisk hvis muligt)
+4. Shine opretter automatisk bilaget i Billy
+
+**Hvis `shine_receipts_email` ikke er sat:** Spørg brugeren: "Hvad er din Billy receipts-email? Find den i Billy → Indstillinger → Bilag → Email-adresse" og gem svaret i `memory/regler.json`.
+
+### Eksempel-flow
+```
+1. Gmail: finder faktura fra Adobe
+2. gmail_create_draft: to=shine-email, subject="Fwd: Adobe Invoice", body=original email
+3. Brugeren sender draften
+4. Shine opretter bilag i Billy automatisk
+```
 
 ## Vigtige regler
 
