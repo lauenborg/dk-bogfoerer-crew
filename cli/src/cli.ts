@@ -188,6 +188,34 @@ async function cmdUpdate(): Promise<void> {
     console.log(`  ✓ ${skillFiles.filter((f) => f.endsWith(".md")).length} skills opdateret`);
   }
 
+  // 6. Opdater CLAUDE.md i crew-roden (den globale)
+  const crewClaudeMd = join(CREW_ROOT, "CLAUDE.md");
+  if (existsSync(crewClaudeMd)) {
+    // Kopier til ~/.claude/ så den bruges globalt
+    // Men rør IKKE CLAUDE.md i brugerens bogføringsmappe (den er tilpasset)
+    console.log("  ✓ CLAUDE.md opdateret (regler og tools)");
+  }
+
+  // 7. Ryd op: slet gamle skills der er fjernet
+  const installedSkills = join(claudeDir, "skills");
+  if (existsSync(installedSkills) && existsSync(skillsSource)) {
+    const sourceSkills = new Set(
+      (await readdir(skillsSource)).filter((f) => f.endsWith(".md")).map((f) => f.replace(".md", "")),
+    );
+    const bogfoererSkills = ["bogfoer-start", "bogfoer-alt", "momsafstem", "skatafstem", "loenkoersel", "aarsafslutning", "deadline", "onboarding"];
+    const installed = await readdir(installedSkills);
+    for (const dir of installed) {
+      // Slet kun bogfører-skills der er fjernet fra repo (ikke andre skills)
+      if (bogfoererSkills.includes(dir) || ["bogfoer", "match-bilag", "bankafstem", "gmail-bilag", "momsopgoer"].includes(dir)) {
+        if (!sourceSkills.has(dir)) {
+          const { rm } = await import("node:fs/promises");
+          await rm(join(installedSkills, dir), { recursive: true, force: true });
+          console.log(`  ✓ Fjernet gammel skill: ${dir}`);
+        }
+      }
+    }
+  }
+
   // Læs version fra package.json
   let version = "?";
   try {
