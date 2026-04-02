@@ -21,6 +21,7 @@ Kør dette ved starten af hver session. Læser al hukommelse og giver et komplet
 Læs disse filer og opsummer:
 - `memory/leverandoerer.json` → "X kendte leverandører"
 - `memory/regler.json` → eventuelle virksomhedsspecifikke regler + Shine receipts-email
+- `memory/afventer_bilag.json` → banklinjer der er klar til afstemning men venter på bilag
 - `memory/referat.md` → seneste 5-10 linjer (hvad skete sidst?)
 - `memory/indberetning.json` → aktuelle momstal og skatteestimat
 - `memory/manuelle_downloads.json` → afventende downloads
@@ -42,6 +43,7 @@ Firma: Lauenborg (CVR: 39387735) — EMV, halvårsmoms
 Status:
   Kendte leverandører:    15
   Uafstemte banklinjer:   231
+  Afventer bilag:         8 (klar til afstemning når bilag er sendt)
   Manuelle downloads:     3 afventer
   Sidst bogført:          2/4-2026
 

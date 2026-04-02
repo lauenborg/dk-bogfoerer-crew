@@ -642,6 +642,7 @@ Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør
     ["referat.md", `# Bogføringsreferat — ${firmanavn || "Virksomhed"}\n\nLøbende revisionslog med begrundelser for alle posteringer og beslutninger.\n\n---\n\n`],
     ["manuelle_downloads.json", JSON.stringify({ downloads: [] }, null, 2)],
     ["indberetning.json", JSON.stringify({ moms: {}, skat: {} }, null, 2)],
+    ["afventer_bilag.json", JSON.stringify({ afventer: [] }, null, 2)],
   ];
   let memoryCreated = 0;
   let memorySkipped = 0;

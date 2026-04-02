@@ -111,6 +111,43 @@ Når du matcher mange banklinjer med emails:
 
 **VIGTIGT:** Afstem IKKE banklinjer der kræver bilag før brugeren har bekræftet videresendelse.
 
+### Afventer bilag — memory/afventer_bilag.json
+
+Når en banklinje er klassificeret og klar til afstemning, men bilag mangler, gem den i `memory/afventer_bilag.json`:
+
+```json
+{
+  "afventer": [
+    {
+      "banklinje_id": "abc123",
+      "match_id": "def456",
+      "dato": "2026-03-27",
+      "beloeb": 1177.67,
+      "side": "credit",
+      "beskrivelse": "Amazon",
+      "leverandoer": "Amazon",
+      "konto": "4400",
+      "momskode": "koeb_25",
+      "gmail_link": "https://mail.google.com/mail/u/0/#inbox/MSG_ID",
+      "gmail_subject": "Your Amazon order #123",
+      "status": "afventer_bilag",
+      "oprettet": "2026-04-02"
+    }
+  ]
+}
+```
+
+**Workflow:**
+1. Klassificér banklinjen (konto + momskode)
+2. Gem i `afventer_bilag.json` med status "afventer_bilag"
+3. Vis Gmail-link til brugeren
+4. Når brugeren siger "bilagene er sendt" eller "bilagene ligger i dump" → læs `afventer_bilag.json` → afstem alle med status "afventer_bilag"
+5. Sæt status til "afstemt" og flyt til `memory/log.json`
+
+Brugeren kan også sige: "Bilagene til Amazon og Simply.com ligger nu i dump" → afstem kun de specifikke.
+
+**Kommando:** Når brugeren siger "bilag klar", "dump klar", "fakturaer sendt" el.lign. → læs `afventer_bilag.json` og afstem dem.
+
 ## Vigtige regler
 
 ### ALTID kør igennem moms/skat-regler før bogføring (KRITISK)
