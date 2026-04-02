@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, getFile,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, createBill, getFile,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -212,6 +212,34 @@ async function main(): Promise<void> {
       const { data, error } = await safeCall(() => getBills({ contactId, state, isPaid, page }));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Regninger:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_regning_opret",
+    "Opret en ny regning (purchase invoice/bill) i Billy med valgfri bilag-tilknytning.",
+    {
+      contactId: z.string().describe("Kontakt-ID (leverandør)"),
+      entryDate: z.string().describe("Fakturadato YYYY-MM-DD"),
+      description: z.string().optional().describe("Beskrivelse"),
+      accountId: z.string().describe("Udgifts-konto-ID"),
+      amount: z.number().describe("Beløb ekskl. moms"),
+      taxRateId: z.string().optional().describe("Momssats-ID"),
+      attachmentId: z.string().optional().describe("Bilag-ID at knytte til regningen"),
+      suppliersInvoiceNo: z.string().optional().describe("Leverandørens fakturanummer"),
+    },
+    async ({ contactId, entryDate, description, accountId, amount, taxRateId, attachmentId, suppliersInvoiceNo }) => {
+      const { data, error } = await safeCall(() =>
+        createBill({
+          contactId,
+          entryDate,
+          lines: [{ accountId, amount, taxRateId, description }],
+          attachmentIds: attachmentId ? [{ id: attachmentId }] : undefined,
+          suppliersInvoiceNo,
+        }),
+      );
+      if (error) return textResult(`Fejl: ${error}`);
+      return textResult(`**Regning oprettet:**\n\n${jsonText(data)}`);
     },
   );
 

@@ -209,11 +209,42 @@ export async function getFile(fileId: string): Promise<unknown> {
   return billyFetch(`/files/${fileId}`);
 }
 
-// Knyt et bilag til en regning (bill)
+// Knyt et bilag til en regning via bill-opdatering (attachment.owner er immutable)
 export async function linkAttachmentToBill(attachmentId: string, billId: string): Promise<unknown> {
-  return billyFetch(`/attachments/${attachmentId}`, {
+  return billyFetch(`/bills/${billId}`, {
     method: "PUT",
-    body: { attachment: { ownerId: billId, ownerReference: `bill:${billId}` } },
+    body: { bill: { attachmentIds: [{ id: attachmentId }] } },
+  });
+}
+
+// Opret en regning (purchase invoice/bill) med valgfri bilag
+export async function createBill(data: {
+  readonly contactId: string;
+  readonly entryDate: string;
+  readonly paymentDate?: string;
+  readonly lines: readonly {
+    readonly accountId: string;
+    readonly amount: number;
+    readonly taxRateId?: string;
+    readonly description?: string;
+    readonly currencyId?: string;
+  }[];
+  readonly attachmentIds?: readonly { readonly id: string }[];
+  readonly suppliersInvoiceNo?: string;
+}): Promise<unknown> {
+  const linesWithCurrency = data.lines.map((line) => ({
+    ...line,
+    currencyId: line.currencyId ?? "DKK",
+  }));
+  return billyFetch("/bills", {
+    method: "POST",
+    body: {
+      bill: {
+        ...data,
+        paymentDate: data.paymentDate ?? data.entryDate,
+        lines: linesWithCurrency,
+      },
+    },
   });
 }
 
@@ -253,7 +284,20 @@ export async function approveDaybookTransaction(id: string): Promise<unknown> {
 // ─── Find uafstemte banklinjer ───
 // Hent banklinjer, tjek hver linjes match for isApproved=false.
 export async function getUnreconciledBankLines(accountId: string): Promise<unknown> {
-  // Hent alle banklinjer (op til 500 fordelt på sider)
+  // Effektiv metode: hent unapproved matches først, derefter find tilhørende banklinjer
+  // Undgår N+1 query-problem
+
+  // Trin 1: Hent alle unapproved matches (2 kald i stedet for N)
+  const unapprovedMatchIds = new Set<string>();
+  const matchResult = await billyFetch("/bankLineMatches", {
+    params: { isApproved: false, pageSize: 500 },
+  }) as Record<string, unknown>;
+  const matches = (matchResult.bankLineMatches ?? []) as Array<Record<string, unknown>>;
+  for (const m of matches) {
+    unapprovedMatchIds.add(m.id as string);
+  }
+
+  // Trin 2: Hent banklinjer (paginated)
   const allLines: Array<Record<string, unknown>> = [];
   let page = 1;
   let hasMore = true;
@@ -268,30 +312,12 @@ export async function getUnreconciledBankLines(accountId: string): Promise<unkno
     page++;
   }
 
-  // Tjek hver linjes match
-  const unreconciled: Array<Record<string, unknown>> = [];
-  const checked = new Set<string>();
-
-  for (const line of allLines) {
+  // Trin 3: Filtrer banklinjer der har en unapproved match
+  const unreconciled = allLines.filter((line) => {
     const matchId = line.matchId as string | null;
-    if (!matchId) {
-      unreconciled.push(line);
-      continue;
-    }
-    if (checked.has(matchId)) continue;
-    checked.add(matchId);
-
-    try {
-      const matchResult = await billyFetch(`/bankLineMatches/${matchId}`) as Record<string, unknown>;
-      const match = matchResult.bankLineMatch as Record<string, unknown> | undefined;
-      if (match && match.isApproved === false) {
-        unreconciled.push(line);
-      }
-    } catch {
-      // Kan ikke hente match — antag uafstemt
-      unreconciled.push(line);
-    }
-  }
+    if (!matchId) return true;
+    return unapprovedMatchIds.has(matchId);
+  });
 
   return {
     bankLines: unreconciled,
