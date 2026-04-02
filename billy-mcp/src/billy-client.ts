@@ -204,6 +204,11 @@ export async function getUnlinkedAttachments(): Promise<unknown> {
   return { attachments: unlinked, total: unlinked.length, allTotal: all.length };
 }
 
+// Hent fil-detaljer inkl. download-URL
+export async function getFile(fileId: string): Promise<unknown> {
+  return billyFetch(`/files/${fileId}`);
+}
+
 // Knyt et bilag til en regning (bill)
 export async function linkAttachmentToBill(attachmentId: string, billId: string): Promise<unknown> {
   return billyFetch(`/attachments/${attachmentId}`, {

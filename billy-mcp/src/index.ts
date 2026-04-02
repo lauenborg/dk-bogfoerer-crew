@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, getFile,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -571,6 +571,28 @@ async function main(): Promise<void> {
       const { data, error } = await safeCall(() => linkAttachmentToBill(attachmentId, billId));
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Bilag knyttet til regning:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_bilag_hent_pdf",
+    "Hent download-URL for et bilags PDF/fil. Bruges til at læse fakturaindhold (leverandør, beløb, moms, CVR).",
+    { fileId: z.string().describe("File-ID fra bilaget (feltet fileId)") },
+    async ({ fileId }) => {
+      const { data, error } = await safeCall(() => getFile(fileId));
+      if (error) return textResult(`Fejl: ${error}`);
+
+      const result = data as Record<string, unknown>;
+      const file = (result.file ?? result) as Record<string, unknown>;
+
+      return textResult(
+        `**Fil:**\n` +
+        `  Navn: ${file.fileName ?? "—"}\n` +
+        `  Størrelse: ${file.fileSize ?? "?"} bytes\n` +
+        `  PDF: ${file.isPdf ?? false}\n` +
+        `  Billede: ${file.isImage ?? false}\n` +
+        `  Download: ${file.downloadUrl ?? "ingen URL"}`,
+      );
     },
   );
 
