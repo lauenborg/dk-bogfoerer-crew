@@ -369,7 +369,7 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bankmatch_ryd_op",
-    "Komplet oprydning af en forkert bankafstemning: unapprove → slet subject associations → void transaktion. Banklinjen bliver uafstemt igen.",
+    "Fortryd en bankafstemning: unapprove match → slet subject associations → void bills/transaktioner. Banklinjen uafstemt igen, bilag bevaret.",
     { matchId: z.string().describe("Match-ID fra banklinjen") },
     async ({ matchId }) => {
       const parts: string[] = [];
