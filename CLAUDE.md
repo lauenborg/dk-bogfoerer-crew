@@ -145,6 +145,25 @@ Formulér spørgsmålet konkret:
 
 Gem svaret i `memory/leverandoerer.json` så du ikke spørger igen næste gang.
 
+### BILAG PÅKRÆVET ved afstemning (KRITISK)
+
+Afstem ALDRIG en banklinje uden bilag — **undtagen** disse typer:
+- Privathævning (overførsel til privat konto) → konto 7130
+- Betaling af moms/skat til SKAT → konto 15200/15300/15400
+- Bankgebyrer → konto 7200
+- Renter → konto 7000/6000
+- Interne overførsler mellem egne konti
+
+For ALLE andre banklinjer (køb, abonnementer, leverandører):
+1. Find faktura-email i Gmail
+2. Opret draft til Shine receipts-email
+3. VENT på brugerbekræftelse at drafts er sendt
+4. Først da → afstem
+
+Hvis du har lavet en fejl (afstemt uden bilag):
+- `billy_bankmatch_fortryd` → sætter banklinjen til uafstemt igen
+- `billy_transaktion_slet` → annullerer den forkerte postering
+
 ### DOKUMENTÉR alt løbende (KRITISK)
 
 Skriv et løbende referat i `memory/referat.md` efter HVER handling. Det er din revisionslog.

@@ -170,6 +170,22 @@ export async function updateBankLineMatch(
   });
 }
 
+// Fortryd en bankafstemning: sæt isApproved=false
+export async function unapproveMatch(id: string): Promise<unknown> {
+  return billyFetch(`/bankLineMatches/${id}`, {
+    method: "PUT",
+    body: { bankLineMatch: { isApproved: false } },
+  });
+}
+
+// Slet en dagbogstransaktion (voider den)
+export async function voidDaybookTransaction(id: string): Promise<unknown> {
+  return billyFetch(`/daybookTransactions/${id}`, {
+    method: "PUT",
+    body: { daybookTransaction: { state: "voided" } },
+  });
+}
+
 export async function getBankLineMatches(params?: {
   readonly isApproved?: boolean;
   readonly pageSize?: number;

@@ -6,8 +6,8 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
-  getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, getDaybooks,
+  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation,
+  getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
   uploadFile, createAttachment, getAttachments,
@@ -310,6 +310,28 @@ async function main(): Promise<void> {
       );
       if (error) return textResult(`Fejl: ${error}`);
       return textResult(`**Bankmatch godkendt:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_bankmatch_fortryd",
+    "Fortryd en bankafstemning — sætter isApproved=false så banklinjen bliver uafstemt igen.",
+    { matchId: z.string().describe("Match-ID (fra banklinjen's matchId felt)") },
+    async ({ matchId }) => {
+      const { data, error } = await safeCall(() => unapproveMatch(matchId));
+      if (error) return textResult(`Fejl: ${error}`);
+      return textResult(`**Bankafstemning fortrudt:**\n\n${jsonText(data)}`);
+    },
+  );
+
+  server.tool(
+    "billy_transaktion_slet",
+    "Annuller/void en dagbogstransaktion. Bruges når en postering er bogført forkert.",
+    { id: z.string().describe("Dagbogstransaktion-ID") },
+    async ({ id }) => {
+      const { data, error } = await safeCall(() => voidDaybookTransaction(id));
+      if (error) return textResult(`Fejl: ${error}`);
+      return textResult(`**Transaktion annulleret:**\n\n${jsonText(data)}`);
     },
   );
 
