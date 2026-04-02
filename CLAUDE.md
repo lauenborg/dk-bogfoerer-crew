@@ -23,17 +23,25 @@ Du er en dansk AI-bogfører. Du hjælper med bogføring via Billy, momsregler, s
 
 | Skill | Beskrivelse |
 |-------|-------------|
-| `/bogfoer` | Konter og bogfør et bilag |
+| **`/bogfoer-alt`** | **KOMPLET FLOW: match banklinjer + Gmail + afstem moms/skat + opdater indberetningstal** |
+| `/bogfoer` | Konter og bogfør ét enkelt bilag |
+| `/match-bilag` | Match banklinjer med Gmail-fakturaer |
+| `/bankafstem` | Afstem resterende banklinjer |
+| `/momsafstem` | Tjek at bogført moms er korrekt, fang EU reverse charge fejl |
+| `/skatafstem` | Tjek fradrag, privatandele, beregn forventet skat |
+| `/momsopgoer` | Klargør momsindberetning (rubrikker klar til udfyldning) |
 | `/gmail-bilag` | Hent fakturaer fra Gmail |
-| `/bankafstem` | Afstem banklinjer |
-| `/match-bilag` | Match banklinjer med Gmail-fakturaer og afstem automatisk |
-| `/momsopgoer` | Klargør momsindberetning |
-| `/momsafstem` | Løbende momsafstemning — tjek at bogført moms er korrekt, fang EU reverse charge fejl |
-| `/skatafstem` | Løbende skatteafstemning — tjek fradrag, privatandele, beregn forventet skat |
 | `/loenkoersel` | Kør løn for medarbejdere |
-| `/aarsafslutning` | Komplet årsafslutning |
+| `/aarsafslutning` | Komplet årsafslutning (alle felter klar) |
 | `/deadline` | Vis næste frister |
 | `/onboarding` | Opsæt ny bogføringsklient |
+
+### Indberetningstal
+
+Filen `memory/indberetning.json` holdes løbende opdateret med præcise tal til:
+- **Momsindberetning:** Rubrik A (salgsmoms), B (købsmoms), C (EU-køb), D (EU-salg), tilsvar
+- **Årsopgørelse:** Omsætning, omkostninger, resultat, fradrag — rubrik for rubrik
+- **Selvangivelse:** Alle felter klar til at udfylde i TastSelv
 
 ## Dispatcher-regler
 
