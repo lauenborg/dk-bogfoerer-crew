@@ -135,15 +135,17 @@ export async function getBill(id: string): Promise<unknown> {
   return billyFetch(`/bills/${id}`);
 }
 
-export async function deleteBill(id: string): Promise<unknown> {
-  return billyFetch(`/bills/${id}`, { method: "DELETE" });
-}
-
-// Fjern bilag fra en bill INDEN sletning — ellers slettes bilaget med!
-export async function detachAttachmentsFromBill(billId: string): Promise<unknown> {
-  return billyFetch(`/bills/${billId}`, {
+// ALDRIG brug DELETE /bills — det sletter også bilag!
+// Brug ALTID voidBill i stedet.
+export async function voidBill(id: string): Promise<unknown> {
+  // Bills skal godkendes før de kan voides
+  await billyFetch(`/bills/${id}`, {
     method: "PUT",
-    body: { bill: { attachmentIds: [] } },
+    body: { bill: { state: "approved" } },
+  }).catch(() => {}); // Ignorer fejl hvis allerede approved
+  return billyFetch(`/bills/${id}`, {
+    method: "PUT",
+    body: { bill: { state: "voided" } },
   });
 }
 
