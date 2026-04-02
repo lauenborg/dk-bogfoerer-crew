@@ -94,18 +94,109 @@ function printHelp(): void {
 
 Brug:
   dk-bogfoerer setup                Interaktiv førstegangsopsætning (start her!)
+  dk-bogfoerer update               Opdater MCP-servere, agents og skills (bevarer din data)
   dk-bogfoerer init [sti]           Opret mappestruktur for bogføring
   dk-bogfoerer dump <mappe>         Upload fakturaer/bilag til Billy
   dk-bogfoerer status               Vis Billy-forbindelse og firmainfo
   dk-bogfoerer deadlines            Vis næste indberetningsfrister
   dk-bogfoerer help                 Vis denne hjælp
 
-Første gang? Kør:
-  dk-bogfoerer setup
+Første gang? Kør:  dk-bogfoerer setup
+Opdater? Kør:      dk-bogfoerer update
   `);
 }
 
 // ─── SETUP command (interaktiv førstegangsopsætning) ───
+
+// ─── UPDATE command ───
+
+async function cmdUpdate(): Promise<void> {
+  const claudeJson = join(process.env.HOME ?? "~", ".claude.json");
+  const claudeDir = join(process.env.HOME ?? "~", ".claude");
+
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║  dk-bogfoerer update                             ║
+║  Opdaterer uden at røre din data                 ║
+╚══════════════════════════════════════════════════╝
+`);
+
+  // 1. Hent/opdater crew fra GitHub
+  const CREW_ROOT = await ensureCrewInstalled();
+  console.log("  ✓ Kildekode opdateret\n");
+
+  // 2. Byg MCP-servere
+  const bogfoeringMcpDir = join(CREW_ROOT, "bogfoerer-mcp");
+  const billyMcpDir = join(CREW_ROOT, "billy-mcp");
+
+  for (const [name, dir] of [["dk-bogfoerer", bogfoeringMcpDir], ["billy", billyMcpDir]] as const) {
+    if (existsSync(dir)) {
+      try {
+        execSync("npm install --silent", { cwd: dir, stdio: "ignore" });
+        execSync("npm run build --silent", { cwd: dir, stdio: "ignore" });
+        console.log(`  ✓ ${name} MCP bygget`);
+      } catch {
+        console.log(`  ⚠ Kunne ikke bygge ${name} MCP`);
+      }
+    }
+  }
+
+  // 3. Opdater MCP-stier i claude.json (bevar eksisterende env/tokens)
+  if (existsSync(claudeJson)) {
+    const config = JSON.parse(await readFile(claudeJson, "utf-8")) as Record<string, unknown>;
+    const mcpServers = (config.mcpServers ?? {}) as Record<string, Record<string, unknown>>;
+
+    // Opdater stier, bevar env (tokens)
+    if (existsSync(join(bogfoeringMcpDir, "dist", "index.js"))) {
+      const existing = mcpServers["dk-bogfoerer"] ?? {};
+      mcpServers["dk-bogfoerer"] = { ...existing, command: "node", args: [join(bogfoeringMcpDir, "dist", "index.js")] };
+    }
+    if (existsSync(join(billyMcpDir, "dist", "index.js"))) {
+      const existing = mcpServers["billy"] ?? {};
+      mcpServers["billy"] = { ...existing, command: "node", args: [join(billyMcpDir, "dist", "index.js")] };
+    }
+
+    config.mcpServers = mcpServers;
+    await writeFile(claudeJson, JSON.stringify(config, null, 2), "utf-8");
+    console.log("  ✓ MCP-stier opdateret (tokens bevaret)");
+  }
+
+  // 4. Opdater agents
+  const agentsSource = join(CREW_ROOT, "agents");
+  if (existsSync(agentsSource)) {
+    await mkdir(join(claudeDir, "agents"), { recursive: true });
+    const agentFiles = await readdir(agentsSource);
+    for (const f of agentFiles) {
+      if (f.endsWith(".md")) {
+        await copyFile(join(agentsSource, f), join(claudeDir, "agents", f));
+      }
+    }
+    console.log(`  ✓ ${agentFiles.filter((f) => f.endsWith(".md")).length} agents opdateret`);
+  }
+
+  // 5. Opdater skills
+  const skillsSource = join(CREW_ROOT, "skills");
+  if (existsSync(skillsSource)) {
+    const skillFiles = await readdir(skillsSource);
+    for (const f of skillFiles) {
+      if (f.endsWith(".md")) {
+        const skillName = f.replace(".md", "");
+        await mkdir(join(claudeDir, "skills", skillName), { recursive: true });
+        await copyFile(join(skillsSource, f), join(claudeDir, "skills", skillName, "SKILL.md"));
+      }
+    }
+    console.log(`  ✓ ${skillFiles.filter((f) => f.endsWith(".md")).length} skills opdateret`);
+  }
+
+  console.log(`
+  ✓ Opdatering færdig!
+
+  Dine data (memory/, config.json) er IKKE rørt.
+  Genstart Claude Code for at aktivere ændringerne.
+  `);
+}
+
+// ─── SETUP command ───
 
 async function cmdSetup(): Promise<void> {
   const rl = createRl();
@@ -825,6 +916,10 @@ async function main(): Promise<void> {
   switch (command) {
     case "setup":
       await cmdSetup();
+      break;
+    case "update":
+    case "upgrade":
+      await cmdUpdate();
       break;
     case "init":
       await cmdInit(args[1]);
