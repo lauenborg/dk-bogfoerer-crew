@@ -44,7 +44,7 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_firma",
-    "Hent info om firmaet i Billy (navn, CVR, adresse, regnskabsaar).",
+    "Hent info om firmaet i Billy (navn, CVR, adresse, regnskabsår).",
     {},
     async () => {
       const { data, error } = await safeCall(getOrganization);
@@ -85,11 +85,11 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_kontakter",
-    "Soeg og list kontakter (kunder/leverandoerer) i Billy.",
+    "Søg og list kontakter (kunder/leverandører) i Billy.",
     {
-      q: z.string().optional().describe("Soeg paa navn"),
+      q: z.string().optional().describe("Søg på navn"),
       isCustomer: z.boolean().optional().describe("Kun kunder?"),
-      isSupplier: z.boolean().optional().describe("Kun leverandoerer?"),
+      isSupplier: z.boolean().optional().describe("Kun leverandører?"),
     },
     async ({ q, isCustomer, isSupplier }) => {
       const { data, error } = await safeCall(() => getContacts({ q, isCustomer, isSupplier }));
@@ -100,12 +100,12 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_kontakt_opret",
-    "Opret en ny kontakt (kunde eller leverandoer) i Billy.",
+    "Opret en ny kontakt (kunde eller leverandør) i Billy.",
     {
       name: z.string().describe("Kontaktens navn"),
       registrationNo: z.string().optional().describe("CVR-nummer"),
       isCustomer: z.boolean().optional().describe("Er det en kunde?"),
-      isSupplier: z.boolean().optional().describe("Er det en leverandoer?"),
+      isSupplier: z.boolean().optional().describe("Er det en leverandør?"),
       paymentTermsDays: z.number().optional().describe("Betalingsfrist i dage"),
     },
     async ({ name, registrationNo, isCustomer, isSupplier, paymentTermsDays }) => {
@@ -123,9 +123,9 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_fakturaer",
-    "List salgsfakturaer fra Billy. Filtrer paa status og betaling.",
+    "List salgsfakturaer fra Billy. Filtrer på status og betaling.",
     {
-      contactId: z.string().optional().describe("Filtrer paa kontakt-ID"),
+      contactId: z.string().optional().describe("Filtrer på kontakt-ID"),
       state: z.string().optional().describe("'draft' eller 'approved'"),
       isPaid: z.boolean().optional().describe("Kun betalte/ubetalte?"),
       page: z.number().optional().describe("Sidetal"),
@@ -168,14 +168,14 @@ async function main(): Promise<void> {
   );
 
   // ╔══════════════════════════════════════════╗
-  // ║  REGNINGER (KOEB)                        ║
+  // ║  REGNINGER (KØB)                         ║
   // ╚══════════════════════════════════════════╝
 
   server.tool(
     "billy_regninger",
-    "List koebsfakturaer/regninger fra Billy.",
+    "List købsfakturaer/regninger fra Billy.",
     {
-      contactId: z.string().optional().describe("Filtrer paa leverandoer-ID"),
+      contactId: z.string().optional().describe("Filtrer på leverandør-ID"),
       state: z.string().optional().describe("'draft' eller 'approved'"),
       isPaid: z.boolean().optional().describe("Kun betalte/ubetalte?"),
       page: z.number().optional().describe("Sidetal"),
@@ -193,11 +193,11 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_banklinjer",
-    "Hent banklinjer fra Billy. KRAEVER accountId (brug billy_kontoplan for at finde bankkonti med isBankAccount=true).",
+    "Hent banklinjer fra Billy. KRÆVER accountId (brug billy_kontoplan for at finde bankkonti med isBankAccount=true).",
     {
-      accountId: z.string().describe("Bank-konto-ID (paakreevet — brug billy_kontoplan for at finde bankkonti)"),
+      accountId: z.string().describe("Bank-konto-ID (påkrævet — brug billy_kontoplan for at finde bankkonti)"),
       page: z.number().optional().describe("Sidetal"),
-      sortDirection: z.string().optional().describe("'ASC' (aeldste foerst) eller 'DESC' (nyeste foerst)"),
+      sortDirection: z.string().optional().describe("'ASC' (ældste først) eller 'DESC' (nyeste først)"),
     },
     async ({ accountId, page, sortDirection }) => {
       const { data, error } = await safeCall(() =>
@@ -210,7 +210,7 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_banklinjer_uafstemte",
-    "Hent uafstemte banklinjer (matches med isApproved=false). Brug denne til bankafsteming.",
+    "Hent uafstemte banklinjer (matches med isApproved=false). Brug denne til bankafstemning.",
     { accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan for at finde bankkonti)") },
     async ({ accountId }) => {
       const { data, error } = await safeCall(() => getUnreconciledBankLines(accountId));
@@ -221,11 +221,11 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bankafstem_link",
-    "Knyt en bankmatch til en faktura, regning eller dagbogstransaktion via subject association. Dagbogstransaktion SKAL vaere godkendt foerst (brug billy_transaktion_godkend).",
+    "Knyt en bankmatch til en faktura, regning eller dagbogstransaktion via subject association. Dagbogstransaktion SKAL være godkendt først (brug billy_transaktion_godkend).",
     {
       matchId: z.string().describe("Match-ID (banklinjeMatchId fra banklinjen)"),
       subjectReference: z.string().describe("Reference: 'invoice:ID', 'bill:ID' eller 'daybookTransaction:ID'"),
-      amount: z.number().optional().describe("Beloeb (valgfrit, ved delbetaling)"),
+      amount: z.number().optional().describe("Beløb (valgfrit, ved delbetaling)"),
     },
     async ({ matchId, subjectReference, amount }) => {
       const { data, error } = await safeCall(() =>
@@ -238,7 +238,7 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_transaktion_godkend",
-    "Godkend en dagbogstransaktion (state → approved). SKAL goeres foer bankmatch kan godkendes.",
+    "Godkend en dagbogstransaktion (state → approved). SKAL gøres før bankmatch kan godkendes.",
     { id: z.string().describe("Dagbogstransaktion-ID") },
     async ({ id }) => {
       const { data, error } = await safeCall(() => approveDaybookTransaction(id));
@@ -275,23 +275,23 @@ async function main(): Promise<void> {
   );
 
   // ╔══════════════════════════════════════════╗
-  // ║  BOGFOERING (DAGBOG/JOURNAL)             ║
+  // ║  BOGFØRING (DAGBOG/JOURNAL)              ║
   // ╚══════════════════════════════════════════╝
 
   server.tool(
     "billy_dagboeger",
-    "List dagboeger (journals) i Billy.",
+    "List dagbøger (journals) i Billy.",
     {},
     async () => {
       const { data, error } = await safeCall(getDaybooks);
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Dagboeger:**\n\n${jsonText(data)}`);
+      return textResult(`**Dagbøger:**\n\n${jsonText(data)}`);
     },
   );
 
   server.tool(
     "billy_posteringer_list",
-    "Hent bogfoeringsposteringer fra Billy. Filtrer paa konto og datointerval.",
+    "Hent bogføringsposteringer fra Billy. Filtrer på konto og datointerval.",
     {
       accountId: z.string().optional().describe("Konto-ID"),
       minEntryDate: z.string().optional().describe("Fra dato YYYY-MM-DD"),
@@ -307,13 +307,13 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_transaktioner",
-    "Hent dagbogstransaktioner. Filtrer paa dagbog, status, dato.",
+    "Hent dagbogstransaktioner. Filtrer på dagbog, status, dato.",
     {
       daybookId: z.string().optional().describe("Dagbog-ID"),
       state: z.string().optional().describe("Status-filter"),
       minEntryDate: z.string().optional().describe("Fra dato YYYY-MM-DD"),
       maxEntryDate: z.string().optional().describe("Til dato YYYY-MM-DD"),
-      q: z.string().optional().describe("Soeg i transaktioner"),
+      q: z.string().optional().describe("Søg i transaktioner"),
       page: z.number().optional().describe("Sidetal"),
     },
     async ({ daybookId, state, minEntryDate, maxEntryDate, q, page }) => {
@@ -327,9 +327,9 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bogfoer",
-    "Opret en ny bogfoeringspostering i Billy (dagbogstransaktion med debet/kredit-linjer).",
+    "Opret en ny bogføringspostering i Billy (dagbogstransaktion med debet/kredit-linjer).",
     {
-      daybookId: z.string().describe("Dagbog-ID (brug billy_dagboeger for at finde det)"),
+      daybookId: z.string().describe("Dagbog-ID (brug billy_dagbøger for at finde det)"),
       entryDate: z.string().describe("Dato YYYY-MM-DD"),
       description: z.string().optional().describe("Beskrivelse af posteringen"),
       lines: z.string().describe("Posteringslinjer som JSON-array: [{accountId, amount, side ('debit'/'credit'), text, taxRateId}]"),
@@ -356,12 +356,12 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_moms",
-    "Hent momsopgoerelser (sales tax returns) fra Billy.",
-    { isSettled: z.boolean().optional().describe("Kun afsluttede/aabne perioder?") },
+    "Hent momsopgørelser (sales tax returns) fra Billy.",
+    { isSettled: z.boolean().optional().describe("Kun afsluttede/åbne perioder?") },
     async ({ isSettled }) => {
       const { data, error } = await safeCall(() => getSalesTaxReturns({ isSettled }));
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Momsopgoerelser:**\n\n${jsonText(data)}`);
+      return textResult(`**Momsopgørelser:**\n\n${jsonText(data)}`);
     },
   );
 
@@ -408,8 +408,8 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_produkter",
-    "Soeg og list produkter i Billy.",
-    { q: z.string().optional().describe("Soeg paa produktnavn") },
+    "Søg og list produkter i Billy.",
+    { q: z.string().optional().describe("Søg på produktnavn") },
     async ({ q }) => {
       const { data, error } = await safeCall(() => getProducts({ q }));
       if (error) return textResult(`Fejl: ${error}`);
@@ -438,7 +438,7 @@ async function main(): Promise<void> {
     {
       contactId: z.string().describe("Kontakt-ID"),
       entryDate: z.string().describe("Betalingsdato YYYY-MM-DD"),
-      cashAmount: z.number().describe("Beloeb"),
+      cashAmount: z.number().describe("Beløb"),
       cashSide: z.string().describe("'debit' eller 'credit'"),
       cashAccountId: z.string().describe("Bankkonto-ID"),
       associations: z.string().describe("Tilknytninger som JSON-array: [{subjectReference: 'invoice:ID', amount}]"),

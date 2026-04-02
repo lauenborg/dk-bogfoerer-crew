@@ -1,18 +1,18 @@
 ---
 name: aarsafslutning
-description: "Komplet aarsafslutningsworkflow med tjekliste, afstemninger og beregninger."
+description: "Komplet årsafslutningsworkflow med tjekliste, afstemninger og beregninger."
 ---
 
-# /aarsafslutning — Aarsafslutning
+# /aarsafslutning — Årsafslutning
 
-Guider brugeren igennem hele aarsafslutningen.
+Guider brugeren igennem hele årsafslutningen.
 
-Brug aarsafslutter-agenten til at gennemfoere workflowet.
+Brug aarsafslutter-agenten til at gennemføre workflowet.
 
 ## Oversigt
 
-1. Generer tjekliste baseret paa virksomhedstype
-2. Gaa igennem hvert trin — et ad gangen
+1. Generer tjekliste baseret på virksomhedstype
+2. Gå igennem hvert trin — et ad gangen
 3. Brug Billy-data til at verificere afstemninger
 4. Beregn afskrivninger og skat
-5. Paaamind om frister
+5. Påmind om frister

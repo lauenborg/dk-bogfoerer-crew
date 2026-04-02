@@ -3,26 +3,26 @@ name: momsopgoer
 description: "Beregn momstilsvar og klargør momsindberetning."
 ---
 
-# /momsopgoer — Momsopgoerelse
+# /momsopgoer — Momsopgørelse
 
-Hjaelp brugeren med at klargore momsindberetning.
+Hjælp brugeren med at klargøre momsindberetning.
 
 ## Trin
 
-1. Brug `billy_moms` for at hente aabne momsperioder
-2. Vis perioden og spoerg brugeren om bekraeftelse
+1. Brug `billy_moms` for at hente åbne momsperioder
+2. Vis perioden og spørg brugeren om bekræftelse
 3. Brug `billy_moms_detalje` for at hente detaljer
 4. Opsummer:
-   - Udgaaende moms (salgsmoms)
-   - Indgaaende moms (koebsmoms)
+   - Udgående moms (salgsmoms)
+   - Indgående moms (købsmoms)
    - Momstilsvar (difference)
-   - EU-koeb og -salg
+   - EU-køb og -salg
 5. Brug `moms_frist` fra dk-bogfoerer for at vise indberetningsfristen
 6. Advar hvis der er uoverensstemmelser
 
-## Tjek foer indberetning
+## Tjek før indberetning
 
 - Er alle banklinjer afstemt?
-- Er alle fakturaer og regninger bogfoert?
-- Er momskoder korrekte (saeligt 25%-fradrag paa restaurant/repr.)?
-- Er EU-handel korrekt haandteret (reverse charge)?
+- Er alle fakturaer og regninger bogført?
+- Er momskoder korrekte (særligt 25%-fradrag på restaurant/repr.)?
+- Er EU-handel korrekt håndteret (reverse charge)?

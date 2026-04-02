@@ -1,10 +1,10 @@
 ---
 name: deadline
-description: "Vis naeste indberetningsfrister for moms, skat, loen og aarsafslutning."
+description: "Vis næste indberetningsfrister for moms, skat, løn og årsafslutning."
 ---
 
 # /deadline — Frist-tjek
 
-Vis de naeste indberetningsfrister.
+Vis de næste indberetningsfrister.
 
 Brug deadliner-agenten med `deadline_naeste` og `deadline_oversigt`.

@@ -1,19 +1,19 @@
 # dk-bogfoerer-crew
 
-AI-drevet bogfoerer for danske virksomheder. Installeres i Claude Code og integrerer med **Billy.dk** og **Gmail**.
+AI-drevet bogfører for danske virksomheder. Installeres i Claude Code og integrerer med **Billy.dk** og **Gmail**.
 
-## Hvad det goer
+## Hvad det gør
 
-- **Bilagsklassificering** — beskriv et bilag → faa konto, momskode og fradrag
-- **Bogfoering i Billy** — opret posteringer direkte i dit regnskabsprogram
-- **Gmail-fakturaer** — hent fakturaer fra din email og bogfoer dem
-- **Bankafsteming** — gennemgaa uafstemte banklinjer og match dem
-- **Momsopgoerelse** — beregn momstilsvar og klargoor indberetning
-- **Loenkoersel** — beregn loen med A-skat, AM-bidrag, ATP, pension, feriepenge
-- **Frist-overvaaagning** — hold styr paa alle indberetningsfrister
-- **Aarsafslutning** — trin-for-trin guide med tjekliste
-- **Lovopslag** — hent praecise lovtekster fra Retsinformation API
-- **Fejldetektion** — find typiske bogfoeringsfejl (forkert momsfradrag, manglende bilag)
+- **Bilagsklassificering** — beskriv et bilag → få konto, momskode og fradrag
+- **Bogføring i Billy** — opret posteringer direkte i dit regnskabsprogram
+- **Gmail-fakturaer** — hent fakturaer fra din email og bogfør dem
+- **Bankafstemning** — gennemgå uafstemte banklinjer og match dem
+- **Momsopgørelse** — beregn momstilsvar og klargør indberetning
+- **Lønkørsel** — beregn løn med A-skat, AM-bidrag, ATP, pension, feriepenge
+- **Frist-overvågning** — hold styr på alle indberetningsfrister
+- **Årsafslutning** — trin-for-trin guide med tjekliste
+- **Lovopslag** — hent præcise lovtekster fra Retsinformation API
+- **Fejldetektion** — find typiske bogføringsfejl (forkert momsfradrag, manglende bilag)
 
 ## Installation
 
@@ -27,9 +27,9 @@ Installeren:
 1. Bygger 2 MCP-servere (dk-bogfoerer + Billy)
 2. Installerer 6 agents og 8 skills
 3. Registrerer MCP-serverne i Claude Code
-4. Spoerger om dit Billy API token
+4. Spørger om dit Billy API token
 
-### Forudsaetninger
+### Forudsætninger
 
 - [Claude Code](https://claude.ai/code) (CLI, desktop eller IDE)
 - [Node.js](https://nodejs.org/) 18+
@@ -38,47 +38,47 @@ Installeren:
 
 ### Billy API token
 
-1. Log ind paa [billy.dk](https://www.billy.dk/)
-2. Gaa til **Indstillinger → Adgangstokens**
+1. Log ind på [billy.dk](https://www.billy.dk/)
+2. Gå til **Indstillinger → Adgangstokens**
 3. Opret et nyt token
-4. Indsaet det under installation
+4. Indsæt det under installation
 
 ## Brug
 
 Efter installation, genstart Claude Code og brug:
 
 ```
-/onboarding          ← Opsaet bogfoering for din virksomhed
-/bogfoer             ← Konter og bogfoer et bilag
+/onboarding          ← Opsæt bogføring for din virksomhed
+/bogfoer             ← Konter og bogfør et bilag
 /gmail-bilag         ← Hent fakturaer fra Gmail
 /bankafstem          ← Afstem banklinjer
-/momsopgoer          ← Klargoor momsindberetning
-/loenkoersel         ← Koer loen
-/deadline            ← Vis naeste frister
-/aarsafslutning      ← Aarsafslutning med tjekliste
+/momsopgoer          ← Klargør momsindberetning
+/loenkoersel         ← Kør løn
+/deadline            ← Vis næste frister
+/aarsafslutning      ← Årsafslutning med tjekliste
 ```
 
 Eller bare sig det i naturligt sprog:
 
-> "Jeg har en restaurantregning paa 2.400 kr. med 3 gaester"
-> "Hvornaar skal jeg indberette moms?"
-> "Beregn loen for 35.000 kr. brutto med 37% traek"
+> "Jeg har en restaurantregning på 2.400 kr. med 3 gæster"
+> "Hvornår skal jeg indberette moms?"
+> "Beregn løn for 35.000 kr. brutto med 37% træk"
 > "Tjek mine uafstemte banklinjer"
 
 ## Arkitektur
 
 ```
 dk-bogfoerer-crew/
-├── install.sh              ← Koer denne
+├── install.sh              ← Kør denne
 ├── CLAUDE.md               ← Dispatcher + crew-instruktioner
 │
 ├── agents/                 ← 6 AI-agents
 │   ├── konterer.md         ← Bilag → konto + moms → Billy
 │   ├── momsraadgiver.md    ← Moms/skat-ekspert + lovtekst
-│   ├── loenberegner.md     ← Loenkoersel
-│   ├── deadliner.md        ← Frist-overvaaagning
-│   ├── fejlfinder.md       ← Bogfoeringskontrol
-│   └── aarsafslutter.md    ← Aarsafslutning
+│   ├── loenberegner.md     ← Lønkørsel
+│   ├── deadliner.md        ← Frist-overvågning
+│   ├── fejlfinder.md       ← Bogføringskontrol
+│   └── aarsafslutter.md    ← Årsafslutning
 │
 ├── skills/                 ← 8 slash-commands
 │   ├── bogfoer.md          ← /bogfoer
@@ -90,7 +90,7 @@ dk-bogfoerer-crew/
 │   ├── deadline-check.md   ← /deadline
 │   └── onboarding.md       ← /onboarding
 │
-├── bogfoerer-mcp/          ← MCP: Moms, skat, kontoplan, loen, retsinformation
+├── bogfoerer-mcp/          ← MCP: Moms, skat, kontoplan, løn, retsinformation
 │   └── (42 tools)
 │
 └── billy-mcp/              ← MCP: Billy.dk integration
@@ -102,8 +102,8 @@ dk-bogfoerer-crew/
 | Server | Tools | Kilde |
 |--------|-------|-------|
 | dk-bogfoerer | 42 | Moms/skat-regler (statisk JSON) + Retsinformation API (live lovtekst) |
-| billy | 22 | Billy.dk REST API (banklinjer, fakturaer, bogfoering, moms) |
-| Gmail | 6 | Google Gmail MCP (email-soegning, laes beskeder) |
+| billy | 22 | Billy.dk REST API (banklinjer, fakturaer, bogføring, moms) |
+| Gmail | 6 | Google Gmail MCP (email-søgning, læs beskeder) |
 
 ### Dataflow
 
@@ -118,18 +118,18 @@ Gmail ──→ /gmail-bilag ──→ Henter fakturaer
 Billy ←── billy_bogfoer ←── Opretter postering
   │
   ├── bankLines ──→ /bankafstem ──→ Matcher banklinjer
-  ├── salesTaxReturns ──→ /momsopgoer ──→ Klargoor indberetning
+  ├── salesTaxReturns ──→ /momsopgoer ──→ Klargør indberetning
   └── postings ──→ fejlfinder ──→ Tjekker for fejl
 ```
 
 ## Lovgivning og disclaimer
 
-Dette vaerktoej er en **assistent** — ikke en certificeret bogfoerer eller revisor.
+Dette værktøj er en **assistent** — ikke en certificeret bogfører eller revisor.
 
-- Det juridiske ansvar for bogfoering ligger hos **virksomhedsejeren** (Bogfoeringsloven §5-6)
-- Vaerktoejet erstatter IKKE professionel revisorraadgivning
-- Tjek altid konteringer foer godkendelse
-- Brug `/onboarding` for at opsaette korrekt
+- Det juridiske ansvar for bogføring ligger hos **virksomhedsejeren** (Bogføringsloven §5-6)
+- Værktøjet erstatter IKKE professionel revisorådgivning
+- Tjek altid konteringer før godkendelse
+- Brug `/onboarding` for at opsætte korrekt
 
 ## Bidrag
 

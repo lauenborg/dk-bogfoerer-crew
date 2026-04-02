@@ -51,7 +51,7 @@ async function ensureCrewInstalled(): Promise<string> {
       console.log("  ✓ Klonet fra GitHub");
     } catch (e) {
       console.error(`  ✗ Kunne ikke klone: ${(e as Error).message}`);
-      console.error(`  Proev manuelt: git clone https://github.com/${GITHUB_REPO}.git ~/.dk-bogfoerer`);
+      console.error(`  Prøv manuelt: git clone https://github.com/${GITHUB_REPO}.git ~/.dk-bogfoerer`);
       process.exit(1);
     }
   }
@@ -79,33 +79,33 @@ async function askChoice(rl: ReturnType<typeof createRl>, question: string, choi
   for (let i = 0; i < choices.length; i++) {
     console.log(`    ${i + 1}) ${choices[i]}`);
   }
-  const answer = await ask(rl, "Vaelg nummer", "1");
+  const answer = await ask(rl, "Vælg nummer", "1");
   const idx = parseInt(answer, 10) - 1;
   return choices[Math.max(0, Math.min(idx, choices.length - 1))];
 }
 
-// ─── Hjaelpetekst ───
+// ─── Hjælpetekst ───
 
 function printHelp(): void {
   console.log(`
 ╔══════════════════════════════════════════════════╗
-║  dk-bogfoerer — AI Bogfoerer for Danmark         ║
+║  dk-bogfoerer — AI Bogfører for Danmark          ║
 ╚══════════════════════════════════════════════════╝
 
 Brug:
-  dk-bogfoerer setup                Interaktiv foerstegangsopsaetning (start her!)
-  dk-bogfoerer init [sti]           Opret mappestruktur for bogfoering
+  dk-bogfoerer setup                Interaktiv førstegangsopsætning (start her!)
+  dk-bogfoerer init [sti]           Opret mappestruktur for bogføring
   dk-bogfoerer dump <mappe>         Upload fakturaer/bilag til Billy
   dk-bogfoerer status               Vis Billy-forbindelse og firmainfo
-  dk-bogfoerer deadlines            Vis naeste indberetningsfrister
-  dk-bogfoerer help                 Vis denne hjaelp
+  dk-bogfoerer deadlines            Vis næste indberetningsfrister
+  dk-bogfoerer help                 Vis denne hjælp
 
-Foerste gang? Koer:
+Første gang? Kør:
   dk-bogfoerer setup
   `);
 }
 
-// ─── SETUP command (interaktiv foerstegangsopsaetning) ───
+// ─── SETUP command (interaktiv førstegangsopsætning) ───
 
 async function cmdSetup(): Promise<void> {
   const rl = createRl();
@@ -115,7 +115,7 @@ async function cmdSetup(): Promise<void> {
   console.log(`
 ╔══════════════════════════════════════════════════╗
 ║  dk-bogfoerer setup                              ║
-║  Interaktiv opsaetning af AI Bogfoerer           ║
+║  Interaktiv opsætning af AI Bogfører             ║
 ╚══════════════════════════════════════════════════╝
 `);
 
@@ -125,10 +125,10 @@ async function cmdSetup(): Promise<void> {
   console.log("  For at forbinde til dit regnskabsprogram (Billy) skal du bruge et API token.");
   console.log("  Find det i Billy: Indstillinger → Adgangstokens → Opret nyt token\n");
 
-  const billyToken = await ask(rl, "Indsaet dit Billy API token");
+  const billyToken = await ask(rl, "Indsæt dit Billy API token");
 
   if (!billyToken) {
-    console.log("\n  ⚠ Intet token angivet. Du kan tilfoeje det senere med 'dk-bogfoerer setup'.\n");
+    console.log("\n  ⚠ Intet token angivet. Du kan tilføje det senere med 'dk-bogfoerer setup'.\n");
   } else {
     // Test token
     setToken(billyToken);
@@ -137,7 +137,7 @@ async function cmdSetup(): Promise<void> {
       console.log(`\n  ✓ Forbundet til Billy: ${org.name} (CVR: ${org.registrationNo ?? "—"})\n`);
     } catch (e) {
       console.log(`\n  ✗ Token virkede ikke: ${(e as Error).message}`);
-      console.log("  Du kan proeve igen med 'dk-bogfoerer setup'.\n");
+      console.log("  Du kan prøve igen med 'dk-bogfoerer setup'.\n");
     }
   }
 
@@ -157,21 +157,21 @@ async function cmdSetup(): Promise<void> {
     console.log("  ✓ Gmail MCP er allerede konfigureret i Claude Code.\n");
   } else {
     console.log("  Gmail-integration lader dig hente fakturaer direkte fra din email.");
-    console.log("  Det er en built-in Claude Code integration — du aktiverer den saadan:\n");
-    console.log("    1. Abn Claude Code");
+    console.log("  Det er en built-in Claude Code integration — du aktiverer den sådan:\n");
+    console.log("    1. Åbn Claude Code");
     console.log("    2. Skriv /mcp");
-    console.log("    3. Vaelg 'Claude AI' → aktiver 'Gmail'");
+    console.log("    3. Vælg 'Claude AI' → aktiver 'Gmail'");
     console.log("    4. Log ind med din Google-konto\n");
-    console.log("  Naar det er aktiveret kan du bruge /gmail-bilag til at soege fakturaer.\n");
+    console.log("  Når det er aktiveret kan du bruge /gmail-bilag til at søge fakturaer.\n");
 
-    const gmailNow = await askChoice(rl, "Vil du aktivere Gmail nu? (kraever genstart af Claude Code)", ["Senere", "Vis mig hvordan"]);
+    const gmailNow = await askChoice(rl, "Vil du aktivere Gmail nu? (kræver genstart af Claude Code)", ["Senere", "Vis mig hvordan"]);
     if (gmailNow === "Vis mig hvordan") {
       console.log("\n  I Claude Code terminalen:");
       console.log("    1. Tryk Ctrl+C for at stoppe denne setup (vi gemmer dit Billy token)");
       console.log("    2. Skriv: /mcp");
       console.log("    3. Scroll ned til 'Claude AI' sektionen");
       console.log("    4. Aktiver 'Gmail' og log ind");
-      console.log("    5. Koer 'dk-bogfoerer setup' igen for at faerdiggoere\n");
+      console.log("    5. Kør 'dk-bogfoerer setup' igen for at færdiggøre\n");
     }
   }
 
@@ -203,15 +203,15 @@ async function cmdSetup(): Promise<void> {
   // ─── Trin 3: Momsperiode ───
 
   console.log("\n  ── Trin 4/7: Momsperiode ──\n");
-  console.log("  Afhaenger af din omsaetning:");
-  console.log("    Under 5 mio. kr.   → Halvaar");
+  console.log("  Afhænger af din omsætning:");
+  console.log("    Under 5 mio. kr.   → Halvår");
   console.log("    5-50 mio. kr.      → Kvartal");
-  console.log("    Over 50 mio. kr.   → Maaned\n");
+  console.log("    Over 50 mio. kr.   → Måned\n");
 
   const momsperiode = await askChoice(rl, "Din momsperiode:", [
-    "Halvaar (under 5 mio.)",
+    "Halvår (under 5 mio.)",
     "Kvartal (5-50 mio.)",
-    "Maaned (over 50 mio.)",
+    "Måned (over 50 mio.)",
   ]);
   const mpKort = momsperiode.split(" ")[0].toLowerCase();
 
@@ -221,13 +221,13 @@ async function cmdSetup(): Promise<void> {
   const harAnsatte = await askChoice(rl, "Har virksomheden ansatte?", ["Ja", "Nej"]);
   const ansatte = harAnsatte === "Ja";
 
-  const branche = await ask(rl, "Branche (f.eks. 'konsulent', 'handel', 'haandvaerker')", "generel");
+  const branche = await ask(rl, "Branche (f.eks. 'konsulent', 'handel', 'håndværker')", "generel");
 
-  // ─── Trin 5: Bogfoeringsmappe ───
+  // ─── Trin 5: Bogføringsmappe ───
 
-  console.log("\n  ── Trin 6/7: Bogfoeringsmappe ──\n");
+  console.log("\n  ── Trin 6/7: Bogføringsmappe ──\n");
   const defaultPath = join(process.cwd(), firmanavn ? firmanavn.toLowerCase().replace(/[^a-z0-9æøåäöü]/g, "-").replace(/-+/g, "-") : "bogfoering");
-  const bogfoeringsSti = await ask(rl, "Hvor skal bogfoeringsmappen oprettes?", defaultPath);
+  const bogfoeringsSti = await ask(rl, "Hvor skal bogføringsmappen oprettes?", defaultPath);
 
   // ─── Trin 6: Installer ───
 
@@ -247,9 +247,9 @@ async function cmdSetup(): Promise<void> {
       if (!existsSync(join(bogfoeringMcpDir, "dist"))) {
         execSync("npm run build --silent", { cwd: bogfoeringMcpDir, stdio: "ignore" });
       }
-      console.log("  ✓ dk-bogfoerer MCP klar (42 tools: moms, skat, kontoplan, loen, retsinformation)");
+      console.log("  ✓ dk-bogfoerer MCP klar (42 tools: moms, skat, kontoplan, løn, retsinformation)");
     } catch {
-      console.log("  ⚠ Kunne ikke bygge dk-bogfoerer MCP. Koer 'npm install && npm run build' i bogfoerer-mcp/");
+      console.log("  ⚠ Kunne ikke bygge dk-bogfoerer MCP. Kør 'npm install && npm run build' i bogfoerer-mcp/");
     }
   }
 
@@ -261,9 +261,9 @@ async function cmdSetup(): Promise<void> {
       if (!existsSync(join(billyMcpDir, "dist"))) {
         execSync("npm run build --silent", { cwd: billyMcpDir, stdio: "ignore" });
       }
-      console.log("  ✓ Billy MCP klar (26 tools: banklinjer, fakturaer, bogfoering, moms)");
+      console.log("  ✓ Billy MCP klar (26 tools: banklinjer, fakturaer, bogføring, moms)");
     } catch {
-      console.log("  ⚠ Kunne ikke bygge Billy MCP. Koer 'npm install && npm run build' i billy-mcp/");
+      console.log("  ⚠ Kunne ikke bygge Billy MCP. Kør 'npm install && npm run build' i billy-mcp/");
     }
   }
 
@@ -321,7 +321,7 @@ async function cmdSetup(): Promise<void> {
     console.log(`  ✓ ${skillFiles.filter((f) => f.endsWith(".md")).length} skills installeret`);
   }
 
-  // 6e: Opret bogfoeringsmappe
+  // 6e: Opret bogføringsmappe
   const target = resolve(bogfoeringsSti);
   const dirs = [
     "bilag/indgaaende",
@@ -345,107 +345,107 @@ async function cmdSetup(): Promise<void> {
     momsperiode: mpKort,
     branche,
     har_ansatte: ansatte,
-    regnskabsaar: "kalenderaar",
+    regnskabsaar: "kalenderår",
     oprettet: new Date().toISOString().slice(0, 10),
     billy_token_sat: !!billyToken,
   };
   await writeFile(join(target, "config.json"), JSON.stringify(config, null, 2), "utf-8");
 
   // CLAUDE.md — dispatcher-instruktioner tilpasset denne virksomhed
-  const claudeMd = `# ${firmanavn || "Bogfoering"} — AI Bogfoerer
+  const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører
 
-Du er AI-bogfoerer for **${firmanavn || "denne virksomhed"}**${cvr ? ` (CVR: ${cvr})` : ""}.
+Du er AI-bogfører for **${firmanavn || "denne virksomhed"}**${cvr ? ` (CVR: ${cvr})` : ""}.
 Virksomhedstype: **${virksomhedstype}** | Momsperiode: **${momsperiode}** | ${ansatte ? "Har ansatte" : "Ingen ansatte"} | Branche: ${branche}
 
 ## Dine regler
 
-- Slaa ALTID regler op via MCP-tools — stol aldrig paa hukommelsen
-- Spoerg ALTID brugeren om godkendelse foer du bogfoerer noget i Billy
-- Citer lovtekst med lov_paragraf naar du raadgiver om regler
-- Advar om usikkerhed — anbefal professionel revisor ved komplekse spoergsmaal
-- Svar paa dansk
+- Slå ALTID regler op via MCP-tools — stol aldrig på hukommelsen
+- Spørg ALTID brugeren om godkendelse før du bogfører noget i Billy
+- Citer lovtekst med lov_paragraf når du rådgiver om regler
+- Advar om usikkerhed — anbefal professionel revisor ved komplekse spørgsmål
+- Svar på dansk
 
 ## MCP-servere
 
-| Server | Tools | Hvad den goer |
+| Server | Tools | Hvad den gør |
 |--------|-------|---------------|
-| **dk-bogfoerer** | 42 | Momsregler, skatteregler, kontoplan, loensatser, deadlines, Retsinformation (lovtekst) |
-| **billy** | 26 | Billy.dk: banklinjer, fakturaer, regninger, bogfoering, momsopgoerelse, bankafsteming |
-| **Gmail** | 6 | Email: soeg fakturaer, laes beskeder |
+| **dk-bogfoerer** | 42 | Momsregler, skatteregler, kontoplan, lønsatser, deadlines, Retsinformation (lovtekst) |
+| **billy** | 26 | Billy.dk: banklinjer, fakturaer, regninger, bogføring, momsopgørelse, bankafstemning |
+| **Gmail** | 6 | Email: søg fakturaer, læs beskeder |
 
 ## Slash-commands
 
-| Kommando | Hvad den goer |
+| Kommando | Hvad den gør |
 |----------|--------------|
-| \`/bogfoer\` | Konter og bogfoer et bilag i Billy |
-| \`/gmail-bilag\` | Hent fakturaer fra Gmail og bogfoer dem |
-| \`/bankafstem\` | Gennemgaa uafstemte banklinjer fra Billy |
-| \`/momsopgoer\` | Beregn momstilsvar og klargoor indberetning |
-${ansatte ? "| `/loenkoersel` | Koer loen for medarbejdere |\n" : ""}| \`/aarsafslutning\` | Komplet aarsafslutning med tjekliste |
-| \`/deadline\` | Vis naeste indberetningsfrister |
-| \`/onboarding\` | Genkonfigurer bogfoering |
+| \`/bogfoer\` | Konter og bogfør et bilag i Billy |
+| \`/gmail-bilag\` | Hent fakturaer fra Gmail og bogfør dem |
+| \`/bankafstem\` | Gennemgå uafstemte banklinjer fra Billy |
+| \`/momsopgoer\` | Beregn momstilsvar og klargør indberetning |
+${ansatte ? "| `/loenkoersel` | Kør løn for medarbejdere |\n" : ""}| \`/aarsafslutning\` | Komplet årsafslutning med tjekliste |
+| \`/deadline\` | Vis næste indberetningsfrister |
+| \`/onboarding\` | Genkonfigurer bogføring |
 
 ## Agents
 
-| Agent | Hvornaar |
+| Agent | Hvornår |
 |-------|----------|
 | **konterer** | Brugeren har et bilag/faktura/kvittering |
-| **momsraadgiver** | Spoergsmaal om moms, skat, lovregler |
-${ansatte ? "| **loenberegner** | Loenkoersel, satser, personalegoder |\n" : ""}| **deadliner** | Frister og deadlines |
+| **momsraadgiver** | Spørgsmål om moms, skat, lovregler |
+${ansatte ? "| **loenberegner** | Lønkørsel, satser, personalegoder |\n" : ""}| **deadliner** | Frister og deadlines |
 | **fejlfinder** | Tjek konteringer for fejl |
-| **aarsafslutter** | Aarsafslutning |
+| **aarsafslutter** | Årsafslutning |
 
 ## Dispatcher
 
-Naar brugeren skriver noget:
+Når brugeren skriver noget:
 1. Slash-command → aktiver den skill
 2. Bilag/faktura/kvittering → **konterer**
-3. Moms/skat-spoergsmaal → **momsraadgiver**
-${ansatte ? "4. Loen → **loenberegner**\n" : ""}${ansatte ? "5" : "4"}. Frister → **deadliner**
+3. Moms/skat-spørgsmål → **momsraadgiver**
+${ansatte ? "4. Løn → **loenberegner**\n" : ""}${ansatte ? "5" : "4"}. Frister → **deadliner**
 ${ansatte ? "6" : "5"}. Kontrol/gennemgang → **fejlfinder**
-${ansatte ? "7" : "6"}. Aarsafslutning → **aarsafslutter**
+${ansatte ? "7" : "6"}. Årsafslutning → **aarsafslutter**
 ${ansatte ? "8" : "7"}. Ellers → svar direkte med MCP-tools
 
 ## Denne virksomhed
 
 - **Momsperiode:** ${mpKort} — frister via \`deadline_oversigt\`
 - **Type:** ${vtKort.toUpperCase()}${vtKort === "emv" ? " — husk virksomhedsordningen (skat_virksomhedsordning)" : ""}${vtKort === "aps" || vtKort === "as" ? " — husk selskabsskat 22% (skat_selskab)" : ""}
-${ansatte ? "- **Ansatte:** Ja — loenkoersel med A-skat/AM-bidrag" : "- **Ingen ansatte** — spring loenrelaterede tools over"}
+${ansatte ? "- **Ansatte:** Ja — lønkørsel med A-skat/AM-bidrag" : "- **Ingen ansatte** — spring lønrelaterede tools over"}
 - **Branche:** ${branche}
 
 ## Vigtige love (brug lov_paragraf)
 
 - **Momsloven** (2024/209) — ML §13 (fritagelser), §37 (fradrag), §42 (restaurant/hotel)
-- **Bogfoeringsloven** (2022/700) — registrering, opbevaring, digitale krav
+- **Bogføringsloven** (2022/700) — registrering, opbevaring, digitale krav
 ${vtKort === "emv" ? "- **Virksomhedsskatteloven** (2021/1836) — virksomhedsordningen\n" : ""}${vtKort === "aps" || vtKort === "as" ? "- **Selskabsskatteloven** (2025/279) — 22% selskabsskat\n" : ""}- **Kildeskatteloven** (2024/460) — A-skat, AM-bidrag
-- **Ligningsloven** (2025/1500) — fradrag, koerselsgodtgoerelse
+- **Ligningsloven** (2025/1500) — fradrag, kørselsgodtgørelse
 
 ## Hukommelse
 
-Du har en lokal hukommelse i \`memory/\`-mappen. Den holder styr paa ting du laerer om denne virksomhed.
+Du har en lokal hukommelse i \`memory/\`-mappen. Den holder styr på ting du lærer om denne virksomhed.
 
 ### Automatisk opdatering
 
-Efter HVER bogfoering eller raadgivning, tjek om du har laert noget nyt der boer gemmes:
+Efter HVER bogføring eller rådgivning, tjek om du har lært noget nyt der bør gemmes:
 
-- **Ny leverandoer-kontering:** Foerste gang du konterer en faktura fra en leverandoer, gem mappingen i \`memory/leverandoerer.json\`
-- **Korrektioner:** Hvis brugeren retter din kontering, gem den korrekte kontering saa du goer det rigtigt naeste gang
-- **Saerlige regler:** Hvis virksomheden har specielle momsregler, delvis momsfradrag, eller andre undtagelser
-- **Beslutninger:** Hvis brugeren traffer en beslutning om bogfoeringspraksis (f.eks. "vi bogfoerer altid kantineudgifter paa 4230")
+- **Ny leverandør-kontering:** Første gang du konterer en faktura fra en leverandør, gem mappingen i \`memory/leverandoerer.json\`
+- **Korrektioner:** Hvis brugeren retter din kontering, gem den korrekte kontering så du gør det rigtigt næste gang
+- **Særlige regler:** Hvis virksomheden har specielle momsregler, delvis momsfradrag, eller andre undtagelser
+- **Beslutninger:** Hvis brugeren træffer en beslutning om bogføringspraksis (f.eks. "vi bogfører altid kantineudgifter på 4230")
 
 ### Hukommelsesfiler
 
 | Fil | Indhold |
 |-----|---------|
-| \`memory/leverandoerer.json\` | Leverandoer → konto + momskode mapping |
+| \`memory/leverandoerer.json\` | Leverandør → konto + momskode mapping |
 | \`memory/konteringer.json\` | Typiske konteringer og korrektioner |
 | \`memory/regler.json\` | Virksomhedsspecifikke regler og beslutninger |
-| \`memory/log.json\` | Kronologisk log over bogfoerte poster |
+| \`memory/log.json\` | Kronologisk log over bogførte poster |
 
-### Saaadan bruger du hukommelsen
+### Sådan bruger du hukommelsen
 
-1. **Foer kontering:** Laes \`memory/leverandoerer.json\` — kender du leverandoeren? Brug den gemte kontering.
-2. **Efter kontering:** Opdater \`memory/leverandoerer.json\` med nye leverandoerer og \`memory/log.json\` med posteringen.
+1. **Før kontering:** Læs \`memory/leverandoerer.json\` — kender du leverandøren? Brug den gemte kontering.
+2. **Efter kontering:** Opdater \`memory/leverandoerer.json\` med nye leverandører og \`memory/log.json\` med posteringen.
 3. **Ved korrektioner:** Opdater \`memory/konteringer.json\` med den korrekte kontering.
 4. **Ved nye regler:** Opdater \`memory/regler.json\`.
 
@@ -465,10 +465,10 @@ Efter HVER bogfoering eller raadgivning, tjek om du har laert noget nyt der boer
   "konteringer": [
     {
       "dato": "2026-04-02",
-      "hvad": "Brugeren rettede: restaurant-udgift var bogfoert med fuld moms, skal vaere 25% fradrag",
+      "hvad": "Brugeren rettede: restaurant-udgift var bogført med fuld moms, skal være 25% fradrag",
       "foer": { "konto": "4100", "momskode": "koeb_25" },
       "efter": { "konto": "3700", "momskode": "rest_25pct_fradrag" },
-      "laering": "Restaurant/forplejning skal altid paa 3700 med 25% momsfradrag"
+      "laering": "Restaurant/forplejning skal altid på 3700 med 25% momsfradrag"
     }
   ]
 }
@@ -520,9 +520,9 @@ Efter HVER bogfoering eller raadgivning, tjek om du har laert noget nyt der boer
 
   // README
   const readme = [
-    `# ${firmanavn || "Bogfoering"}`,
+    `# ${firmanavn || "Bogføring"}`,
     "",
-    `| Felt | Vaerdi |`,
+    `| Felt | Værdi |`,
     `|------|--------|`,
     `| CVR | ${cvr || "—"} |`,
     `| Type | ${virksomhedstype} |`,
@@ -542,34 +542,34 @@ Efter HVER bogfoering eller raadgivning, tjek om du har laert noget nyt der boer
     "/bogfoer          # Konter et bilag",
     "/gmail-bilag      # Hent fakturaer fra email",
     "/bankafstem       # Afstem banklinjer",
-    "/momsopgoer       # Klargoor momsindberetning",
-    ...(ansatte ? ["/loenkoersel      # Koer loen"] : []),
-    "/aarsafslutning   # Aarsafslutning",
+    "/momsopgoer       # Klargør momsindberetning",
+    ...(ansatte ? ["/loenkoersel      # Kør løn"] : []),
+    "/aarsafslutning   # Årsafslutning",
     "/deadline         # Vis frister",
     "```",
     "",
     "## Mappestruktur",
     "```",
     "bilag/dump/          ← Smid filer her → dk-bogfoerer dump",
-    "bilag/indgaaende/    ← Koebsfakturaer",
+    "bilag/indgaaende/    ← Købsfakturaer",
     "bilag/udgaaende/     ← Salgsfakturaer",
     "bank/                ← Kontoudtog",
-    ...(ansatte ? ["loen/                ← Loensedler"] : []),
+    ...(ansatte ? ["loen/                ← Lønsedler"] : []),
     "moms/                ← Momsindberetninger",
-    "aarsafslutning/      ← Aarsregnskab",
+    "aarsafslutning/      ← Årsregnskab",
     "rapporter/           ← Perioderegnskaber",
     "```",
   ].join("\n");
   await writeFile(join(target, "README.md"), readme, "utf-8");
   await writeFile(join(target, ".gitignore"), "config.json\n*.billy.json\n.processed/\n", "utf-8");
 
-  console.log(`  ✓ Bogfoeringsmappe oprettet: ${target}`);
+  console.log(`  ✓ Bogføringsmappe oprettet: ${target}`);
 
   // ─── Opsummering ───
 
   console.log(`
 ╔══════════════════════════════════════════════════╗
-║  Setup faerdig!                                  ║
+║  Setup færdig!                                   ║
 ╚══════════════════════════════════════════════════╝
 
   Firma:           ${firmanavn || "—"}
@@ -580,13 +580,13 @@ Efter HVER bogfoering eller raadgivning, tjek om du har laert noget nyt der boer
   Billy:           ${billyToken ? "✓ Forbundet" : "✗ Ikke forbundet"}
   Gmail:           ${gmailConfigured ? "✓ Aktiv" : "○ Ikke aktiveret (brug /mcp i Claude Code)"}
 
-  Bogfoeringsmappe: ${target}
+  Bogføringsmappe: ${target}
 
-  Naeste skridt:
-    1. Genstart Claude Code (luk og aaben igen)
+  Næste skridt:
+    1. Genstart Claude Code (luk og åben igen)
     2. Smid fakturaer i: ${join(target, "bilag/dump/")}
-    3. Koer: dk-bogfoerer dump ${join(target, "bilag/dump/")}
-    4. Eller abn Claude Code og skriv /bogfoer
+    3. Kør: dk-bogfoerer dump ${join(target, "bilag/dump/")}
+    4. Eller åbn Claude Code og skriv /bogfoer
   `);
 
   rl.close();
@@ -604,7 +604,7 @@ async function cmdInit(targetPath?: string): Promise<void> {
     orgName = (org.name as string) ?? "Ukendt";
     console.log(`  ✓ Billy: ${orgName}`);
   } catch {
-    console.log("  ⚠ Billy ikke forbundet. Koer 'dk-bogfoerer setup' foerst.");
+    console.log("  ⚠ Billy ikke forbundet. Kør 'dk-bogfoerer setup' først.");
   }
 
   const dirs = ["bilag/indgaaende", "bilag/udgaaende", "bilag/dump", "bank", "loen", "moms", "aarsafslutning", "rapporter"];
@@ -631,7 +631,7 @@ async function cmdDump(dumpPath: string): Promise<void> {
 
   try { getToken(); } catch (e) {
     console.error(`  ${(e as Error).message}`);
-    console.error("  Koer 'dk-bogfoerer setup' foerst.");
+    console.error("  Kør 'dk-bogfoerer setup' først.");
     process.exit(1);
   }
 
@@ -689,7 +689,7 @@ async function cmdDump(dumpPath: string): Promise<void> {
   Uploaded: ${uploaded} | Fejlede: ${failed}
   Filer flyttet til: ${processedDir}
 
-  Abn Claude Code og skriv /bogfoer for at kontere filerne.
+  Åbn Claude Code og skriv /bogfoer for at kontere filerne.
   `);
 }
 
@@ -706,14 +706,14 @@ async function cmdStatus(): Promise<void> {
     console.log(`  Billy ID:  ${org.id}`);
 
     const daybooks = await getDaybooks();
-    console.log(`  Dagboeger: ${daybooks.length} stk`);
+    console.log(`  Dagbøger: ${daybooks.length} stk`);
     for (const db of daybooks) {
       console.log(`    - ${db.name} (${db.id})`);
     }
     console.log("\n  ✓ Billy OK\n");
   } catch (e) {
     console.error(`  ✗ ${(e as Error).message}`);
-    console.error("  Koer 'dk-bogfoerer setup' for at konfigurere.\n");
+    console.error("  Kør 'dk-bogfoerer setup' for at konfigurere.\n");
   }
 }
 
@@ -724,8 +724,8 @@ async function cmdDeadlines(): Promise<void> {
   console.log(`\n  dk-bogfoerer deadlines (${today})\n`);
 
   const deadlines = [
-    { frist: "2026-09-01", beskrivelse: "Moms: 1. halvaar 2026" },
-    { frist: "2027-03-01", beskrivelse: "Moms: 2. halvaar 2026" },
+    { frist: "2026-09-01", beskrivelse: "Moms: 1. halvår 2026" },
+    { frist: "2027-03-01", beskrivelse: "Moms: 2. halvår 2026" },
     { frist: "2026-05-11", beskrivelse: "A-skat/AM-bidrag: April" },
     { frist: "2026-06-10", beskrivelse: "A-skat/AM-bidrag: Maj" },
     { frist: "2026-07-10", beskrivelse: "A-skat/AM-bidrag: Juni" },
@@ -736,9 +736,9 @@ async function cmdDeadlines(): Promise<void> {
     { frist: "2026-12-10", beskrivelse: "A-skat/AM-bidrag: November" },
     { frist: "2026-11-20", beskrivelse: "Selskabsskat: 2. aconto-rate" },
     { frist: "2026-05-01", beskrivelse: "Privat selvangivelse" },
-    { frist: "2026-05-31", beskrivelse: "Aarsrapport til Erhvervsstyrelsen" },
+    { frist: "2026-05-31", beskrivelse: "Årsrapport til Erhvervsstyrelsen" },
     { frist: "2026-06-30", beskrivelse: "Selskabsselvangivelse" },
-    { frist: "2026-07-01", beskrivelse: "Udvidet selvangivelse (selvstaendige)" },
+    { frist: "2026-07-01", beskrivelse: "Udvidet selvangivelse (selvstændige)" },
   ];
 
   const kommende = deadlines
@@ -791,10 +791,10 @@ async function main(): Promise<void> {
       printHelp();
       break;
     case undefined:
-      // Foerste gang? Koer setup
+      // Første gang? Kør setup
       if (!existsSync(join(process.env.HOME ?? "~", ".claude.json")) ||
           !process.env.BILLY_API_TOKEN) {
-        console.log("\n  Velkommen! Koerer foerstegangsopsaetning...\n");
+        console.log("\n  Velkommen! Kører førstegangsopsætning...\n");
         await cmdSetup();
       } else {
         printHelp();

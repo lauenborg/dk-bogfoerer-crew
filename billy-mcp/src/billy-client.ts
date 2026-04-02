@@ -9,7 +9,7 @@ const BASE_URL = "https://api.billysbilling.com/v2";
 function getToken(): string {
   const token = process.env.BILLY_API_TOKEN;
   if (!token) {
-    throw new Error("BILLY_API_TOKEN environment variable er ikke sat. Generer et token i Billy: Indstillinger → Adgangstokens.");
+    throw new Error("BILLY_API_TOKEN environment variable er ikke sat. Generér et token i Billy: Indstillinger → Adgangstokens.");
   }
   return token;
 }
@@ -119,7 +119,7 @@ export async function createInvoice(data: Record<string, unknown>): Promise<unkn
   return billyFetch("/invoices", { method: "POST", body: { invoice: data } });
 }
 
-// ─── Regninger (koeb) ───
+// ─── Regninger (køb) ───
 
 export async function getBills(params?: {
   readonly contactId?: string;
@@ -136,7 +136,7 @@ export async function getBill(id: string): Promise<unknown> {
 }
 
 // ─── Banklinjer ───
-// Billy bankLines: KRAEVER accountId parameter.
+// Billy bankLines: KRÆVER accountId parameter.
 // Hver banklinje har et matchId (Billy opretter automatisk en match per linje).
 // "Uafstemt" = matchens isApproved er false.
 // Felt-navne: accountId, feeAccountId (IKKE account/feeAccount).
@@ -190,7 +190,7 @@ export async function createSubjectAssociation(data: {
   });
 }
 
-// Godkend en dagbogstransaktion (state: "approved") — SKAL ske foer bankmatch godkendes.
+// Godkend en dagbogstransaktion (state: "approved") — SKAL ske før bankmatch godkendes.
 export async function approveDaybookTransaction(id: string): Promise<unknown> {
   return billyFetch(`/daybookTransactions/${id}`, {
     method: "PUT",
@@ -201,7 +201,7 @@ export async function approveDaybookTransaction(id: string): Promise<unknown> {
 // ─── Find uafstemte banklinjer ───
 // Hent banklinjer, tjek hver linjes match for isApproved=false.
 export async function getUnreconciledBankLines(accountId: string): Promise<unknown> {
-  // Hent alle banklinjer (op til 500 fordelt paa sider)
+  // Hent alle banklinjer (op til 500 fordelt på sider)
   const allLines: Array<Record<string, unknown>> = [];
   let page = 1;
   let hasMore = true;
@@ -276,7 +276,7 @@ export async function createDaybookTransaction(data: {
     readonly currencyId?: string;
   }[];
 }): Promise<unknown> {
-  // Tilfoej currencyId=DKK paa linjer der mangler det
+  // Tilføj currencyId=DKK på linjer der mangler det
   const linesWithCurrency = data.lines.map((line) => ({
     ...line,
     currencyId: line.currencyId ?? "DKK",

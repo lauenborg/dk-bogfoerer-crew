@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # ─── dk-bogfoerer-crew installer ───
-# Installer AI Bogfoerer for danske virksomheder
-# Saetter MCP-servere, agents, skills og CLAUDE.md op
+# Installer AI Bogfører for danske virksomheder
+# Sætter MCP-servere, agents, skills og CLAUDE.md op
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
@@ -11,11 +11,11 @@ CLAUDE_JSON="$HOME/.claude.json"
 
 echo ""
 echo "╔══════════════════════════════════════════════════╗"
-echo "║  dk-bogfoerer-crew — AI Bogfoerer for Danmark   ║"
+echo "║  dk-bogfoerer-crew — AI Bogfører for Danmark    ║"
 echo "╚══════════════════════════════════════════════════╝"
 echo ""
 
-# ─── Tjek forudsaetninger ───
+# ─── Tjek forudsætninger ───
 
 if ! command -v node &> /dev/null; then
   echo "FEJL: Node.js er ikke installeret. Installer via: brew install node"
@@ -33,13 +33,13 @@ echo "✓ Node.js $(node --version) fundet"
 
 echo ""
 if [ -z "${BILLY_API_TOKEN:-}" ]; then
-  echo "Billy API token kraeves for at integrere med dit regnskabsprogram."
+  echo "Billy API token kræves for at integrere med dit regnskabsprogram."
   echo "Find dit token: Billy → Indstillinger → Adgangstokens"
   echo ""
-  read -rp "Indsaet dit Billy API token: " BILLY_TOKEN
+  read -rp "Indsæt dit Billy API token: " BILLY_TOKEN
   if [ -z "$BILLY_TOKEN" ]; then
     echo "ADVARSEL: Intet Billy token angivet. Billy-integration vil ikke virke."
-    echo "Du kan tilfoeje det senere i ~/.claude.json under mcpServers.billy.env"
+    echo "Du kan tilføje det senere i ~/.claude.json under mcpServers.billy.env"
     BILLY_TOKEN="INDSAET_DIT_TOKEN_HER"
   fi
 else
@@ -99,7 +99,7 @@ if [ ! -f "$CLAUDE_JSON" ]; then
   echo '{"mcpServers":{}}' > "$CLAUDE_JSON"
 fi
 
-# Brug python3 til at opdatere JSON (tilgaengelig paa macOS)
+# Brug python3 til at opdatere JSON (tilgængelig på macOS)
 python3 << PYEOF
 import json, os
 
@@ -132,32 +132,32 @@ print("  ✓ dk-bogfoerer MCP registreret")
 print("  ✓ Billy MCP registreret")
 PYEOF
 
-# ─── Faerdig ───
+# ─── Færdig ───
 
 echo ""
 echo "╔══════════════════════════════════════════════════╗"
-echo "║  Installation faerdig!                          ║"
+echo "║  Installation færdig!                           ║"
 echo "╚══════════════════════════════════════════════════╝"
 echo ""
 echo "MCP-servere:"
-echo "  • dk-bogfoerer (42 tools) — moms, skat, kontoplan, loen, retsinformation"
+echo "  • dk-bogfoerer (42 tools) — moms, skat, kontoplan, løn, retsinformation"
 echo "  • billy (26 tools) — Billy.dk integration"
 echo "  • Gmail — (brug din eksisterende Gmail MCP)"
 echo ""
 echo "Agents:"
-echo "  • konterer — klassificerer bilag og bogfoerer"
+echo "  • konterer — klassificerer bilag og bogfører"
 echo "  • momsraadgiver — moms/skat-ekspert"
-echo "  • loenberegner — loenkoersel"
-echo "  • deadliner — frist-overvaaagning"
-echo "  • fejlfinder — bogfoeringskontrol"
-echo "  • aarsafslutter — aarsafslutning"
+echo "  • loenberegner — lønkørsel"
+echo "  • deadliner — frist-overvågning"
+echo "  • fejlfinder — bogføringskontrol"
+echo "  • aarsafslutter — årsafslutning"
 echo ""
 echo "Skills (slash-commands):"
 echo "  /bogfoer /gmail-bilag /bankafstem /momsopgoer"
 echo "  /loenkoersel /aarsafslutning /deadline /onboarding"
 echo ""
-echo "Naeste skridt:"
+echo "Næste skridt:"
 echo "  1. Genstart Claude Code"
-echo "  2. Koer /onboarding for at komme igang"
-echo "  3. Eller sig bare 'Hej, jeg har en faktura der skal bogfoeres'"
+echo "  2. Kør /onboarding for at komme igang"
+echo "  3. Eller sig bare 'Hej, jeg har en faktura der skal bogføres'"
 echo ""

@@ -17,7 +17,7 @@ export function getToken(): string {
     throw new Error(
       "BILLY_API_TOKEN er ikke sat.\n" +
       "Find dit token: Billy → Indstillinger → Adgangstokens\n" +
-      "Koer 'dk-bogfoerer setup' for at konfigurere.",
+      "Kør 'dk-bogfoerer setup' for at konfigurere.",
     );
   }
   return token;
