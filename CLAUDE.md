@@ -128,25 +128,79 @@ Når en banklinje er klassificeret og klar til afstemning, men bilag mangler, ge
       "leverandoer": "Amazon",
       "konto": "4400",
       "momskode": "koeb_25",
+      "status": "email_fundet",
       "gmail_link": "https://mail.google.com/mail/u/0/#inbox/MSG_ID",
       "gmail_subject": "Your Amazon order #123",
-      "status": "afventer_bilag",
+      "instruktion": "Videresend email til Shine",
+      "oprettet": "2026-04-02"
+    },
+    {
+      "banklinje_id": "xyz789",
+      "match_id": "uvw012",
+      "dato": "2026-03-15",
+      "beloeb": 499,
+      "side": "credit",
+      "beskrivelse": "GITHUB",
+      "leverandoer": "GitHub",
+      "konto": "4400",
+      "momskode": "eu_koeb_25",
+      "status": "mangler_bilag",
+      "gmail_link": null,
+      "gmail_subject": null,
+      "instruktion": "Find faktura: Log ind på github.com/settings/billing → download invoice for marts 2026",
+      "soegt_i_gmail": "from:noreply@github.com subject:receipt after:2026/3/1 before:2026/4/1",
       "oprettet": "2026-04-02"
     }
   ]
 }
 ```
 
+**Status-typer:**
+- `email_fundet` — faktura-email fundet i Gmail, skal videresendes til Shine
+- `mangler_bilag` — INGEN email fundet, brugeren skal selv finde faktura
+
+**For `mangler_bilag`:** Giv en KONKRET instruktion om hvor fakturaen kan findes:
+- Software: "Log ind på [leverandør].com → billing → download invoice"
+- Abonnement: "Tjek [leverandør]-appen → konto → fakturaoversigt"
+- Fysisk køb: "Find kvittering fra [dato] — butik: [navn], beløb: [beløb] kr."
+- Ukendt: "Find dokumentation for køb den [dato] på [beløb] kr. fra [beskrivelse]"
+
+Gem også `soegt_i_gmail` — den Gmail-søgning der blev prøvet — så brugeren kan prøve selv med andre søgeord.
+
 **Workflow:**
 1. Klassificér banklinjen (konto + momskode)
-2. Gem i `afventer_bilag.json` med status "afventer_bilag"
-3. Vis Gmail-link til brugeren
-4. Når brugeren siger "bilagene er sendt" eller "bilagene ligger i dump" → læs `afventer_bilag.json` → afstem alle med status "afventer_bilag"
-5. Sæt status til "afstemt" og flyt til `memory/log.json`
+2. Søg i Gmail efter faktura
+3. Fundet → status `email_fundet` + Gmail-link
+4. Ikke fundet → status `mangler_bilag` + konkret instruktion
+5. Vis brugeren en samlet tabel
+6. Når brugeren siger "bilag klar" / "dump klar" / "sendt til Shine" → afstem dem
 
-Brugeren kan også sige: "Bilagene til Amazon og Simply.com ligger nu i dump" → afstem kun de specifikke.
+**Når brugeren viser tabellen (via /bogfoer-start):**
+```
+Afventer bilag (8):
 
-**Kommando:** Når brugeren siger "bilag klar", "dump klar", "fakturaer sendt" el.lign. → læs `afventer_bilag.json` og afstem dem.
+  EMAIL FUNDET — videresend til Shine:
+  ┌──────────┬────────────┬──────────────────────────────────────────────┐
+  │ Dato     │ Beløb      │ Gmail-link                                   │
+  ├──────────┼────────────┼──────────────────────────────────────────────┤
+  │ 27/3     │ 1.177 kr.  │ Amazon — https://mail.google.com/...         │
+  │ 27/3     │   972 kr.  │ Simply.com — https://mail.google.com/...     │
+  │ 31/3     │   237 kr.  │ Apify — https://mail.google.com/...          │
+  └──────────┴────────────┴──────────────────────────────────────────────┘
+
+  MANGLER BILAG — find dem manuelt:
+  ┌──────────┬────────────┬──────────────────────────────────────────────┐
+  │ Dato     │ Beløb      │ Hvad skal du gøre?                           │
+  ├──────────┼────────────┼──────────────────────────────────────────────┤
+  │ 15/3     │   499 kr.  │ GitHub: github.com/settings/billing → marts  │
+  │ 20/3     │   289 kr.  │ Lunar: kontakt banken for dokumentation      │
+  │ 25/3     │   779 kr.  │ Apple: appleid.apple.com → purchase history  │
+  └──────────┴────────────┴──────────────────────────────────────────────┘
+
+  Shine: lauenborg+xxx@receipts.shine.co
+  Smid filer i: bilag/dump/
+  Sig "bilag klar" når du er færdig.
+```
 
 ## Vigtige regler
 
