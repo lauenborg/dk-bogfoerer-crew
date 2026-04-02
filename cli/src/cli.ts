@@ -1,0 +1,665 @@
+#!/usr/bin/env node
+
+import { readFile, mkdir, writeFile, readdir, stat, copyFile, unlink } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { join, extname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+import { createInterface } from "node:readline";
+import { execSync } from "node:child_process";
+import {
+  getToken, setToken, getOrganization, getDaybooks, getAccounts, getTaxRates,
+  uploadFile,
+} from "./billy-api.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const GITHUB_REPO = "lauenborg/dk-bogfoerer-crew";
+const DEFAULT_INSTALL_DIR = join(process.env.HOME ?? "~", ".dk-bogfoerer");
+
+function getCrewRoot(): string {
+  // Lokal udvikling: brug relativ sti hvis agents/ eksisterer
+  const localRoot = resolve(__dirname, "..", "..");
+  if (existsSync(join(localRoot, "agents"))) return localRoot;
+  // Installeret: brug ~/.dk-bogfoerer
+  return DEFAULT_INSTALL_DIR;
+}
+
+async function ensureCrewInstalled(): Promise<string> {
+  const crewRoot = getCrewRoot();
+
+  // Allerede installeret lokalt (udvikling)?
+  if (existsSync(join(crewRoot, "agents")) && existsSync(join(crewRoot, "bogfoerer-mcp", "src"))) {
+    return crewRoot;
+  }
+
+  // Klon fra GitHub
+  console.log(`  Henter dk-bogfoerer-crew fra GitHub...\n`);
+
+  if (existsSync(DEFAULT_INSTALL_DIR)) {
+    // Opdater eksisterende
+    try {
+      execSync("git pull --ff-only", { cwd: DEFAULT_INSTALL_DIR, stdio: "pipe" });
+      console.log("  ✓ Opdateret til seneste version");
+    } catch {
+      console.log("  ⚠ Kunne ikke opdatere. Bruger eksisterende version.");
+    }
+  } else {
+    try {
+      execSync(`git clone https://github.com/${GITHUB_REPO}.git "${DEFAULT_INSTALL_DIR}"`, { stdio: "pipe" });
+      console.log("  ✓ Klonet fra GitHub");
+    } catch (e) {
+      console.error(`  ✗ Kunne ikke klone: ${(e as Error).message}`);
+      console.error(`  Proev manuelt: git clone https://github.com/${GITHUB_REPO}.git ~/.dk-bogfoerer`);
+      process.exit(1);
+    }
+  }
+
+  return DEFAULT_INSTALL_DIR;
+}
+
+// ─── Readline helper ───
+
+function createRl() {
+  return createInterface({ input: process.stdin, output: process.stdout });
+}
+
+async function ask(rl: ReturnType<typeof createRl>, question: string, defaultValue?: string): Promise<string> {
+  const suffix = defaultValue ? ` [${defaultValue}]` : "";
+  return new Promise((resolve) => {
+    rl.question(`  ${question}${suffix}: `, (answer) => {
+      resolve(answer.trim() || defaultValue || "");
+    });
+  });
+}
+
+async function askChoice(rl: ReturnType<typeof createRl>, question: string, choices: readonly string[]): Promise<string> {
+  console.log(`  ${question}`);
+  for (let i = 0; i < choices.length; i++) {
+    console.log(`    ${i + 1}) ${choices[i]}`);
+  }
+  const answer = await ask(rl, "Vaelg nummer", "1");
+  const idx = parseInt(answer, 10) - 1;
+  return choices[Math.max(0, Math.min(idx, choices.length - 1))];
+}
+
+// ─── Hjaelpetekst ───
+
+function printHelp(): void {
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║  dk-bogfoerer — AI Bogfoerer for Danmark         ║
+╚══════════════════════════════════════════════════╝
+
+Brug:
+  dk-bogfoerer setup                Interaktiv foerstegangsopsaetning (start her!)
+  dk-bogfoerer init [sti]           Opret mappestruktur for bogfoering
+  dk-bogfoerer dump <mappe>         Upload fakturaer/bilag til Billy
+  dk-bogfoerer status               Vis Billy-forbindelse og firmainfo
+  dk-bogfoerer deadlines            Vis naeste indberetningsfrister
+  dk-bogfoerer help                 Vis denne hjaelp
+
+Foerste gang? Koer:
+  dk-bogfoerer setup
+  `);
+}
+
+// ─── SETUP command (interaktiv foerstegangsopsaetning) ───
+
+async function cmdSetup(): Promise<void> {
+  const rl = createRl();
+  const claudeJson = join(process.env.HOME ?? "~", ".claude.json");
+  const claudeDir = join(process.env.HOME ?? "~", ".claude");
+
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║  dk-bogfoerer setup                              ║
+║  Interaktiv opsaetning af AI Bogfoerer           ║
+╚══════════════════════════════════════════════════╝
+`);
+
+  // ─── Trin 1: Billy API token ───
+
+  console.log("  ── Trin 1/6: Billy API token ──\n");
+  console.log("  For at forbinde til dit regnskabsprogram (Billy) skal du bruge et API token.");
+  console.log("  Find det i Billy: Indstillinger → Adgangstokens → Opret nyt token\n");
+
+  const billyToken = await ask(rl, "Indsaet dit Billy API token");
+
+  if (!billyToken) {
+    console.log("\n  ⚠ Intet token angivet. Du kan tilfoeje det senere med 'dk-bogfoerer setup'.\n");
+  } else {
+    // Test token
+    setToken(billyToken);
+    try {
+      const org = await getOrganization();
+      console.log(`\n  ✓ Forbundet til Billy: ${org.name} (CVR: ${org.registrationNo ?? "—"})\n`);
+    } catch (e) {
+      console.log(`\n  ✗ Token virkede ikke: ${(e as Error).message}`);
+      console.log("  Du kan proeve igen med 'dk-bogfoerer setup'.\n");
+    }
+  }
+
+  // ─── Trin 2: Gmail ───
+
+  console.log("  ── Trin 2/7: Gmail (faktura-indhentning) ──\n");
+
+  // Tjek om Gmail MCP er konfigureret
+  let gmailConfigured = false;
+  if (existsSync(claudeJson)) {
+    const existing = JSON.parse(await readFile(claudeJson, "utf-8")) as Record<string, unknown>;
+    const servers = (existing.mcpServers ?? {}) as Record<string, unknown>;
+    gmailConfigured = "claude_ai_Gmail" in servers || Object.keys(servers).some((k) => k.toLowerCase().includes("gmail"));
+  }
+
+  if (gmailConfigured) {
+    console.log("  ✓ Gmail MCP er allerede konfigureret i Claude Code.\n");
+  } else {
+    console.log("  Gmail-integration lader dig hente fakturaer direkte fra din email.");
+    console.log("  Det er en built-in Claude Code integration — du aktiverer den saadan:\n");
+    console.log("    1. Abn Claude Code");
+    console.log("    2. Skriv /mcp");
+    console.log("    3. Vaelg 'Claude AI' → aktiver 'Gmail'");
+    console.log("    4. Log ind med din Google-konto\n");
+    console.log("  Naar det er aktiveret kan du bruge /gmail-bilag til at soege fakturaer.\n");
+
+    const gmailNow = await askChoice(rl, "Vil du aktivere Gmail nu? (kraever genstart af Claude Code)", ["Senere", "Vis mig hvordan"]);
+    if (gmailNow === "Vis mig hvordan") {
+      console.log("\n  I Claude Code terminalen:");
+      console.log("    1. Tryk Ctrl+C for at stoppe denne setup (vi gemmer dit Billy token)");
+      console.log("    2. Skriv: /mcp");
+      console.log("    3. Scroll ned til 'Claude AI' sektionen");
+      console.log("    4. Aktiver 'Gmail' og log ind");
+      console.log("    5. Koer 'dk-bogfoerer setup' igen for at faerdiggoere\n");
+    }
+  }
+
+  // ─── Trin 3: Virksomhedsinfo ───
+
+  console.log("  ── Trin 3/7: Virksomhedsinfo ──\n");
+
+  let firmanavn = "";
+  let cvr = "";
+  if (billyToken) {
+    try {
+      const org = await getOrganization();
+      firmanavn = (org.name as string) ?? "";
+      cvr = (org.registrationNo as string) ?? "";
+    } catch { /* ignore */ }
+  }
+
+  firmanavn = await ask(rl, "Firmanavn", firmanavn || undefined);
+  cvr = await ask(rl, "CVR-nummer", cvr || undefined);
+
+  const virksomhedstype = await askChoice(rl, "Virksomhedstype:", [
+    "ApS (Anpartsselskab)",
+    "EMV (Enkeltmandsvirksomhed)",
+    "A/S (Aktieselskab)",
+    "I/S (Interessentskab)",
+  ]);
+  const vtKort = virksomhedstype.split(" ")[0].toLowerCase();
+
+  // ─── Trin 3: Momsperiode ───
+
+  console.log("\n  ── Trin 4/7: Momsperiode ──\n");
+  console.log("  Afhaenger af din omsaetning:");
+  console.log("    Under 5 mio. kr.   → Halvaar");
+  console.log("    5-50 mio. kr.      → Kvartal");
+  console.log("    Over 50 mio. kr.   → Maaned\n");
+
+  const momsperiode = await askChoice(rl, "Din momsperiode:", [
+    "Halvaar (under 5 mio.)",
+    "Kvartal (5-50 mio.)",
+    "Maaned (over 50 mio.)",
+  ]);
+  const mpKort = momsperiode.split(" ")[0].toLowerCase();
+
+  // ─── Trin 4: Har du ansatte? ───
+
+  console.log("\n  ── Trin 5/7: Ansatte ──\n");
+  const harAnsatte = await askChoice(rl, "Har virksomheden ansatte?", ["Ja", "Nej"]);
+  const ansatte = harAnsatte === "Ja";
+
+  const branche = await ask(rl, "Branche (f.eks. 'konsulent', 'handel', 'haandvaerker')", "generel");
+
+  // ─── Trin 5: Bogfoeringsmappe ───
+
+  console.log("\n  ── Trin 6/7: Bogfoeringsmappe ──\n");
+  const defaultPath = join(process.cwd(), firmanavn ? firmanavn.toLowerCase().replace(/[^a-z0-9æøåäöü]/g, "-").replace(/-+/g, "-") : "bogfoering");
+  const bogfoeringsSti = await ask(rl, "Hvor skal bogfoeringsmappen oprettes?", defaultPath);
+
+  // ─── Trin 6: Installer ───
+
+  console.log("\n  ── Trin 7/7: Installation ──\n");
+  console.log("  Installerer...\n");
+
+  // 6a: Hent/opdater crew fra GitHub + byg MCP-servere
+  const CREW_ROOT = await ensureCrewInstalled();
+  const bogfoeringMcpDir = join(CREW_ROOT, "bogfoerer-mcp");
+  const billyMcpDir = join(CREW_ROOT, "billy-mcp");
+
+  if (existsSync(bogfoeringMcpDir)) {
+    try {
+      if (!existsSync(join(bogfoeringMcpDir, "node_modules"))) {
+        execSync("npm install --silent", { cwd: bogfoeringMcpDir, stdio: "ignore" });
+      }
+      if (!existsSync(join(bogfoeringMcpDir, "dist"))) {
+        execSync("npm run build --silent", { cwd: bogfoeringMcpDir, stdio: "ignore" });
+      }
+      console.log("  ✓ dk-bogfoerer MCP klar (42 tools: moms, skat, kontoplan, loen, retsinformation)");
+    } catch {
+      console.log("  ⚠ Kunne ikke bygge dk-bogfoerer MCP. Koer 'npm install && npm run build' i bogfoerer-mcp/");
+    }
+  }
+
+  if (existsSync(billyMcpDir)) {
+    try {
+      if (!existsSync(join(billyMcpDir, "node_modules"))) {
+        execSync("npm install --silent", { cwd: billyMcpDir, stdio: "ignore" });
+      }
+      if (!existsSync(join(billyMcpDir, "dist"))) {
+        execSync("npm run build --silent", { cwd: billyMcpDir, stdio: "ignore" });
+      }
+      console.log("  ✓ Billy MCP klar (26 tools: banklinjer, fakturaer, bogfoering, moms)");
+    } catch {
+      console.log("  ⚠ Kunne ikke bygge Billy MCP. Koer 'npm install && npm run build' i billy-mcp/");
+    }
+  }
+
+  // 6b: Registrer MCP-servere i ~/.claude.json
+  let claudeConfig: Record<string, unknown> = {};
+  if (existsSync(claudeJson)) {
+    claudeConfig = JSON.parse(await readFile(claudeJson, "utf-8")) as Record<string, unknown>;
+  }
+  const mcpServers = (claudeConfig.mcpServers ?? {}) as Record<string, unknown>;
+
+  if (existsSync(join(bogfoeringMcpDir, "dist", "index.js"))) {
+    mcpServers["dk-bogfoerer"] = {
+      command: "node",
+      args: [join(bogfoeringMcpDir, "dist", "index.js")],
+    };
+  }
+  if (existsSync(join(billyMcpDir, "dist", "index.js"))) {
+    mcpServers["billy"] = {
+      command: "node",
+      args: [join(billyMcpDir, "dist", "index.js")],
+      ...(billyToken ? { env: { BILLY_API_TOKEN: billyToken } } : {}),
+    };
+  }
+
+  claudeConfig.mcpServers = mcpServers;
+  await writeFile(claudeJson, JSON.stringify(claudeConfig, null, 2), "utf-8");
+  console.log("  ✓ MCP-servere registreret i Claude Code");
+
+  // 6c: Installer agents
+  const agentsSource = join(CREW_ROOT, "agents");
+  const agentsTarget = join(claudeDir, "agents");
+  if (existsSync(agentsSource)) {
+    await mkdir(agentsTarget, { recursive: true });
+    const agentFiles = await readdir(agentsSource);
+    for (const f of agentFiles) {
+      if (f.endsWith(".md")) {
+        await copyFile(join(agentsSource, f), join(agentsTarget, f));
+      }
+    }
+    console.log(`  ✓ ${agentFiles.filter((f) => f.endsWith(".md")).length} agents installeret`);
+  }
+
+  // 6d: Installer skills
+  const skillsSource = join(CREW_ROOT, "skills");
+  const skillsTarget = join(claudeDir, "skills");
+  if (existsSync(skillsSource)) {
+    const skillFiles = await readdir(skillsSource);
+    for (const f of skillFiles) {
+      if (f.endsWith(".md")) {
+        const skillName = f.replace(".md", "");
+        await mkdir(join(skillsTarget, skillName), { recursive: true });
+        await copyFile(join(skillsSource, f), join(skillsTarget, skillName, "SKILL.md"));
+      }
+    }
+    console.log(`  ✓ ${skillFiles.filter((f) => f.endsWith(".md")).length} skills installeret`);
+  }
+
+  // 6e: Opret bogfoeringsmappe
+  const target = resolve(bogfoeringsSti);
+  const dirs = [
+    "bilag/indgaaende",
+    "bilag/udgaaende",
+    "bilag/dump",
+    "bank",
+    "moms",
+    "rapporter",
+    ...(ansatte ? ["loen"] : []),
+    "aarsafslutning",
+  ];
+  for (const dir of dirs) {
+    await mkdir(join(target, dir), { recursive: true });
+  }
+
+  // Config
+  const config = {
+    firmanavn,
+    cvr,
+    virksomhedstype: vtKort,
+    momsperiode: mpKort,
+    branche,
+    har_ansatte: ansatte,
+    regnskabsaar: "kalenderaar",
+    oprettet: new Date().toISOString().slice(0, 10),
+    billy_token_sat: !!billyToken,
+  };
+  await writeFile(join(target, "config.json"), JSON.stringify(config, null, 2), "utf-8");
+
+  // Hent data fra Billy
+  if (billyToken) {
+    try {
+      const accounts = await getAccounts();
+      await writeFile(join(target, "kontoplan-billy.json"), JSON.stringify(accounts, null, 2), "utf-8");
+      console.log(`  ✓ Kontoplan hentet fra Billy (${accounts.length} konti)`);
+    } catch { /* stille */ }
+
+    try {
+      const daybooks = await getDaybooks();
+      await writeFile(join(target, "dagboeger.json"), JSON.stringify(daybooks, null, 2), "utf-8");
+    } catch { /* stille */ }
+
+    try {
+      const taxRates = await getTaxRates();
+      await writeFile(join(target, "momssatser.json"), JSON.stringify(taxRates, null, 2), "utf-8");
+    } catch { /* stille */ }
+  }
+
+  // README
+  const readme = [
+    `# ${firmanavn || "Bogfoering"}`,
+    "",
+    `| Felt | Vaerdi |`,
+    `|------|--------|`,
+    `| CVR | ${cvr || "—"} |`,
+    `| Type | ${virksomhedstype} |`,
+    `| Momsperiode | ${momsperiode} |`,
+    `| Branche | ${branche} |`,
+    `| Ansatte | ${ansatte ? "Ja" : "Nej"} |`,
+    "",
+    "## Brug",
+    "```bash",
+    "# Smid fakturaer i dump-mappen og upload til Billy",
+    `dk-bogfoerer dump ${join(target, "bilag/dump/")}`,
+    "",
+    "# Se frister",
+    "dk-bogfoerer deadlines",
+    "",
+    "# I Claude Code:",
+    "/bogfoer          # Konter et bilag",
+    "/gmail-bilag      # Hent fakturaer fra email",
+    "/bankafstem       # Afstem banklinjer",
+    "/momsopgoer       # Klargoor momsindberetning",
+    ...(ansatte ? ["/loenkoersel      # Koer loen"] : []),
+    "/aarsafslutning   # Aarsafslutning",
+    "/deadline         # Vis frister",
+    "```",
+    "",
+    "## Mappestruktur",
+    "```",
+    "bilag/dump/          ← Smid filer her → dk-bogfoerer dump",
+    "bilag/indgaaende/    ← Koebsfakturaer",
+    "bilag/udgaaende/     ← Salgsfakturaer",
+    "bank/                ← Kontoudtog",
+    ...(ansatte ? ["loen/                ← Loensedler"] : []),
+    "moms/                ← Momsindberetninger",
+    "aarsafslutning/      ← Aarsregnskab",
+    "rapporter/           ← Perioderegnskaber",
+    "```",
+  ].join("\n");
+  await writeFile(join(target, "README.md"), readme, "utf-8");
+  await writeFile(join(target, ".gitignore"), "config.json\n*.billy.json\n.processed/\n", "utf-8");
+
+  console.log(`  ✓ Bogfoeringsmappe oprettet: ${target}`);
+
+  // ─── Opsummering ───
+
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║  Setup faerdig!                                  ║
+╚══════════════════════════════════════════════════╝
+
+  Firma:           ${firmanavn || "—"}
+  CVR:             ${cvr || "—"}
+  Type:            ${virksomhedstype}
+  Momsperiode:     ${momsperiode}
+  Ansatte:         ${ansatte ? "Ja" : "Nej"}
+  Billy:           ${billyToken ? "✓ Forbundet" : "✗ Ikke forbundet"}
+  Gmail:           ${gmailConfigured ? "✓ Aktiv" : "○ Ikke aktiveret (brug /mcp i Claude Code)"}
+
+  Bogfoeringsmappe: ${target}
+
+  Naeste skridt:
+    1. Genstart Claude Code (luk og aaben igen)
+    2. Smid fakturaer i: ${join(target, "bilag/dump/")}
+    3. Koer: dk-bogfoerer dump ${join(target, "bilag/dump/")}
+    4. Eller abn Claude Code og skriv /bogfoer
+  `);
+
+  rl.close();
+}
+
+// ─── INIT command (hurtig mappeopsaetning uden interaktion) ───
+
+async function cmdInit(targetPath?: string): Promise<void> {
+  const target = resolve(targetPath ?? ".");
+  console.log("\n  dk-bogfoerer init\n");
+
+  let orgName = "Ukendt";
+  try {
+    const org = await getOrganization();
+    orgName = (org.name as string) ?? "Ukendt";
+    console.log(`  ✓ Billy: ${orgName}`);
+  } catch {
+    console.log("  ⚠ Billy ikke forbundet. Koer 'dk-bogfoerer setup' foerst.");
+  }
+
+  const dirs = ["bilag/indgaaende", "bilag/udgaaende", "bilag/dump", "bank", "loen", "moms", "aarsafslutning", "rapporter"];
+  for (const dir of dirs) await mkdir(join(target, dir), { recursive: true });
+
+  await writeFile(join(target, "config.json"), JSON.stringify({ firmanavn: orgName, oprettet: new Date().toISOString().slice(0, 10) }, null, 2), "utf-8");
+  await writeFile(join(target, ".gitignore"), "config.json\n*.billy.json\n.processed/\n", "utf-8");
+
+  console.log(`  ✓ Mappestruktur oprettet: ${target}\n`);
+}
+
+// ─── DUMP command ───
+
+const SUPPORTED_EXTENSIONS = new Set([".pdf", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".tiff", ".bmp", ".heic"]);
+
+async function cmdDump(dumpPath: string): Promise<void> {
+  const target = resolve(dumpPath);
+  if (!existsSync(target)) {
+    console.error(`  Fejl: "${target}" eksisterer ikke.`);
+    process.exit(1);
+  }
+
+  console.log(`\n  dk-bogfoerer dump — ${target}\n`);
+
+  try { getToken(); } catch (e) {
+    console.error(`  ${(e as Error).message}`);
+    console.error("  Koer 'dk-bogfoerer setup' foerst.");
+    process.exit(1);
+  }
+
+  const entries = await readdir(target);
+  const files = [];
+  for (const entry of entries) {
+    if (entry.startsWith(".")) continue;
+    const filePath = join(target, entry);
+    const fileStat = await stat(filePath);
+    if (!fileStat.isFile()) continue;
+    if (!SUPPORTED_EXTENSIONS.has(extname(entry).toLowerCase())) continue;
+    files.push({ path: filePath, name: entry, size: fileStat.size });
+  }
+
+  if (files.length === 0) {
+    console.log("  Ingen filer fundet. Formater: PDF, PNG, JPG, GIF, WEBP, TIFF, BMP, HEIC");
+    return;
+  }
+
+  console.log(`  ${files.length} filer fundet:\n`);
+
+  const processedDir = join(target, ".processed");
+  await mkdir(processedDir, { recursive: true });
+
+  let uploaded = 0;
+  let failed = 0;
+
+  for (const file of files) {
+    try {
+      const buffer = await readFile(file.path);
+      const base64 = buffer.toString("base64");
+      const uploadResult = await uploadFile(file.name, base64);
+      const fileId = uploadResult.id as string;
+
+      console.log(`  ✓ ${file.name} (${(file.size / 1024).toFixed(0)} KB) → Billy: ${fileId}`);
+
+      await copyFile(file.path, join(processedDir, file.name));
+      await unlink(file.path);
+
+      await writeFile(join(processedDir, `${file.name}.billy.json`), JSON.stringify({
+        original_name: file.name,
+        billy_file_id: fileId,
+        uploaded_at: new Date().toISOString(),
+        size_bytes: file.size,
+      }, null, 2), "utf-8");
+
+      uploaded++;
+    } catch (e) {
+      console.log(`  ✗ ${file.name}: ${(e as Error).message}`);
+      failed++;
+    }
+  }
+
+  console.log(`
+  Uploaded: ${uploaded} | Fejlede: ${failed}
+  Filer flyttet til: ${processedDir}
+
+  Abn Claude Code og skriv /bogfoer for at kontere filerne.
+  `);
+}
+
+// ─── STATUS command ───
+
+async function cmdStatus(): Promise<void> {
+  console.log("\n  dk-bogfoerer status\n");
+  try {
+    getToken();
+    const org = await getOrganization();
+    console.log(`  Firma:     ${org.name}`);
+    console.log(`  CVR:       ${org.registrationNo ?? "—"}`);
+    console.log(`  Valuta:    ${org.baseCurrencyId ?? "DKK"}`);
+    console.log(`  Billy ID:  ${org.id}`);
+
+    const daybooks = await getDaybooks();
+    console.log(`  Dagboeger: ${daybooks.length} stk`);
+    for (const db of daybooks) {
+      console.log(`    - ${db.name} (${db.id})`);
+    }
+    console.log("\n  ✓ Billy OK\n");
+  } catch (e) {
+    console.error(`  ✗ ${(e as Error).message}`);
+    console.error("  Koer 'dk-bogfoerer setup' for at konfigurere.\n");
+  }
+}
+
+// ─── DEADLINES command ───
+
+async function cmdDeadlines(): Promise<void> {
+  const today = new Date().toISOString().slice(0, 10);
+  console.log(`\n  dk-bogfoerer deadlines (${today})\n`);
+
+  const deadlines = [
+    { frist: "2026-09-01", beskrivelse: "Moms: 1. halvaar 2026" },
+    { frist: "2027-03-01", beskrivelse: "Moms: 2. halvaar 2026" },
+    { frist: "2026-05-11", beskrivelse: "A-skat/AM-bidrag: April" },
+    { frist: "2026-06-10", beskrivelse: "A-skat/AM-bidrag: Maj" },
+    { frist: "2026-07-10", beskrivelse: "A-skat/AM-bidrag: Juni" },
+    { frist: "2026-08-10", beskrivelse: "A-skat/AM-bidrag: Juli" },
+    { frist: "2026-09-10", beskrivelse: "A-skat/AM-bidrag: August" },
+    { frist: "2026-10-12", beskrivelse: "A-skat/AM-bidrag: September" },
+    { frist: "2026-11-10", beskrivelse: "A-skat/AM-bidrag: Oktober" },
+    { frist: "2026-12-10", beskrivelse: "A-skat/AM-bidrag: November" },
+    { frist: "2026-11-20", beskrivelse: "Selskabsskat: 2. aconto-rate" },
+    { frist: "2026-05-01", beskrivelse: "Privat selvangivelse" },
+    { frist: "2026-05-31", beskrivelse: "Aarsrapport til Erhvervsstyrelsen" },
+    { frist: "2026-06-30", beskrivelse: "Selskabsselvangivelse" },
+    { frist: "2026-07-01", beskrivelse: "Udvidet selvangivelse (selvstaendige)" },
+  ];
+
+  const kommende = deadlines
+    .filter((d) => d.frist >= today)
+    .sort((a, b) => a.frist.localeCompare(b.frist))
+    .slice(0, 8);
+
+  if (kommende.length === 0) {
+    console.log("  Ingen kommende deadlines.");
+    return;
+  }
+
+  for (const d of kommende) {
+    const dage = Math.ceil((new Date(d.frist).getTime() - new Date(today).getTime()) / 86400000);
+    const urgency = dage <= 7 ? " ⚠ SNART!" : dage <= 30 ? " ←" : "";
+    console.log(`  ${d.frist}  ${d.beskrivelse}  (${dage} dage)${urgency}`);
+  }
+  console.log();
+}
+
+// ─── Main router ───
+
+async function main(): Promise<void> {
+  const args = process.argv.slice(2);
+  const command = args[0];
+
+  switch (command) {
+    case "setup":
+      await cmdSetup();
+      break;
+    case "init":
+      await cmdInit(args[1]);
+      break;
+    case "dump":
+      if (!args[1]) {
+        console.error("  Brug: dk-bogfoerer dump <mappe>");
+        process.exit(1);
+      }
+      await cmdDump(args[1]);
+      break;
+    case "status":
+      await cmdStatus();
+      break;
+    case "deadlines":
+      await cmdDeadlines();
+      break;
+    case "help":
+    case "--help":
+    case "-h":
+      printHelp();
+      break;
+    case undefined:
+      // Foerste gang? Koer setup
+      if (!existsSync(join(process.env.HOME ?? "~", ".claude.json")) ||
+          !process.env.BILLY_API_TOKEN) {
+        console.log("\n  Velkommen! Koerer foerstegangsopsaetning...\n");
+        await cmdSetup();
+      } else {
+        printHelp();
+      }
+      break;
+    default:
+      console.error(`  Ukendt kommando: ${command}`);
+      printHelp();
+      process.exit(1);
+  }
+}
+
+main().catch((error) => {
+  console.error("Fejl:", error.message);
+  process.exit(1);
+});

@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "year": 2026,
+    "description": "Loensatser, bidrag og beregninger for dansk loenkoersel 2026"
+  },
+  "am_bidrag": {
+    "sats": 8.0,
+    "beskrivelse": "Arbejdsmarkedsbidrag — 8% af bruttoeloen",
+    "grundlag": "Al A-indkomst foer AM-bidragsfritagelse",
+    "lovhenvisning": "Arbejdsmarkedsbidragsloven §1"
+  },
+  "a_skat": {
+    "beskrivelse": "A-skat beregnes paa bruttoeloen minus AM-bidrag, baseret paa medarbejderens skattekort",
+    "traekkort_typer": ["Hovedkort", "Bikort", "Frikort"],
+    "beregning": "A-skat = (Brutto - AM-bidrag - traekfradrag) * traekprocent"
+  },
+  "feriepenge": {
+    "sats": 12.5,
+    "beskrivelse": "12,5% af loen (inkl. vaerdi af fri kost, logi mv.)",
+    "system": "Samtidighedsferie via FerieKonto eller fond",
+    "ferietillaeg_sats": 1.0,
+    "ferietillaeg_beskrivelse": "1% af loen udbetales med maj- og augustloen",
+    "lovhenvisning": "Ferieloven"
+  },
+  "atp": {
+    "beskrivelse": "Arbejdsmarkedets Tillaegspension — fast bidrag baseret paa arbejdstid",
+    "maanedlig_fuldtid": {
+      "total": 284.40,
+      "arbejdsgiver": 189.60,
+      "loenmodtager": 94.80
+    },
+    "timer_graenser": {
+      "fuldtid": { "min_timer": 117, "total": 284.40 },
+      "to_tredjedel": { "min_timer": 78, "max_timer": 116, "total": 189.60 },
+      "en_tredjedel": { "min_timer": 39, "max_timer": 77, "total": 94.80 },
+      "under": { "max_timer": 38, "total": 0 }
+    },
+    "lovhenvisning": "ATP-loven"
+  },
+  "pension": {
+    "typisk_bidrag": {
+      "arbejdsgiver": 8.0,
+      "loenmodtager": 4.0,
+      "total": 12.0,
+      "beskrivelse": "Typisk pensionsbidrag — varierer efter overenskomst"
+    }
+  },
+  "sh_bidrag": {
+    "beskrivelse": "SH-bidrag (Soegne-Helligdagsbetaling) — for timeloennede der ikke har ret til betalt fridag",
+    "sats": 3.5,
+    "note": "Afhaenger af overenskomst"
+  },
+  "fritvalgskonto": {
+    "sats": 7.0,
+    "beskrivelse": "Fritvalgskonto — til ekstra ferie, pension eller udbetaling. Afhaenger af overenskomst",
+    "note": "Varierer fra 4-9% afhaengig af overenskomst"
+  },
+  "koerselsgodtgoerelse": {
+    "lav": { "km_fra": 0, "km_til": 20000, "sats_pr_km": 3.94 },
+    "hoej": { "km_fra": 20001, "sats_pr_km": 2.28 },
+    "lovhenvisning": "Ligningsloven §9B"
+  },
+  "diaetkost": {
+    "doegnsats": 625,
+    "beskrivelse": "Skattefri kostgodtgoerelse pr. doegn (min. 24 timer)",
+    "lovhenvisning": "Ligningsloven §9A"
+  },
+  "logigodtgoerelse": {
+    "doegnsats": 268,
+    "beskrivelse": "Skattefri logigodtgoerelse pr. doegn",
+    "lovhenvisning": "Ligningsloven §9A"
+  },
+  "beregningseksempel": {
+    "beskrivelse": "Eksempel: Maanedsloen 35.000 kr., skattekort: 37% traek, 5.500 kr. traekfradrag",
+    "bruttoeloen": 35000,
+    "am_bidrag": 2800,
+    "a_indkomst_efter_am": 32200,
+    "traekfradrag": 5500,
+    "skattepligtig": 26700,
+    "a_skat": 9879,
+    "atp_loenmodtager": 94.80,
+    "pension_loenmodtager_4pct": 1400,
+    "nettoeloen": 20826.20,
+    "arbejdsgiver_pensionsbidrag_8pct": 2800,
+    "arbejdsgiver_atp": 189.60,
+    "feriepenge_12_5pct": 4375
+  }
+}

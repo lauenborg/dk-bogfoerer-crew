@@ -1,0 +1,1508 @@
+{
+  "meta": {
+    "version": "2026",
+    "last_updated": "2026-04-02",
+    "sources": [
+      "pwc.dk",
+      "skat.dk",
+      "europa.eu",
+      "diverse (dinero.dk, e-conomic.dk, stadsrevisionen.dk, martinsen.dk, bakertilly.dk, bdo.dk, redmark.dk, beierholm.dk, kpmg.dk)"
+    ],
+    "description": "Konsolideret database over danske momsregler 2026, baseret paa fire primaerkilder."
+  },
+  "rates": {
+    "standard": {
+      "rate": 25,
+      "description": "Standardmomssats i Danmark paa 25 % af varens eller ydelsens vaerdi. Danmark er det eneste EU-land uden reducerede momssatser mellem 0 % og 25 %.",
+      "law_reference": "ML ss 33",
+      "keywords": ["momssats", "25 procent", "standardsats", "moms", "mervaerdiafgift"]
+    },
+    "reduced": [],
+    "zero": [
+      {
+        "id": "zero_newspapers",
+        "category": "aviser",
+        "rate": 0,
+        "description": "Nulmoms (0 %) paa trykte og elektroniske nyhedsmedier/aviser. Virksomheder beholder fuld fradragsret for koebsmoms.",
+        "effective_date": "gaeldende",
+        "law_reference": "ML ss 34",
+        "keywords": ["aviser", "nulmoms", "nyhedsmedier", "dagblade", "0 procent"]
+      },
+      {
+        "id": "zero_books",
+        "category": "boeger",
+        "rate": 0,
+        "description": "Nulmoms (0 %) paa boeger, e-boeger, lydboeger, billed-/tegne-/maleboeger til boern og trykt/haandskreven musik. Virksomheder beholder fuld fradragsret for koebsmoms. Gavekort til boeger momsafregnes foerst ved indloesning.",
+        "effective_date": "2026-07-01",
+        "law_reference": "ML (ny bestemmelse 2026)",
+        "keywords": ["boeger", "e-boeger", "lydboeger", "nulmoms", "ISBN", "borneboeger", "musik", "0 procent"]
+      }
+    ],
+    "zero_vs_exempt_explanation": "Nulmoms (0 %) betyder at virksomheden ikke opkraever moms af salget, men beholder fuld ret til at fradrage moms paa indkoeb. Momsfritagelse betyder at virksomheden hverken opkraever moms af salget eller kan fradrage moms paa indkoeb. Momsfritagne virksomheder betaler typisk loensumsafgift (registreringspligt ved omsaetning over 80.000 kr. aarligt).",
+    "eu_rates_overview": {
+      "description": "Oversigt over momssatser i alle EU-lande pr. marts 2026",
+      "highest": {"country": "Ungarn", "rate": 27},
+      "lowest": {"country": "Luxembourg", "rate": 17},
+      "denmark_note": "Danmark har EUs simpleste momsstruktur med kun en ensartet sats paa 25 % (ingen nedsatte satser)",
+      "countries": [
+        {"country": "Belgien", "code": "BE", "standard": 21, "reduced": "6%, 12%"},
+        {"country": "Bulgarien", "code": "BG", "standard": 20, "reduced": "9%"},
+        {"country": "Cypern", "code": "CY", "standard": 19, "reduced": "5%, 9%"},
+        {"country": "Danmark", "code": "DK", "standard": 25, "reduced": "ingen"},
+        {"country": "Estland", "code": "EE", "standard": 24, "reduced": "9%, 13%"},
+        {"country": "Finland", "code": "FI", "standard": 25.5, "reduced": "10%, 13.5%"},
+        {"country": "Frankrig", "code": "FR", "standard": 20, "reduced": "5.5%, 10%"},
+        {"country": "Graekenland", "code": "EL", "standard": 24, "reduced": "6%, 17%"},
+        {"country": "Holland", "code": "NL", "standard": 21, "reduced": "9%"},
+        {"country": "Irland", "code": "IE", "standard": 23, "reduced": "9%, 13.5%"},
+        {"country": "Italien", "code": "IT", "standard": 22, "reduced": "5%, 10%"},
+        {"country": "Kroatien", "code": "HR", "standard": 25, "reduced": "5%, 13%"},
+        {"country": "Letland", "code": "LV", "standard": 21, "reduced": "5%, 12%"},
+        {"country": "Litauen", "code": "LT", "standard": 21, "reduced": "5%, 12%"},
+        {"country": "Luxembourg", "code": "LU", "standard": 17, "reduced": "8%, 14%"},
+        {"country": "Malta", "code": "MT", "standard": 18, "reduced": "5%, 7%"},
+        {"country": "Polen", "code": "PL", "standard": 23, "reduced": "5%, 8%"},
+        {"country": "Portugal", "code": "PT", "standard": 23, "reduced": "6%, 13%"},
+        {"country": "Rumaenien", "code": "RO", "standard": 21, "reduced": "11%"},
+        {"country": "Slovakiet", "code": "SK", "standard": 23, "reduced": "5%, 19%"},
+        {"country": "Slovenien", "code": "SI", "standard": 22, "reduced": "5%, 9.5%"},
+        {"country": "Spanien", "code": "ES", "standard": 21, "reduced": "10%"},
+        {"country": "Sverige", "code": "SE", "standard": 25, "reduced": "6%, 12%"},
+        {"country": "Tjekkiet", "code": "CZ", "standard": 21, "reduced": "12%"},
+        {"country": "Tyskland", "code": "DE", "standard": 19, "reduced": "7%"},
+        {"country": "Ungarn", "code": "HU", "standard": 27, "reduced": "5%, 18%"},
+        {"country": "OEstrig", "code": "AT", "standard": 20, "reduced": "10%, 13%"}
+      ]
+    }
+  },
+  "registration": {
+    "threshold": {
+      "amount": 50000,
+      "currency": "DKK",
+      "period": "kalenderaar",
+      "description": "Virksomheder skal momsregistreres, hvis de saelger momspligtige varer og ydelser for mere end 50.000 kr. inden for et kalenderaar.",
+      "deadline": "Senest 8 dage foer omsaetningen forventes at overstige 50.000 kr.",
+      "keywords": ["registreringsgraense", "50000", "momsregistrering", "pligt"]
+    },
+    "voluntary": {
+      "description": "Virksomheder med omsaetning under 50.000 kr. kan frivilligt momsregistrere sig. Fordel: Fuldt momsfradrag paa etableringsomkostninger.",
+      "keywords": ["frivillig registrering", "under 50000"]
+    },
+    "procedure": {
+      "steps": [
+        "Gaa til virk.dk",
+        "Vaelg 'Start virksomhed' (ny) eller 'AEndre virksomhed' (eksisterende med CVR-nummer)",
+        "Vaelg 'Start selvbetjening' og foelg guiden",
+        "Bekraeft med MitID"
+      ],
+      "url": "virk.dk",
+      "keywords": ["registrering", "virk.dk", "MitID", "CVR"]
+    },
+    "foreign_companies": {
+      "description": "Udenlandske virksomheder uden fast forretningssted i Danmark skal momsregistreres fra den foerste krone, hvis de udoever momspligtige leverancer i Danmark. Der er ingen taerskel.",
+      "keywords": ["udenlandsk virksomhed", "ingen taerskel", "foerste krone"]
+    },
+    "eu_small_business_scheme": {
+      "description": "Smaa virksomheder etableret i EU kan anvende en saerordning for at undgaa momsregistrering i andre EU-lande.",
+      "conditions": [
+        "Aarlig omsaetning i EU under 100.000 EUR (ca. 744.750 DKK)",
+        "Aarlig omsaetning under taerskelvaerdien i det paagaeldende land",
+        "Virksomheden har givet forhaandsmeddelelse til sit etableringsland",
+        "Virksomheden kan identificeres ved hjaelp af et individuelt registreringsnummer (EX-nummer)"
+      ],
+      "effective_date": "2025-01-01",
+      "keywords": ["smavirksomhedsordning", "EU", "100000 EUR", "744750 DKK", "momsfritagelse"]
+    },
+    "deregistration": {
+      "description": "Ved lukning af virksomheden skal moms indberettes for den sidste periode, selv ved ingen transaktioner (nulindberetning). Aktiver skal vaerdiansaettes til markedsvaerdi.",
+      "keywords": ["afregistrering", "lukning", "virksomhedslukning", "ophoeor"]
+    }
+  },
+  "deductions": [
+    {
+      "id": "deduction_full_office",
+      "category": "kontorhold",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for kontorartikler, inventar, edb-udstyr, rengoeoring, revision og professionelle ydelser (juridisk raadgivning, konsulentydelser).",
+      "conditions": "Udgifterne skal udelukkende relatere sig til momspligtige aktiviteter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["kontorartikler", "inventar", "edb", "rengoeoring", "revision", "kontor", "kontorhold"]
+    },
+    {
+      "id": "deduction_full_advertising",
+      "category": "reklame",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for reklameudgifter (annoncer, skilte, brochurer, busreklame, sponsorbidrag). Udgifterne afholdes normalt over for en ubestemt kreds af kunder/potentielle kunder.",
+      "conditions": "Formaal: Opretholde virksomhedens omdomme eller fremme dens interesser.",
+      "law_reference": "ML ss 37",
+      "keywords": ["reklame", "annonce", "sponsor", "brochure", "markedsfoering", "skilte"]
+    },
+    {
+      "id": "deduction_full_promo_items_under100",
+      "category": "reklameartikler",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for reklameartikler under 100 kr. ekskl. moms pr. stk., forsynet med virksomhedens navn/logo. Ved vaerdi paa 100 kr. eller derover skal virksomheden betale salgsmoms af vaerdien.",
+      "conditions": "Varen skal tydeligt vaere forsynet med virksomhedens navn eller logo. Vaerdi under 100 kr. ekskl. moms.",
+      "threshold": 100,
+      "law_reference": "ML ss 42, stk. 2",
+      "keywords": ["reklameartikler", "giveaways", "kuglepen", "kalender", "logo", "firmanavn"]
+    },
+    {
+      "id": "deduction_full_samples",
+      "category": "vareproever",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for vareproever, uanset om varens vaerdi er under eller over 100 kr. ekskl. moms. En vareproeve er typisk en vare virksomheden omsaetter, udleveret for at fremme omsaetningen.",
+      "conditions": "Skal vaere en vare virksomheden omsaetter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["vareproever", "produktproever", "demonstration", "salgsfremme"]
+    },
+    {
+      "id": "deduction_full_hotel",
+      "category": "hotelovernatning",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for hotelovernatninger ved strengt erhvervsmaessig brug. Fakturaen SKAL splittes, saa overnatning og restauration fremgaar separat.",
+      "conditions": "Strengt erhvervsmaessig brug. Faktura skal specificere overnatning separat.",
+      "law_reference": "ML ss 42, stk. 2",
+      "keywords": ["hotel", "overnatning", "forretningsrejse", "vandrehjem", "motel"]
+    },
+    {
+      "id": "deduction_restaurant",
+      "category": "restauration",
+      "rate": 25,
+      "description": "25 % momsfradrag (dvs. 1/4 af momsen) for restaurationsydelser ved strengt erhvervsmaessig brug. Gaelder restaurantbesoeg ved forretningsrejser, forretningsmiddag, moeder uden for virksomhedens lokaler, morgenmad paa hotel (skal udspecificeres separat), personalemoeder, julefrokost og personalefester (ogsaa med aegtefaeller).",
+      "conditions": "Strengt erhvervsmaessig brug. Morgenmad paa hotel skal udspecificeres separat paa regningen.",
+      "law_reference": "ML ss 42, stk. 2",
+      "keywords": ["restaurant", "mad", "frokost", "forplejning", "restauration", "morgenmad", "julefrokost", "personalefest", "middag"]
+    },
+    {
+      "id": "deduction_full_meeting_food",
+      "category": "moede-forplejning",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for mad, kage og drikkevarer ved interne/eksterne moeder i virksomhedens egne lokaler, bestyrelsesmoeder, direktionsmoeder, interne uddannelsesdage og temadage.",
+      "conditions": "Skal vaere i virksomhedens egne lokaler. Moeder af ren erhvervsmaessig karakter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["moede", "bestyrelse", "direktion", "forplejning", "kantine", "catering", "internt moede"]
+    },
+    {
+      "id": "deduction_full_meeting_coffee_guests",
+      "category": "kaffe-te-gaester",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for kaffe, te og vand til forretningsforbindelser og personale under moeder.",
+      "conditions": "Skal vaere til forretningsforbindelser eller under moeder af erhvervsmaessig karakter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["kaffe", "te", "vand", "forretningsforbindelser", "moede"]
+    },
+    {
+      "id": "deduction_zero_coffee_staff",
+      "category": "kaffe-te-personale",
+      "rate": 0,
+      "description": "Intet momsfradrag for gratis kaffe og te til ansatte (betragtes som fri kost/naturalafloening).",
+      "conditions": "Gaelder daglig kaffe/te til personale uden moede-kontekst.",
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["kaffe", "te", "personale", "fri kost", "naturalafloening"]
+    },
+    {
+      "id": "deduction_zero_representation",
+      "category": "repraesentation",
+      "rate": 0,
+      "description": "Intet momsfradrag for repraesentationsudgifter (generelt). Kendetegnet ved udgifter for at afslutte forretninger eller knytte/bevare forretningsforbindelser, afholdt over for en begraenset personkreds. Eksempler: Vin, chokolade, blomster til jubilaeeer.",
+      "conditions": "Undtagelse: Hotel- og restaurationsydelser har saerlige fradragsregler.",
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["repraesentation", "gaver", "vin", "chokolade", "blomster", "forretningsforbindelser"]
+    },
+    {
+      "id": "deduction_zero_entertainment",
+      "category": "underholdning",
+      "rate": 0,
+      "description": "Intet momsfradrag for udgifter til underholdning, teambuilding og private sociale arrangementer.",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["underholdning", "teambuilding", "fest", "socialt arrangement"]
+    },
+    {
+      "id": "deduction_zero_gifts",
+      "category": "gaver",
+      "rate": 0,
+      "description": "Intet momsfradrag for udgifter til gaver, herunder julegaver til medarbejdere og blomster til personale.",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["gaver", "julegaver", "blomster", "personalegaver"]
+    },
+    {
+      "id": "deduction_zero_flights",
+      "category": "transport-persontransport",
+      "rate": 0,
+      "description": "Intet momsfradrag for flybilletter, faergebilletter og taxi.",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 6",
+      "keywords": ["flybillet", "fly", "faerge", "taxi", "transport", "persontransport"]
+    },
+    {
+      "id": "deduction_full_workwear",
+      "category": "arbejdstoej",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for arbejdstoej, uniformer og sikkerhedsudstyr ejet af virksomheden. Ogsaa civilbeklaedning med virksomhedens logo, forudsat at toejet tilhoerer virksomheden, ansatte ikke maa bruge det privat, og det leveres tilbage ved ansaettelsens ophoer.",
+      "conditions": "Toejet skal vaere forsynet med virksomhedens navn/logo, maa ikke bruges privat, og skal leveres tilbage.",
+      "law_reference": "ML ss 37",
+      "keywords": ["arbejdstoej", "uniform", "sikkerhedsudstyr", "beklaedning", "logo"]
+    },
+    {
+      "id": "deduction_full_screen_glasses",
+      "category": "skaermbriller",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for skaermbriller til medarbejdere.",
+      "conditions": "Erhvervsmaessig brug.",
+      "law_reference": "ML ss 37",
+      "keywords": ["skaermbriller", "briller", "medarbejder"]
+    },
+    {
+      "id": "deduction_50_landline",
+      "category": "fastnettelefon",
+      "rate": 50,
+      "description": "50 % momsfradrag for anskaffelses- og driftsudgifter til fastnettelefon paa ansattes bopael.",
+      "conditions": "Telefonen anvendes erhvervsmaessigt, og regningen stiles til/betales af virksomheden.",
+      "law_reference": "ML ss 42, stk. 4",
+      "keywords": ["fastnet", "telefon", "bopael", "50 procent"]
+    },
+    {
+      "id": "deduction_full_mobile_business",
+      "category": "mobiltelefon-erhverv",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for mobiltelefoner ved udelukkende erhvervsmaessig brug (tro og love erklaering + stikproevekontrol anbefales).",
+      "conditions": "Udelukkende erhvervsmaessig brug. Regningen stiles til/betales af virksomheden.",
+      "law_reference": "ML ss 37",
+      "keywords": ["mobiltelefon", "mobil", "erhverv"]
+    },
+    {
+      "id": "deduction_partial_mobile_mixed",
+      "category": "mobiltelefon-blandet",
+      "rate": null,
+      "description": "Skoensmaessigt momsfradrag for mobiltelefoner ved blandet brug. Skoennet boer vurderes mindst en gang aarligt.",
+      "conditions": "Blandet erhverv/privat brug. Regningen stiles til/betales af virksomheden.",
+      "law_reference": "ML ss 38, stk. 2",
+      "keywords": ["mobiltelefon", "mobil", "blandet brug", "skoen"]
+    },
+    {
+      "id": "deduction_partial_broadband",
+      "category": "bredbaand",
+      "rate": 50,
+      "description": "Momsfradrag for bredbaand i det omfang det bruges erhvervsmaessigt. Skattestyrelsen anerkender som tommelfingerregel: halvdelen af udgiften anses som erhvervsmaessig.",
+      "conditions": "Regningen stiles til/betales af virksomheden. Skoennet boer vurderes mindst en gang aarligt.",
+      "law_reference": "ML ss 38, stk. 2",
+      "keywords": ["bredbaand", "internet", "ADSL", "fiber", "halvdelen"]
+    },
+    {
+      "id": "deduction_partial_home_pc",
+      "category": "hjemme-pc",
+      "rate": null,
+      "description": "Delvist momsfradrag for hjemme-pc, baerbare pc'er og tablets svarende til den erhvervsmaessige anvendelse. I praksis kan mange virksomheder opnaa fradragsret paa 80-100 % med velbegrundet skoen.",
+      "conditions": "Formodning om privat brug, naar pc'en er placeret i hjemmet.",
+      "law_reference": "ML ss 38, stk. 2",
+      "keywords": ["pc", "computer", "baerbar", "tablet", "laptop", "hjemmearbejde"]
+    },
+    {
+      "id": "deduction_full_overtime_meals",
+      "category": "overarbejde-mad",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for mad ved konkret, uvarslet og beordret overarbejde (medarbejderen har ikke haft mulighed for at planlaegge/tage madpakke med).",
+      "conditions": "Uplanlagt overarbejde, ikke forudplanlagt og ikke typisk.",
+      "law_reference": "ML ss 37",
+      "keywords": ["overarbejde", "mad", "uvarslet", "beordret"]
+    },
+    {
+      "id": "deduction_zero_staff_meals",
+      "category": "personale-bespisning",
+      "rate": 0,
+      "description": "Intet momsfradrag som udgangspunkt for bespisning af personale. Undtagelse: Moeder i egne lokaler (100 %), restaurationsydelser (25 %), uvarslet overarbejde (100 %).",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["bespisning", "personale", "mad", "medarbejdere"]
+    },
+    {
+      "id": "deduction_full_supplies",
+      "category": "forsyninger",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for forsyninger (varme, el, gas, vand), husleje (hvis moms fremgaar af faktura), reparation og vedligeholdelse af udstyr/inventar.",
+      "conditions": "Relateret til momspligtige aktiviteter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["el", "gas", "vand", "varme", "husleje", "forsyninger", "reparation", "vedligeholdelse"]
+    },
+    {
+      "id": "deduction_full_education",
+      "category": "kurser-uddannelse",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for kursusgebyr, laereboeger og kursusmateriale samt medarbejderuddannelse.",
+      "conditions": "Relateret til virksomhedens aktiviteter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["kursus", "uddannelse", "kursusmateriale", "laereboeger", "efteruddannelse"]
+    },
+    {
+      "id": "deduction_full_moving",
+      "category": "flytning",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for medarbejderes arbejdsbetingede flytteudgifter.",
+      "conditions": "Skal vaere arbejdsbetinget.",
+      "law_reference": "ML ss 37",
+      "keywords": ["flytning", "flytteudgifter", "medarbejder"]
+    },
+    {
+      "id": "deduction_full_coffee_machines",
+      "category": "kaffe-automater",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for indkoeb og drift af kaffe- og sodavandsautomater.",
+      "conditions": "Fradrag gaelder udstyret selv og driften.",
+      "law_reference": "ML ss 37",
+      "keywords": ["kaffeautomat", "sodavandsautomat", "automat", "vending"]
+    },
+    {
+      "id": "deduction_full_canteen",
+      "category": "kantine",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for kantineindkoeb, forudsat at virksomheden afregner kantine-/salgsmoms.",
+      "conditions": "Forudsaetter afregning af kantine-/salgsmoms.",
+      "law_reference": "ML ss 37",
+      "keywords": ["kantine", "kantineindkoeb", "kantinemoms"]
+    },
+    {
+      "id": "deduction_full_flowers_decoration",
+      "category": "udsmykning",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for blomster og kunst til udsmykning af virksomhedens lokaler.",
+      "conditions": "Til udsmykning af lokaler, ikke som gave.",
+      "law_reference": "ML ss 37",
+      "keywords": ["blomster", "kunst", "udsmykning", "dekoration", "lokaler"]
+    },
+    {
+      "id": "deduction_zero_fruit_breakfast",
+      "category": "frugtordning",
+      "rate": 0,
+      "description": "Intet momsfradrag for frugtordninger, morgenmad til personale og anden mad i virksomhedens lokaler (ikke kantine).",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 5",
+      "keywords": ["frugtordning", "frugt", "morgenmad", "personalemad"]
+    },
+    {
+      "id": "deduction_full_scene_setup",
+      "category": "arrangementer-opstilling",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for opstilling af borde, baenke, scene o.l. til arrangementer.",
+      "conditions": null,
+      "law_reference": "ML ss 37",
+      "keywords": ["borde", "baenke", "scene", "arrangement", "opstilling"]
+    },
+    {
+      "id": "deduction_full_oersund_bridge",
+      "category": "oeresundsbroen",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for broafgift til OEresundsbroen for alle biltyper, hvis koerslen vedroerer momspligtige aktiviteter.",
+      "conditions": "Koerslen skal vedroere momspligtige aktiviteter.",
+      "law_reference": "ML ss 37",
+      "keywords": ["oeresundsbroen", "broafgift", "bro"]
+    },
+    {
+      "id": "deduction_zero_storebaelt_person",
+      "category": "storebaeltsbroen-personbil",
+      "rate": 0,
+      "description": "Intet momsfradrag for Storebaeltsbroen i personbiler (hvide plader).",
+      "conditions": null,
+      "law_reference": "ML ss 42, stk. 1, nr. 7",
+      "keywords": ["storebaeltsbroen", "personbil", "hvide plader"]
+    },
+    {
+      "id": "deduction_full_storebaelt_van",
+      "category": "storebaeltsbroen-varevogn",
+      "rate": 100,
+      "description": "Fuldt momsfradrag for Storebaeltsbroen i varevogne (gule plader).",
+      "conditions": "Varevogn paa gule plader.",
+      "law_reference": "ML ss 37",
+      "keywords": ["storebaeltsbroen", "varevogn", "gule plader"]
+    }
+  ],
+  "exemptions": [
+    {
+      "id": "exempt_health",
+      "category": "sundhed",
+      "description": "Hospitalsbehandling, laege- og tandlaegevirksomhed, kiropraktik, fysioterapi. Alternative behandlere kvalificerer sig, hvis de behandler sygdomme/sundhedsproblemer via helbredende eller forebyggende metoder og har de rette kvalifikationer. Udbydere betaler loensumsafgift.",
+      "law_reference": "ML ss 13, stk. 1, nr. 1",
+      "keywords": ["sundhed", "laege", "hospital", "behandling", "tandlaege", "kiropraktor", "fysioterapi", "alternativ behandling"]
+    },
+    {
+      "id": "exempt_social",
+      "category": "social forsorg",
+      "description": "Social forsorg og bistand samt leveringer i naer tilknytning hertil (fx plejehjem, boernehaver, vuggestuer, socialt arbejde).",
+      "law_reference": "ML ss 13, stk. 1, nr. 2",
+      "keywords": ["social forsorg", "plejehjem", "boernehave", "vuggestue", "socialt arbejde", "bistand"]
+    },
+    {
+      "id": "exempt_education",
+      "category": "undervisning",
+      "description": "Skoleundervisning og undervisning paa videregaaende uddannelsesinstitutioner, erhvervsuddannelse (jobspecifikke kompetencer), fysisk traening som erhvervsuddannelse. Dog momspligt for kursusvirksomhed drevet med gevinst for oeje rettet mod erhvervslivet.",
+      "law_reference": "ML ss 13, stk. 1, nr. 3",
+      "keywords": ["undervisning", "skole", "uddannelse", "universitet", "erhvervsuddannelse", "omskoling"]
+    },
+    {
+      "id": "exempt_associations",
+      "category": "foreninger",
+      "description": "Visse foreningers og organisationers leverancer til deres medlemmer mod kontingentbetaling (politisk, religioest, filantropisk formaal). Dog ikke momsfritaget, hvis momsfriheden er konkurrenceforvridende.",
+      "law_reference": "ML ss 13, stk. 1, nr. 4",
+      "keywords": ["forening", "organisation", "kontingent", "medlemmer"]
+    },
+    {
+      "id": "exempt_sport",
+      "category": "sport og motion",
+      "description": "Ydelser fra foreninger der ikke drives med gevinst for oeje. NB: Kommercielle fitness-centre, holdtraening, personlig traening, yoga, danse- og sangundervisning er nu momspligtige fra 1. januar 2026.",
+      "law_reference": "ML ss 13, stk. 1, nr. 5",
+      "keywords": ["sport", "motion", "idraet", "forening", "fitness", "traening"]
+    },
+    {
+      "id": "exempt_culture",
+      "category": "kultur",
+      "description": "Kulturelle aktiviteter som museer, biblioteker og zoologiske haver (undtaget biografer, koncerter).",
+      "law_reference": "ML ss 13, stk. 1, nr. 6",
+      "keywords": ["kultur", "museum", "bibliotek", "zoologisk have", "kulturel aktivitet"]
+    },
+    {
+      "id": "exempt_art",
+      "category": "kunstnerisk virksomhed",
+      "description": "Forfatter-, komponist- og kunstnervirksomhed. Honorarer for forfatterskab, komposition, optraeden, foredrag og visse former for journalistik. Undtaget: Salg af kunstvaerker og arrangementer, hvor kunstnere selv opkraever entrebilletter.",
+      "law_reference": "ML ss 13, stk. 1, nr. 7",
+      "keywords": ["forfatter", "komponist", "kunst", "kunstner", "foredrag", "journalistik"]
+    },
+    {
+      "id": "exempt_real_estate_rental",
+      "category": "udlejning af fast ejendom",
+      "description": "Udlejning og bortforpagtning af fast ejendom herunder forsyning med el, gas, vand. Udlejning til erhvervsformaal kan goeres momspligtig ved frivillig momsregistrering. Undtaget: Hoteller, korttidsudlejning, parkering.",
+      "law_reference": "ML ss 13, stk. 1, nr. 8",
+      "keywords": ["udlejning", "fast ejendom", "husleje", "bortforpagtning", "ejendom", "boligudlejning"]
+    },
+    {
+      "id": "exempt_real_estate_sale",
+      "category": "salg af fast ejendom",
+      "description": "Salg af fast ejendom er momsfrit for eksisterende bygninger. Momspligtigt: Erhvervsmaessigt salg af byggegrunde, nye bygninger (ny indtil foerste indflytning eller foerste salg inden for 5 aar efter faerdigoerelse), og saerskilt levering af bebygget grund.",
+      "law_reference": "ML ss 13, stk. 1, nr. 9",
+      "keywords": ["salg", "fast ejendom", "byggegrund", "ny bygning", "ejendomssalg"]
+    },
+    {
+      "id": "exempt_insurance",
+      "category": "forsikring",
+      "description": "Forsikrings- og genforsikringsvirksomhed.",
+      "law_reference": "ML ss 13, stk. 1, nr. 10",
+      "keywords": ["forsikring", "genforsikring"]
+    },
+    {
+      "id": "exempt_financial",
+      "category": "finansielle ydelser",
+      "description": "De fleste finansielle aktiviteter herunder laan, formidling af laan, sikkerhedsstillelse, overfoersler, transaktioner vedroerende valuta og vaerdipapirer samt forvaltning af investeringsforeninger.",
+      "law_reference": "ML ss 13, stk. 1, nr. 11",
+      "keywords": ["finans", "bank", "laan", "vaerdipapirer", "valuta", "investering", "finansiel"]
+    },
+    {
+      "id": "exempt_gambling",
+      "category": "lotteri og spil",
+      "description": "Lotterier og pengespil.",
+      "law_reference": "ML ss 13, stk. 1, nr. 12",
+      "keywords": ["lotteri", "spil", "pengespil", "gambling"]
+    },
+    {
+      "id": "exempt_postal",
+      "category": "postydelser",
+      "description": "Ydelser omfattet af postbefordringspligten.",
+      "law_reference": "ML ss 13, stk. 1, nr. 13",
+      "keywords": ["post", "breve", "pakker", "postvaesenets"]
+    },
+    {
+      "id": "exempt_stamps",
+      "category": "frimaerker",
+      "description": "Frimaerker til paalydende vaerdi til indenlandsk brug.",
+      "law_reference": "ML ss 13, stk. 1, nr. 14",
+      "keywords": ["frimaerke", "porto"]
+    },
+    {
+      "id": "exempt_passenger_transport",
+      "category": "personbefordring",
+      "description": "Rutebuskoersel er momsfri; turistbuskoersel er det IKKE. Alle andre former for personbefordring er generelt momsfritagne. Operatoerer betaler loensumsafgift.",
+      "law_reference": "ML ss 13, stk. 1, nr. 15",
+      "keywords": ["personbefordring", "bus", "rutebuskoersel", "kollektiv trafik", "transport"]
+    },
+    {
+      "id": "exempt_funeral",
+      "category": "begravelse",
+      "description": "Begravelsesrelaterede ydelser.",
+      "law_reference": "ML ss 13, stk. 1, nr. 16",
+      "keywords": ["begravelse", "bedemand"]
+    },
+    {
+      "id": "exempt_charity",
+      "category": "velgoerenhed",
+      "description": "Varer/ydelser fra velgoerende indsamlinger (kraever forhaandsgodkendelse) og varer fra almenvelgoerende genbrugsbutikker.",
+      "law_reference": "ML ss 13, stk. 1, nr. 17-18",
+      "keywords": ["velgoerenhed", "indsamling", "genbrugsbutik", "almennyttig"]
+    },
+    {
+      "id": "exempt_investment_gold",
+      "category": "investeringsguld",
+      "description": "Investeringsguld og relaterede beholdninger.",
+      "law_reference": "ML ss 13, stk. 1, nr. 20",
+      "keywords": ["guld", "investeringsguld"]
+    },
+    {
+      "id": "exempt_public_service",
+      "category": "public service",
+      "description": "Ikke-kommercielle aktiviteter fra public service-medier.",
+      "law_reference": "ML ss 13, stk. 1, nr. 22",
+      "keywords": ["public service", "medier", "DR"]
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "deadline_halfyear_h2_2025",
+      "period_type": "halvaar",
+      "period": "2. halvaar 2025",
+      "deadline": "2026-03-02",
+      "description": "Halvaarlig momsindberetning for 2. halvaar 2025. Betingelse: Momspligtig omsaetning under 5 mio. kr. aarligt og rettidig betaling.",
+      "keywords": ["halvaar", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_halfyear_h1_2026",
+      "period_type": "halvaar",
+      "period": "1. halvaar 2026",
+      "deadline": "2026-09-01",
+      "description": "Halvaarlig momsindberetning for 1. halvaar 2026.",
+      "keywords": ["halvaar", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_halfyear_h2_2026",
+      "period_type": "halvaar",
+      "period": "2. halvaar 2026",
+      "deadline": "2027-03-01",
+      "description": "Halvaarlig momsindberetning for 2. halvaar 2026.",
+      "keywords": ["halvaar", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_quarterly_q4_2025",
+      "period_type": "kvartal",
+      "period": "Q4 2025",
+      "deadline": "2026-03-02",
+      "description": "Kvartalsvis momsindberetning for 4. kvartal 2025. Betingelse: Omsaetning mellem 5-50 mio. kr. aarligt eller nystartede virksomheder.",
+      "keywords": ["kvartal", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_quarterly_q1_2026",
+      "period_type": "kvartal",
+      "period": "Q1 2026",
+      "deadline": "2026-06-01",
+      "description": "Kvartalsvis momsindberetning for 1. kvartal 2026.",
+      "keywords": ["kvartal", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_quarterly_q2_2026",
+      "period_type": "kvartal",
+      "period": "Q2 2026",
+      "deadline": "2026-09-01",
+      "description": "Kvartalsvis momsindberetning for 2. kvartal 2026.",
+      "keywords": ["kvartal", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_quarterly_q3_2026",
+      "period_type": "kvartal",
+      "period": "Q3 2026",
+      "deadline": "2026-12-01",
+      "description": "Kvartalsvis momsindberetning for 3. kvartal 2026.",
+      "keywords": ["kvartal", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_quarterly_q4_2026",
+      "period_type": "kvartal",
+      "period": "Q4 2026",
+      "deadline": "2027-03-01",
+      "description": "Kvartalsvis momsindberetning for 4. kvartal 2026.",
+      "keywords": ["kvartal", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_jan_2026",
+      "period_type": "maaned",
+      "period": "Januar 2026",
+      "deadline": "2026-02-25",
+      "description": "Maanedlig momsindberetning for januar 2026. Betingelse: Omsaetning over 50 mio. kr. aarligt.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_feb_2026",
+      "period_type": "maaned",
+      "period": "Februar 2026",
+      "deadline": "2026-03-25",
+      "description": "Maanedlig momsindberetning for februar 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_mar_2026",
+      "period_type": "maaned",
+      "period": "Marts 2026",
+      "deadline": "2026-04-27",
+      "description": "Maanedlig momsindberetning for marts 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_apr_2026",
+      "period_type": "maaned",
+      "period": "April 2026",
+      "deadline": "2026-05-26",
+      "description": "Maanedlig momsindberetning for april 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_may_2026",
+      "period_type": "maaned",
+      "period": "Maj 2026",
+      "deadline": "2026-06-25",
+      "description": "Maanedlig momsindberetning for maj 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_jun_2026",
+      "period_type": "maaned",
+      "period": "Juni 2026",
+      "deadline": "2026-08-18",
+      "description": "Maanedlig momsindberetning for juni 2026. NB: Saerlig frist pga. sommerferie.",
+      "keywords": ["maaned", "frist", "indberetning", "juni"]
+    },
+    {
+      "id": "deadline_monthly_jul_2026",
+      "period_type": "maaned",
+      "period": "Juli 2026",
+      "deadline": "2026-08-25",
+      "description": "Maanedlig momsindberetning for juli 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_aug_2026",
+      "period_type": "maaned",
+      "period": "August 2026",
+      "deadline": "2026-09-25",
+      "description": "Maanedlig momsindberetning for august 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_sep_2026",
+      "period_type": "maaned",
+      "period": "September 2026",
+      "deadline": "2026-10-26",
+      "description": "Maanedlig momsindberetning for september 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_oct_2026",
+      "period_type": "maaned",
+      "period": "Oktober 2026",
+      "deadline": "2026-11-25",
+      "description": "Maanedlig momsindberetning for oktober 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_nov_2026",
+      "period_type": "maaned",
+      "period": "November 2026",
+      "deadline": "2026-12-28",
+      "description": "Maanedlig momsindberetning for november 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_monthly_dec_2026",
+      "period_type": "maaned",
+      "period": "December 2026",
+      "deadline": "2027-01-25",
+      "description": "Maanedlig momsindberetning for december 2026.",
+      "keywords": ["maaned", "frist", "indberetning"]
+    },
+    {
+      "id": "deadline_eu_sales_list",
+      "period_type": "maanedlig",
+      "period": "Loebende",
+      "deadline": "25. i den efterfoelgende maaned",
+      "description": "EU-salgslisten (listesystemet): Virksomheder der saelger varer og ydelser til andre EU-lande uden dansk moms skal indsende lister senest den 25. i den efterfoelgende maaned.",
+      "keywords": ["EU-salgsliste", "listesystem", "EU-salg", "25. i maaneden"]
+    },
+    {
+      "id": "deadline_vat_refund_abroad",
+      "period_type": "aarlig",
+      "period": "Momsrefusion udlandet",
+      "deadline": "30. september i aaret efter",
+      "description": "Frist for ansoegning om momsrefusion for moms betalt i andre EU-lande.",
+      "keywords": ["momsrefusion", "udlandet", "EU", "30. september", "tilbagesoegning"]
+    },
+    {
+      "id": "deadline_oss_q1",
+      "period_type": "kvartal",
+      "period": "OSS Q1",
+      "deadline": "30. april",
+      "description": "One Stop Shop (OSS) kvartalsvis angivelse for Q1 (januar-marts).",
+      "keywords": ["OSS", "One Stop Shop", "fjernsalg"]
+    },
+    {
+      "id": "deadline_oss_q2",
+      "period_type": "kvartal",
+      "period": "OSS Q2",
+      "deadline": "31. juli",
+      "description": "One Stop Shop (OSS) kvartalsvis angivelse for Q2 (april-juni).",
+      "keywords": ["OSS", "One Stop Shop", "fjernsalg"]
+    },
+    {
+      "id": "deadline_oss_q3",
+      "period_type": "kvartal",
+      "period": "OSS Q3",
+      "deadline": "31. oktober",
+      "description": "One Stop Shop (OSS) kvartalsvis angivelse for Q3 (juli-september).",
+      "keywords": ["OSS", "One Stop Shop", "fjernsalg"]
+    },
+    {
+      "id": "deadline_oss_q4",
+      "period_type": "kvartal",
+      "period": "OSS Q4",
+      "deadline": "31. januar (naeste aar)",
+      "description": "One Stop Shop (OSS) kvartalsvis angivelse for Q4 (oktober-december).",
+      "keywords": ["OSS", "One Stop Shop", "fjernsalg"]
+    },
+    {
+      "id": "deadline_exempt_annual",
+      "period_type": "aarlig",
+      "period": "Momsfrie ydelser",
+      "deadline": "Perioden der indeholder juni (halvaar: 1. sep, kvartal: 1. sep, maaned: 18. aug)",
+      "description": "Aarlig indberetning af fradragsprocent og regnskabsaarslutdato for virksomheder med blandede aktiviteter.",
+      "keywords": ["momsfrie ydelser", "fradragsprocent", "aarlig indberetning"]
+    }
+  ],
+  "invoicing": {
+    "required_fields": [
+      "Udstedelsesdato (fakturadato)",
+      "Fortloebende fakturanummer (entydigt, baseret paa en eller flere serier)",
+      "Saelgers CVR-/SE-nummer (momsregistreringsnummer)",
+      "Saelgers navn og adresse",
+      "Koebers navn og adresse",
+      "Maengde og art af leverede varer, eller ydelsernes omfang og art",
+      "Leveringsdato (hvis den afviger vaesentligt fra fakturadatoen)",
+      "Pris pr. enhed ekskl. moms",
+      "Eventuelle prisnedslag, bonus eller rabatter",
+      "Gaeldende momssats (25 % eller 0 %)",
+      "Momsbeloeb"
+    ],
+    "simplified_threshold": {
+      "amount": 3000,
+      "currency": "DKK",
+      "description": "En forenklet faktura kan udstedes, naar transaktionsbeloebet ikke overstiger 3.000 kr. inkl. moms.",
+      "required_fields": [
+        "Fakturadato",
+        "Saelgers navn, adresse og CVR-nummer",
+        "Beskrivelse af leverancen",
+        "Momsbeloeb eller momsgrundlag"
+      ]
+    },
+    "credit_notes": {
+      "description": "Ved annullering eller aendring af faktura skal der udstedes en kreditnota, der klart og entydigt henviser til den originale faktura. Bruges ogsaa ved returnering af varer eller efterfoelgende prisnedsaettelse. Skal opfylde samme formelle krav som fakturaer.",
+      "keywords": ["kreditnota", "annullering", "returnering", "prisnedsaettelse"]
+    },
+    "electronic_invoicing": {
+      "description": "Fra 1. januar 2026 skal momsregistrerede virksomheder med omsaetning over 300.000 kr. bruge registreret digitalt bogfoeringssystem med e-faktura-understottelse.",
+      "formats": ["OIOUBL", "Peppol BIS Billing 3.0"],
+      "public_sector": "Krav om elektronisk faktura til offentlige myndigheder via EAN-nummer (13-cifret). Formater: OIOXML eller OIOUBL.",
+      "keywords": ["e-faktura", "elektronisk faktura", "OIOUBL", "Peppol", "EAN"]
+    },
+    "currency_rules": "Fakturering i euro eller anden udenlandsk valuta er tilladt. Ved anden valuta end euro skal momsbeloebet fremgaa i danske kroner eller euro.",
+    "backdating_forbidden": "Det er forbudt at tilbagedatere fakturaer til leveringsdatoen. Fakturadatoen bestemmer, hvornaar momsen forfalder for saelger, og hvornaar koeber kan fradrage koebsmomsen.",
+    "eu_trade_requirements": "Koebers momsnummer skal fremgaa. Ved ren varehandel: '0% moms', 'zero-rated', 'free of VAT' eller lignende. Ved salg af ydelser: 'omvendt betalingspligt' eller 'reverse charge'.",
+    "keywords": ["faktura", "fakturakrav", "kreditnota", "e-faktura", "bilag"]
+  },
+  "international": {
+    "eu_trade": {
+      "b2b_sales": {
+        "description": "Salg af varer til momsregistrerede virksomheder i andre EU-lande er momsfrit i Danmark (0 %). Koebers momsnummer (VAT-nummer) skal valideres via VIES-systemet. Salget indberettes paa EU-salgslisten.",
+        "conditions": [
+          "Koeber opgiver gyldigt momsnummer i et andet EU-land",
+          "Varerne fysisk transporteres ud af Danmark",
+          "Saelger indberetter salget korrekt og rettidigt til EU-salgslisten"
+        ],
+        "documentation": "Mindst to separate beviser for transport (fra 1. jan 2020): fx CMR-dokument, luftfragtbrev, faktura fra transportoeren, forsikringspolice, bankdokumentation.",
+        "invoice_text": "'Free of VAT', 'Zero-rated' eller lignende + begge parters momsnumre.",
+        "law_reference": "ML ss 34, stk. 1",
+        "keywords": ["EU-salg", "B2B", "momsfrit", "VIES", "EU-salgsliste", "varesalg EU"]
+      },
+      "b2b_purchases": {
+        "description": "Koeb af varer fra EU-lande: Dansk virksomhed beregner dansk moms af varen selv (erhvervelsesmoms). Virkningen er neutral ved fuld fradragsret.",
+        "procedure": "Oplys momsnummer til saelger. Saelger udsteder faktura ekskl. moms. Dansk koeber beregner 25 % dansk moms. Bogfoeres som skyldig moms paa saerskilt konto.",
+        "law_reference": "ML ss 11",
+        "keywords": ["erhvervelsesmoms", "varekob EU", "EU-kob"]
+      },
+      "b2b_services_sold": {
+        "description": "Hovedregel: Ingen dansk moms. Leveringsstedet er i koebers land. Omvendt betalingspligt (reverse charge). Faktura skal angive 'reverse charge'. Undtagelser: Ydelser vedroerende fast ejendom i DK, personbefordring i DK, kultur/underholdning i DK, restaurant/catering i DK, korttidsudlejning af koeretoej i DK.",
+        "law_reference": "ML ss 16, stk. 1",
+        "keywords": ["ydelsessalg", "reverse charge", "B2B", "ydelser udlandet"]
+      },
+      "b2b_services_purchased": {
+        "description": "Koeb af ydelser fra EU: Omvendt betalingspligt. Dansk virksomhed beregner 25 % dansk moms selv. Neutral virkning ved fuld fradragsret.",
+        "law_reference": "ML ss 46, stk. 1, nr. 3",
+        "keywords": ["ydelseskob", "omvendt betalingspligt", "reverse charge", "EU-kob ydelser"]
+      },
+      "triangulation": {
+        "description": "Trekantshandel opstaaar naar en leverandoer i et EU-land saelger til en koeber i et andet EU-land, og varerne sendes direkte til et tredje EU-land. Dansk rolle som mellemhandler: Ingen momsangivelse (varer krydser ikke DK-graense), indberettes som 'Trekantshandel' i EU-salgssystemet.",
+        "keywords": ["trekantshandel", "tre-partstransaktion", "triangulation"]
+      }
+    },
+    "reverse_charge": {
+      "description": "Reverse charge (omvendt betalingspligt) er en mekanisme, hvor ansvaret for at afregne moms flyttes fra saelger til koeber. Koeber afregner moms i sit eget land efter lokal sats og kan normalt fratraekke momsen igen.",
+      "applies_to": [
+        "B2B tjenesteydelser paa tvaers af graenser",
+        "B2B varesalg paa tvaers af graenser",
+        "Import af tjenesteydelser fra tredjelande"
+      ],
+      "documentation": [
+        "Koebers gyldige EU-momsnummer verificeret via VIES",
+        "Faktura angiver at reverse charge gaelder",
+        "Korrekt indberetning i momsangivelsen"
+      ],
+      "law_reference": "ML ss 46, stk. 1",
+      "keywords": ["reverse charge", "omvendt betalingspligt", "koeber betaler moms"]
+    },
+    "oss": {
+      "description": "One Stop Shop (OSS) giver virksomheder mulighed for at administrere momsforpligtelser ved graenseoverskridende salg i EU gennem en registrering, en angivelse og en betaling. Erstattede MOSS-ordningen 1. juli 2021.",
+      "schemes": [
+        {
+          "name": "EU-ordningen (Union-ordningen)",
+          "who": "Virksomheder etableret i EU",
+          "covers": "Graenseoverskridende salg af varer og tjenesteydelser til forbrugere",
+          "reporting": "Kvartalsvis via OSS-portal",
+          "binding": "Indevaerende kalenderaar plus to efterfoelgende kalenderaar"
+        },
+        {
+          "name": "Ikke-EU-ordningen (Non-Union-ordningen)",
+          "who": "Virksomheder uden EU-etablering",
+          "covers": "Tjenesteydelser til EU-forbrugere (digitale tjenester, konsultation mv.)",
+          "reporting": "Kvartalsvis",
+          "vat_number_format": "EUxxxyyyyyz"
+        }
+      ],
+      "registration": "Elektronisk registrering via OSS-portal. Ikrafttraeden: Foerste dag i kvartalet efter anmodningen.",
+      "record_keeping": "Registreringer skal gemmes i 10 aar fra udgangen af transaktionsaaret.",
+      "deregistration": "Underret identifikationsmedlemsstaten mindst 15 dage foer kvartalets udgang.",
+      "exclusion_quarantine": "2 aar efter udelukkelse for vedvarende regelovertraedelser.",
+      "keywords": ["OSS", "One Stop Shop", "fjernsalg", "EU-salg til private", "B2C"]
+    },
+    "ioss": {
+      "description": "Import One Stop Shop (IOSS) bruges ved import af varer fra tredjelande med vaerdi under 150 EUR pr. forsendelse. Momsen opkraeves ved salget, ikke ved importen.",
+      "value_limit": "150 EUR pr. forsendelse",
+      "reporting": "Maanedlig momsindberetning",
+      "vat_number_format": "IMxxxyyyyyyz",
+      "intermediary_format": "INxxxyyyyyyz",
+      "marketplace_rule": "Online markedspladser anses for 'deemed supplier' ved import af varer under 150 EUR. Platformen er ansvarlig for momsopkraevning.",
+      "note": "Momsfritagelsen ved import af smaaforsendelser op til 22 EUR er afskaffet siden 1. juli 2021.",
+      "keywords": ["IOSS", "import", "lavvaerdi", "150 EUR", "tredjelande"]
+    },
+    "export": {
+      "description": "Eksport af varer til lande uden for EU er momsfrit (0 %). Der skal foreligge dokumentation for at varerne fysisk har forladt EU. Varen skal angives til udfoersel via enhedsdokumentet.",
+      "documentation": ["Eksporterklaering med udfoerselscertifikat i DMS Eksport", "Skriftlige koebeordrer", "Korrespondance med koebere"],
+      "registration": "Eksportoerer skal registreres paa indberet.virk.dk og modtage et EORI-nummer.",
+      "law_reference": "ML ss 34, stk. 1, nr. 5",
+      "keywords": ["eksport", "tredjeland", "momsfrit", "EORI", "DMS Eksport", "udfoersel"]
+    },
+    "import": {
+      "description": "Ved import af varer fra tredjelande opkraeves importmoms (25 % af vaerdi + told + eventuelle afgifter). Importmomsen kan fradrages som koebsmoms ved brug til momspligtige aktiviteter. Told kan IKKE fradrages.",
+      "vat_calculation": "25 % af (vaerdi + told + eventuelle afgifter)",
+      "law_reference": "ML ss 12",
+      "keywords": ["import", "importmoms", "told", "tredjeland", "toldbehandling"]
+    },
+    "b2c_eu": {
+      "description": "Ved salg af varer til private forbrugere i andre EU-lande gaelder fjernsalgsreglerne. Faelles EU-taerskel: 10.000 EUR (ekskl. moms) for samlet fjernsalg til alle EU-lande. Overstiger fjernsalget taersklen, skal moms afregnes i forbrugerens land.",
+      "threshold": "10000 EUR",
+      "law_reference": "ML ss 34 c",
+      "keywords": ["fjernsalg", "B2C", "private", "10000 EUR", "forbruger"]
+    },
+    "b2c_non_eu": {
+      "services": "Danske virksomheder skal opkraeve 25 % dansk moms ved salg af ydelser til private uden for EU (leverandoerens etableringssted). Undtagelser: Ydelser vedroerende fast ejendom, personbefordring, kultur/underholdning, restaurant/catering, korttidsudlejning, elektroniske ydelser — beskattes i forbrugslandet.",
+      "goods": "Eksport af varer ud af EU til private er momsfrit.",
+      "keywords": ["B2C", "private", "uden for EU", "eksport", "ydelser"]
+    },
+    "digital_services": {
+      "description": "Elektronisk leverede ydelser (software, apps, spil, streaming, e-boeger, cloud-tjenester, online reklame) til forbrugere (B2C) beskattes i kundens land. B2B: Reverse charge i koebers land.",
+      "threshold": "10.000 EUR samlet for fjernsalg + TBE-ydelser",
+      "customer_location_evidence": ["Faktureringsadresse", "IP-adresse", "Bankoplysninger", "Landekode paa SIM-kort", "Beliggenhed for den faste linje"],
+      "keywords": ["digitale ydelser", "e-ydelser", "TBE", "elektroniske tjenester", "streaming", "software"]
+    },
+    "eu_sales_list": {
+      "description": "Virksomheder der saelger varer og ydelser til andre EU-lande uden dansk moms skal indsende lister til Skattestyrelsen. Angiv samlede leverancer til hver enkelt kunde i perioden.",
+      "frequency": "Maanedsvis",
+      "deadline": "25. i den efterfoelgende maaned",
+      "method": "Elektronisk via TastSelv Erhverv",
+      "keywords": ["EU-salgsliste", "listesystem", "EU-salg uden moms"]
+    },
+    "intrastat": {
+      "description": "Statistisk indberetning af varebevaegelser mellem EU-lande.",
+      "import_threshold_2025": "41 mio. kr.",
+      "export_threshold_2025": "11,3 mio. kr.",
+      "reporting_deadline": "10. hverdag i den efterfoelgende maaned",
+      "brexit_note": "Nordirland indberettes med landekode XI/xi. England, Skotland og Wales skal IKKE indberettes til Intrastat.",
+      "keywords": ["Intrastat", "statistik", "varebevaeqelser", "EU-handel"]
+    },
+    "vies": {
+      "description": "VIES (VAT Information Exchange System) er et EU-sogevaerktoj til kontrol af momsnumre. Giver 'gyldigt' eller 'ugyldigt' svar.",
+      "url": "http://ec.europa.eu/taxation_customs/vies/?locale=da",
+      "danish_tool": "NTSE-systemet for danske momsnumre",
+      "keywords": ["VIES", "momsnummer", "VAT-nummer", "validering", "kontrol"]
+    },
+    "vat_refund_abroad": {
+      "description": "Mulighed for godtgoeerelse af betalt udenlandsk moms (fx forretningsrejser, messer). Afhhaenger af det paagaeldende lands fradragsregler.",
+      "deadline": "30. september i aaret efter udgiften er afholdt",
+      "procedure": "Elektronisk ansoegning via Skattestyrelsens hjemmeside. Indsend for 3-12 maaneders perioder.",
+      "file_requirements": "Maks 5 MB pr. fil, formater: PDF, JPG, TIFF. Filnavn maa ikke indeholde ae, oe, aa.",
+      "keywords": ["momsrefusion", "udlandet", "tilbagesoegning", "refusion EU"]
+    },
+    "place_of_supply": {
+      "goods_no_dispatch": "Leveringsstedet er hvor varer befinder sig paa leveringstidspunktet (artikel 31)",
+      "goods_with_dispatch": "Leveringsstedet er hvor forsendelsen til kunden paabegyndes (artikel 32)",
+      "goods_installation": "Hvor installation/samling foretages",
+      "services_b2b": "Afgiftes hvor kundens etableringssted ligger",
+      "services_b2c": "Afgiftes hvor leverandoerens etableringssted ligger",
+      "exceptions_b2c": {
+        "ejendom": "Hvor ejendommen ligger",
+        "personbefordring": "Proportionelt efter rejsestraekning",
+        "kultur_sport": "Hvor arrangementet finder sted",
+        "tbe_ydelser": "Kundens beliggenhed",
+        "restaurant": "Hvor servicen fysisk leveres",
+        "korttidsudlejning_transport": "Hvor transportmidlet stilles til raadighed"
+      },
+      "law_reference": "Momsdirektivets artikel 31-59",
+      "keywords": ["leveringssted", "place of supply", "leveringsstedsregler"]
+    },
+    "special_territories": {
+      "description": "Visse EU-territorier er undtaget fra EUs faelles momsregler og behandles som import/eksport mht. moms.",
+      "territories": ["Aalandsoerne (Finland)", "De Kanariske Oeer (Spanien)", "Ceuta og Melilla (Spanien)", "Mont Athos (Graekenland)", "Campione d'Italia (Italien)", "Helgoland (Tyskland)", "Busingen (Tyskland)", "Franske oversoiske territorier"],
+      "keywords": ["saerlige territorier", "EU-undtagelser", "momsomraade"]
+    }
+  },
+  "special_schemes": [
+    {
+      "id": "scheme_used_goods",
+      "name": "Brugtmomsordningen",
+      "description": "Undgaa dobbelt momsopkraevning ved videresalg af brugte varer. Momsgrundlaget er 80 % af fortjenesten (salgspris minus koebspris). Momsen beregnes som 25 % af 80 % af fortjenesten (effektivt 20 % af avancen).",
+      "who": "Virksomheder der koeber brugte varer til videresalg fra private, ikke-momsregistrerede saelgere, andre brugthandlere.",
+      "calculation": "Avance x 80 % x 25 % = moms. Forenklet: Avance x 20 %.",
+      "example": "Koeb for 5.000 kr., salg for 8.000 kr. Fortjeneste: 3.000 kr. Moms: 25 % x 80 % x 3.000 = 600 kr.",
+      "methods": ["Individuel metode (pr. vare)", "Samleberegning / bulk-metode (ved kob af flere varer samlet)"],
+      "repair_deduction": "Moms paa reparationsomkostninger kan fradrages som koebsmoms, undtagen for brugte biler og motorcykler.",
+      "voluntary": true,
+      "law_reference": "ML ss 70-71",
+      "keywords": ["brugtmoms", "brugte varer", "avancemoms", "videresalg", "antikviteter", "secondhand"]
+    },
+    {
+      "id": "scheme_used_cars",
+      "name": "Brugte biler",
+      "description": "Saerlige brugtmomsregler for brugte biler. Danske koeb: Brugt saa snart bilen tages i brug. EU-koeb: Bilen skal vaere aeldre end 6 maaneder fra foersteregistrering og have koert mindst 6.000 km.",
+      "law_reference": "ML ss 70-71",
+      "keywords": ["brugte biler", "brugtmoms", "bil", "koeretoej", "foersteregistrering"]
+    },
+    {
+      "id": "scheme_travel_agency",
+      "name": "Rejsebureauordningen",
+      "description": "Undgaa at rejsebureauer skal momsregistreres i alle EU-lande. Momsgrundlaget er rejsebureauets fortjenstmargen. Leveringsstedet er hvor rejsebureauet har sin virksomhed. Baseret paa EUs momssystemdirektiv, artikel 306-310. Gaeldende i Danmark siden 1. januar 2011.",
+      "law_reference": "ML ss 67 (momsdirektiv art. 306-310)",
+      "keywords": ["rejsebureau", "rejsebureauordning", "margenmoms", "rejse"]
+    },
+    {
+      "id": "scheme_construction_vat",
+      "name": "Byggemoms (palaegs moms)",
+      "description": "Virksomheder der med egne ansatte udfoerer byggearbejde paa egne bygninger skal afregne byggemoms. Gaelder opfoerelse, ombygning, modernisering, projekteringsarbejde og reparation/vedligeholdelse over 100.000 kr. ekskl. moms aarligt.",
+      "purpose": "Ligestille byggeri udfoert med egne ansatte med byggeri koebt hos tredjepart.",
+      "law_reference": "ML ss 6",
+      "keywords": ["byggemoms", "palaegsmoms", "byggeri", "egne ansatte", "ejendom"]
+    },
+    {
+      "id": "scheme_voluntary_real_estate",
+      "name": "Frivillig momsregistrering for udlejning af fast ejendom",
+      "description": "Udlejning af fast ejendom kan frivilligt momsregistreres for erhvervslejemaal. Giver ret til fuldt momsfradrag paa udgifter til renovering, vedligeholdelse og drift. Krav: Kun erhvervsudlejning, registrering i mindst 2 kalenderaar, separat momsregistrering for hver udlejningsenhed.",
+      "procedure": "Ansoegning via formular 31001 paa Virk.dk. Separat registrering for hver udlejningsenhed. Kan IKKE overtages af ny ejer ved salg.",
+      "law_reference": "ML ss 51",
+      "keywords": ["frivillig momsregistrering", "udlejning", "erhvervslejemaal", "fast ejendom"]
+    },
+    {
+      "id": "scheme_canteen_vat",
+      "name": "Kantinemoms",
+      "description": "Naar medarbejdere betaler arbejdsgiveren for maaltider, skal arbejdsgiveren behandle dette som momspligtig ydelse. Tre beregningsmetoder: (1) Faktisk omkostningsmetode, (2) Forenklet ordning 1 (egen kantine), (3) Forenklet ordning 2 (ekstern operator).",
+      "conditions": ["Medarbejderne betaler for maden", "Arbejdsgiver og medarbejdere er interesseforbundne", "Mad saelges under kostpris", "Medarbejdere kan ikke kraeve momsfradrag"],
+      "law_reference": "ML ss 28, stk. 2",
+      "keywords": ["kantinemoms", "kantine", "medarbejdermad", "personalekantine"]
+    },
+    {
+      "id": "scheme_charity_compensation",
+      "name": "Momskompensation for foreninger",
+      "description": "Velgoerende eller almennyttige organisationer godkendt efter Ligningslovens ss 8 A og/eller ss 12, stk. 3 kan aarligt soege om tilbagebetaling af dansk moms. Frist: 1. juli efter kalenderaaret. Seneste aar udbetaltes typisk ca. 30 % af ansoegt beloeb.",
+      "requirements": ["Godkendt efter Ligningslovens ss 8 A og/eller ss 12, stk. 3", "Gyldigt CVR-nummer", "Aktiv NemKonto"],
+      "law_reference": "C.A.4.3.5.8",
+      "keywords": ["momskompensation", "foreninger", "velgoerende", "almennyttig", "tilbagebetaling"]
+    },
+    {
+      "id": "scheme_vouchers",
+      "name": "Gavekort og vouchers",
+      "description": "Gavekort til et enkelt formaal: Moms afregnes ved udstedelse. Gavekort til flere formaal (leveringssted eller momssats ikke kendt): Moms afregnes foerst ved indloesning.",
+      "law_reference": "ML ss 4, stk. 4-5",
+      "keywords": ["gavekort", "voucher", "indloesning", "udstedelse"]
+    }
+  ],
+  "vehicles": {
+    "personal_cars": {
+      "purchase": "Intet momsfradrag (undtaget: bilforhandlere, udlejning, koereskoler)",
+      "leasing_under_6months": "Intet fradrag",
+      "leasing_over_6months": "Delvist fradrag muligt hvis mindst 10 % erhvervsmaessig brug. Leasingyder oplyser fradragsberettiget andel paa fakturaen.",
+      "operating": "Intet fradrag (undtagen OEresundsbroen-passageafgift)",
+      "sale": "Ikke momspligtigt",
+      "parking": "Ingen fradragsret (anses som driftsudgift). Ogsaa benyttes af kunder: skoensmaessig opgoerelse.",
+      "law_reference": "ML ss 41-42",
+      "keywords": ["personbil", "hvide plader", "bil", "leasing"]
+    },
+    "vans_up_to_3tons": {
+      "purchase_business_only": "Fuldt fradrag",
+      "purchase_mixed_use": "Intet fradrag paa anskaffelse. Reguleringsmulighed inden 5 aar (vaerdi over 100.000 kr.).",
+      "operating": "Fuldt momsfradrag for driftsudgifter selvom bilen ogsaa bruges privat. Fradragsret betinget af momspligtigt salg over 50.000 kr. aarligt.",
+      "leasing_business_only": "Fuldt fradrag",
+      "leasing_mixed_use": "1/3 fradrag af momsen",
+      "sale": "Momspligtigt hvis fradragsret ved anskaffelse. Momsfrit hvis ingen fradragsret.",
+      "day_passes": "Dagsbeviser til privat koersel op til 20 dage om aaret. Pris: 225 kr. (heraf 40 kr. moms) ved fuldt fradrag, 185 kr. uden. Koebes via TastSelv.",
+      "law_reference": "ML ss 37, 38, 41, 42",
+      "keywords": ["varebil", "gule plader", "varevogn", "3 tons", "gulpladebil"]
+    },
+    "trucks_over_3tons": {
+      "purchase_business_only": "Fuldt fradrag",
+      "purchase_mixed_use": "Forholdsmassigt fradrag ved blandet brug. Skoensmaessigt fradrag ved privat brug.",
+      "operating": "Fuldt, forholdsmassigt eller skoensmaessigt fradrag afhaengigt af anvendelse.",
+      "law_reference": "ML ss 37, 38",
+      "keywords": ["lastbil", "varebil over 3 tons", "tung koeretoej"]
+    },
+    "specially_equipped": {
+      "description": "Specialindrettede biler op til 4 tons med mere lempelige regler: Koersel hjem-arbejde tilladt, svinkeaerinder op til 1.000 km/aar.",
+      "keywords": ["specialindrettet", "svinkeaerinder", "1000 km"]
+    },
+    "on_call": {
+      "description": "Koersel hjem-arbejde anses IKKE som privat koersel ved vagtordning. Kraever: Forretningsmassigt behov, relevant vaerktoj, forbud mod privat brug, vagtplan og rapporter.",
+      "consequences_violation": "Tab af momsfradrag, privatbenyttelsesafgift, beskatning af fri bil, eventuel boede.",
+      "keywords": ["vagtordning", "vagtkald", "vagtplan"]
+    },
+    "charging_stations": {
+      "personal_cars": "Intet fradrag (uanset brug)",
+      "vans_up_to_3tons_business": "Fuldt fradrag",
+      "vans_over_3tons_business": "Fuldt fradrag",
+      "vans_over_3tons_mixed": "Skoensmaessigt fradrag",
+      "for_sale_of_electricity": "Fuldt fradrag uanset koeretoejets art og anvendelse",
+      "keywords": ["ladestander", "elbil", "opladning"]
+    },
+    "business_vs_private": {
+      "general_rule": "Al koersel mellem hjem og arbejde er privat koersel.",
+      "business_driving_includes": [
+        "Koersel til spisning/afhentning af mad i arbejdstiden",
+        "Undtagelsesvis koersel hjem-arbejde op til 25 gange aarligt naar bilen naeste dag skal bruges erhvervsmaessigt",
+        "Afhentning/afsaetning af kolleger naar arbejdsgiveren beordrer dette",
+        "Koersel mellem virksomhedens faste adresse og skiftende arbejdssteder"
+      ],
+      "keywords": ["erhvervsmaessig koersel", "privat koersel", "hjem-arbejde"]
+    }
+  },
+  "penalties": {
+    "late_reporting": {
+      "fee": 1400,
+      "currency": "DKK",
+      "description": "Afgift paa 1.400 kr. per periode for sen indberetning. Derudover foreloebig fastsaettelse af salgsmoms og tilloebende renter.",
+      "keywords": ["sen indberetning", "afgift", "1400 kr", "straf"]
+    },
+    "late_payment": {
+      "description": "Renter paaloeber fra den ordinaere betalingsfrist for den paagaeldende indberetningsperiode (nye regler vedtaget 2022).",
+      "keywords": ["renter", "sen betaling", "forsinkelse"]
+    },
+    "incorrect_reporting": {
+      "description": "Fejl i momsangivelsen skal korrigeres via en supplerende angivelse med tilbagevirkende kraft. Ved korrektion tilskriver SKAT renter paa differencen.",
+      "statute_of_limitations": "3 aar (generel forlaeldelsesfrist). Op til 10 aar ved grov uagtsomhed eller forsaet.",
+      "keywords": ["korrektion", "fejl", "forlaeldelse", "supplerende angivelse"]
+    },
+    "fraud": {
+      "simple_violation": "Boede",
+      "negligence": "Op til 1 aar og 6 maaneders faengsel",
+      "serious_fraud": "Op til 8 aars faengsel (straffelovens ss 289). Kendetegnet ved manglende momsindberetninger paa over 500.000 kr. (netto), bevidst undladelse, forsaetlig adfaerd.",
+      "law_reference": "Straffelovens ss 289, ML ss 81",
+      "keywords": ["momssvig", "svig", "straf", "faengsel", "boede"]
+    },
+    "carousel_fraud": {
+      "description": "Momskarruselsvindel involverer graenseoverskridende handel hvor det importerende led ikke indberetter/afregner moms. Konsekvenser: Naegtelse af momsfradragsret, omdoemmetab, juridiske sanktioner selv ved uvidende deltagelse.",
+      "warning_signs_buying": ["Nye/nyligt startede leverandoerer", "Priser vaesentligt under markedsniveau", "Usaedvanlige betalingsvilkaar", "Bankkonti i andre lande"],
+      "warning_signs_selling": ["Nye/nyopstartede kunder", "Store ordrevolumener", "Levering til andre lande end kundens base", "Betaling fra tredjeparter"],
+      "contact": "SK1@sktst.dk",
+      "keywords": ["momskarrusel", "karruselsvindel", "svindel", "advarselstegn"]
+    }
+  },
+  "corrections": {
+    "same_day_before_16": "Indsend ny indberetning. Den seneste indberetning gaelder. Den nye erstatter automatisk den forrige.",
+    "after_16_same_day": "Kraever formel aendring. Renter beregnes tilbage til den ordinaere frist.",
+    "after_3_years": {
+      "allowed": [
+        "Indberetningen fulgte en praksis der senere blev underkendt",
+        "AEndringer skyldes direkte en anden momsaendring for virksomheden",
+        "Saerlige omstaendigheder (ekstern svindel, myndighedernes grove fejl)"
+      ],
+      "not_allowed": "Simple forglemmelser, glemte fradrag, misforstaaede regler, bogfoeringsfejl",
+      "procedure": "Anmod via TastSelv Erhverv med detaljeret begrundelse og dokumentation."
+    },
+    "absolute_limitation": "10 aar",
+    "keywords": ["korrektion", "rettelse", "forlaeldelse", "3 aar", "10 aar"]
+  },
+  "accounting": {
+    "retention_period": "5 aar for regnskabsmateriale. 10 aar ved koeb eller renovering af fast ejendom. 10 aar for OSS-registreringer.",
+    "periodization": "Moms bogfoeres i korrekt periode baseret paa fakturadato, ikke betalingsdato. Undtagelse: Forudbetalinger uden faktura udloeser moms paa betalingsdatoen. Fra 2025: Virksomheder kan vaelge at henfoere koebsmoms til perioden hvor fakturaen bogfoeres.",
+    "digital_bookkeeping_2026": "Fra 1. januar 2026 skal virksomheder med omsaetning over 300.000 kr. bruge registreret digitalt bogfoeringssystem med support for e-fakturering (OIOUBL/Peppol BIS), SAF-T dataeksport, bankdata-import.",
+    "digital_cash_registers": "Detail- og servicevirksomheder med omsaetning under 10 mio. kr. skal benytte digitale kasseapparater (fra 1. jan 2024). Omfatter pizzeriaer, grillbarer, cafeer, koebmaend, doegnkiosker mv.",
+    "partial_deduction_calculation": "Fradragsprocent = (Momspligtig omsaetning / Samlet omsaetning) x 100. Rundes altid op til naermeste hele tal. Endelig opgoerelse angives i perioden der omfatter 6. maaned efter regnskabsaarets afslutning.",
+    "payment": {
+      "methods": ["Leverandoerservice (automatisk)", "Netbank", "Betalingsservice", "MobilePay"],
+      "refund": "Negativt tilsvar udbetales normalt til NemKonto inden for 21 dage.",
+      "installment": "Afdragsordning mulig ved visse betingelser."
+    },
+    "null_reporting": "Selv perioder uden omsaetning SKAL indberettes (nulindberetning).",
+    "keywords": ["bogfoering", "regnskab", "opbevaring", "periodisering", "TastSelv", "digital bogfoering"]
+  },
+  "investment_goods": {
+    "definition": "Maskiner, inventar og driftsmidler med anskaffelsespris mindst 100.000 kr. pr. enhed ekskl. moms. Fast ejendom inkl. til-/ombygning. Reparation/vedligeholdelse af fast ejendom over 100.000 kr. pr. ejendom pr. aar. Software og rettigheder over 100.000 kr.",
+    "adjustment_periods": {
+      "machinery_equipment": "5 aar",
+      "building_repair": "5 aar",
+      "real_estate": "10 aar"
+    },
+    "triggers": [
+      "Overgaar til mindre fradragsberettiget anvendelse",
+      "Overgaar til mere fradragsberettiget anvendelse",
+      "Saelges uden moms",
+      "Overdrages ved virksomhedsoverdragelse"
+    ],
+    "minimum_change": "10 procentpoint aendring i fradragsprocenten foer tilbageregulering kraeves (ved faldende fradrag). Ingen minimumsaendring kraeves ved stigende fradrag.",
+    "withdrawal_vat": "Overgang fra momspligtig til fuld momsfritaget anvendelse inden for reguleringsperioden udloeser udtagningsmoms baseret paa markedspris (regler fra 1. juli 2021).",
+    "law_reference": "ML ss 43-44",
+    "keywords": ["investeringsgode", "regulering", "100000 kr", "reguleringsperiode", "tilbageregulering"]
+  },
+  "withdrawal_vat": {
+    "description": "Udtagningsmoms skal betales naar varer/driftsmidler/ydelser udtages til privat brug, repraesentationsgaver, medarbejderkompensation i naturalydelser, eller brug til momsfrie erhvervsaktiviteter.",
+    "valuation": "Vaerdiansaettes til den pris virksomheden i dag ville betale for identiske varer af samme alder og stand. Nyligt koebte/ubrugte varer: Oprindelig koebspris.",
+    "calculation": "Moms = 25 % x (vaerdi ekskl. moms). Alternativ: Vaerdi inkl. moms x 0,20.",
+    "reporting": "Registreres under salgsmoms og indberettes i samme periode som overgang til privat brug.",
+    "law_reference": "ML ss 5, stk. 1-4",
+    "keywords": ["udtagningsmoms", "privat brug", "privatudtagning", "naturalydelse"]
+  },
+  "bad_debts": {
+    "description": "Virksomheder kan fradrage tidligere betalt salgsmoms ved konstaterede tab paa debitorer. Kun den oprindelige leverandoer kan foretage fradrag.",
+    "qualifying_losses": [
+      "Daekningsloest krav anmeldt i konkurs- og doedsboer",
+      "Nedskreven andel ved tvangsakkord",
+      "Nedskreven andel ved frivillig akkord (mindst halvdelen af kreditorer har tiltraadt)",
+      "Forgaeves fogedforretning eller insolvenserklaaering",
+      "Daekningsloest krav ved tvangsauktion",
+      "Udaekkede fordringer baseret paa konkret vurdering af debitors betalingsevne",
+      "Tab paa forsvundne debitorer (dokumenterbar fraflytning)"
+    ],
+    "expected_losses": "Forventede tab kan som udgangspunkt IKKE fradrages. Undtagelse: Foreloebigt fradrag i konkurs-/doedsboer ved kurators skriftlige oplysning om forventet dividende.",
+    "sale_of_receivables": "Salg af fordringer til underkurs giver IKKE ret til momsfradrag for hverken saelger eller koeber.",
+    "law_reference": "ML ss 27, stk. 6",
+    "keywords": ["tab paa debitorer", "debitor", "konkurs", "akkord", "fordring", "tabsfradrag"]
+  },
+  "outslay_rules": {
+    "description": "Udlaegsregler: Beloeb kan holdes uden for momsgrundlaget ved opfyldelse af betingelser.",
+    "conditions": [
+      "Udgiften afholdt i KOEBERS navn",
+      "Udgiften afholdt for KOEBERS regning",
+      "Fakturaen registreret paa udlaegskonto (balancekonto)",
+      "Originalbilaget udleveret til koeber"
+    ],
+    "rebilling": {
+      "vat_item": "Moms paa salget + fuldt momsfradrag",
+      "non_vat_item": "Moms paa salget hvis udlaegsreglerne ikke er opfyldt, intet momsfradrag"
+    },
+    "note": "Udgifter saelger er forpligtet til at afholde (fx kilometergodtgoerelse, time-/dagpenge) kan IKKE holdes uden for momsberegningen som udlaeg.",
+    "law_reference": "ML ss 27, stk. 3, nr. 3",
+    "keywords": ["udlaeg", "viderefakturering", "udlaegskonto", "originalbilaget"]
+  },
+  "room_rental": {
+    "own_home_short_term": "Momspligtigt (under 1 maaned, behandles som hoteldrift)",
+    "own_home_long_term": "Momsfrit (over 1 maaned, kvalificerer som fast bolig)",
+    "independent_property": "Momsfrit uanset varighed",
+    "holiday_homes": "Alle udlejninger momsfrie uanset lejelaengde",
+    "platform_note": "Udenlandske platforme (Airbnb mv.) aendrer ikke de grundlaeggende regler.",
+    "registration_threshold": "50.000 kr. i aarlig lejeindtaegt (foer moms) for pligtig registrering.",
+    "keywords": ["vaerelseudlejning", "Airbnb", "sommerhus", "boligudlejning", "korttidsudlejning"]
+  },
+  "business_closure": {
+    "final_reporting": "Moms indberettes for den sidste periode, selv uden transaktioner (nulindberetning).",
+    "asset_sale": "Pafoer moms og registrer som salgsmoms paa den sidste indberetning.",
+    "private_withdrawal": "Beregn moms baseret paa markedsvaerdi.",
+    "business_transfer": "Ingen moms ved overdragelse af hel/selvstaendig del af virksomhed. Salgspris indberettes til virk.dk med koebers navn og CVR-nummer.",
+    "access_after_closure": "Enkeltmandsvirksomheder: Brug personligt MitID. Selskaber: Bestil TastSelv-kode paa forhaand.",
+    "keywords": ["virksomhedslukning", "ophoeor", "overdragelse", "afregistrering"]
+  },
+  "changes_2026": [
+    {
+      "id": "change_fitness_vat",
+      "title": "Moms paa fitness, dans og fritidsaktiviteter",
+      "effective_date": "2026-01-01",
+      "description": "Kommercielle udbydere af holdtraening (crossfit, spinning, zumba), personlig traening, yogaundervisning, danse- og sangundervisning, musik-/male-/tegne-/keramikundervisning og koegekurser er nu momspligtige (25 %). Undtagelser: Foreninger, faglig uddannelse, folkehoejosoler/aftenskoler, boern og unge under 30 aar (fritaget). Skattefradrag paa op til 1.750 kr. aarligt for voksne over 30.",
+      "law_reference": "ML ss 13, stk. 1, nr. 3 og 5 (praksisaendring pga. EU-domme)",
+      "keywords": ["fitness", "dans", "yoga", "holdtraening", "moms", "2026", "fritidsaktiviteter", "personlig traening"]
+    },
+    {
+      "id": "change_zero_vat_books",
+      "title": "Nulmoms paa boeger",
+      "effective_date": "2026-07-01",
+      "description": "0 % moms paa fysiske boeger (med ISBN), e-boeger, lydboeger, billed-/tegne-/maleboeger til boern og trykt/haandskreven musik. Virksomheder beholder fuld fradragsret for koebsmoms.",
+      "law_reference": "ML (ny bestemmelse 2026)",
+      "keywords": ["nulmoms", "boeger", "e-boeger", "lydboeger", "0 procent", "ISBN"]
+    },
+    {
+      "id": "change_chocolate_coffee_tax",
+      "title": "Afskaffelse af chokolade- og kaffeafgifter",
+      "effective_date": "Sommer 2026",
+      "description": "Regeringen fjerner de saerlige danske forbrugsafgifter paa chokolade og kaffe. NB: Ikke en momsaendring, men en afgiftsaendring.",
+      "keywords": ["chokoladeafgift", "kaffeafgift", "afgift", "afskaffelse"]
+    },
+    {
+      "id": "change_digital_bookkeeping",
+      "title": "Obligatorisk digitalt bogfoeringssystem",
+      "effective_date": "2026-01-01",
+      "description": "Personligt ejede virksomheder og foreninger med omsaetning over 300.000 kr. skal anvende registreret digitalt bogfoeringssystem med e-fakturering (OIOUBL/Peppol BIS), SAF-T dataeksport og bankdata-import.",
+      "keywords": ["digital bogfoering", "OIOUBL", "Peppol", "SAF-T", "300000 kr"]
+    },
+    {
+      "id": "change_food_vat_2028",
+      "title": "Aftale om lavere foedevaremoms (fra 2028)",
+      "effective_date": "2028 (forventet)",
+      "description": "Bred politisk aftale om 6 mia. kr. aarligt fra 2028 til at saenke moms paa foedevarer. To mulige modeller: (1) Nulmoms paa frugt og groent, (2) Generel nedsaettelse paa alle foedevarer (fx fra 25 % til ca. 20 %). Arbejdsgruppe rapporterer 2. halvaar 2026.",
+      "keywords": ["foedevaremoms", "frugt", "groent", "lavere moms", "2028"]
+    },
+    {
+      "id": "change_periodization_2025",
+      "title": "Periodisering af koebsfakturaers indberetning",
+      "effective_date": "2025-01-01",
+      "description": "Virksomheder kan vaelge at henfoere koebsmomsudgifter til den momsperiode, hvor fakturaen bogfoeres, i stedet for den periode, hvor fakturaen er dateret.",
+      "keywords": ["periodisering", "fakturadato", "bogfoeringsdato", "2025"]
+    },
+    {
+      "id": "change_youth_education_exempt",
+      "title": "Fritagelse af uddannelsestilbud til boern og unge under 30 aar",
+      "effective_date": "Planlagt (Folketingsaaret 2025/2026)",
+      "description": "Regeringen vil fritage uddannelsestilbud til boern og unge under 30 aar fra moms (i forbindelse med de nye momsregler for fitness/dans/musik).",
+      "keywords": ["boern", "unge", "under 30", "uddannelse", "momsfritagelse"]
+    },
+    {
+      "id": "change_packaging_tax",
+      "title": "Afskaffelse af volumenbaserede emballageafgifter",
+      "effective_date": "2026-2027 (planlagt)",
+      "description": "Afskaffelse af volumenbaserede emballageafgifter.",
+      "keywords": ["emballageafgift", "emballage", "afskaffelse"]
+    },
+    {
+      "id": "change_mind_sports",
+      "title": "Tankesport momsfritagelse forlaenget",
+      "effective_date": "Til 2027-01-01",
+      "description": "Alle tankespil forbliver momsfritaget til 1. januar 2027. Bridge er specifikt fritaget som kulturel aktivitet.",
+      "keywords": ["tankesport", "bridge", "fritaget"]
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule_001",
+      "title": "Grundregel for momspligt",
+      "category": "momspligt",
+      "description": "En virksomhed er momspligtig, hvis den driver selvstaendig oekonomisk virksomhed med salg af momspligtige varer og ydelser. Ethvert salg er momspligtigt, medmindre specifikt undtaget.",
+      "details": "Momsangivelsen opgoeres som: Salgsmoms (udgaaende moms) - Koebsmoms (indgaaende moms) = Momstilsvar. Positivt resultat: Virksomheden skylder SKAT. Negativt resultat: Virksomheden faar moms tilbage.",
+      "law_reference": "ML ss 3-4",
+      "keywords": ["momspligt", "salgsmoms", "koebsmoms", "momstilsvar", "afgiftspligtig person"],
+      "source": "skat.dk, pwc.dk"
+    },
+    {
+      "id": "rule_002",
+      "title": "Grundregel for momsfradrag",
+      "category": "fradrag",
+      "description": "En momsregistreret virksomhed kan som udgangspunkt fradrage den koebsmoms, der relaterer sig til momspligtige aktiviteter. Tre betingelser: (1) Registrering af baade koeber og saelger, (2) Erhvervsmaessig brug, (3) Personlige ting udelukket.",
+      "details": "Brugen bestemmer fradragsret, ikke den koebte genstand. Retten til momsfradrag opstaaar, naar udgiften er afholdt (fakturaen er modtaget). Virksomheder kan vaelge at tage fradrag i perioden hvor fakturaen er dateret eller bogfoert, men skal bruge samme metode konsekvent.",
+      "law_reference": "ML ss 37",
+      "keywords": ["momsfradrag", "koebsmoms", "fradragsret", "fradrag"],
+      "source": "skat.dk, pwc.dk"
+    },
+    {
+      "id": "rule_003",
+      "title": "Delvist momsfradrag ved blandede aktiviteter",
+      "category": "fradrag",
+      "description": "Ved blandede momspligtige og momsfrie aktiviteter: Forholdsmassigt fradrag baseret paa omsaetningsfordeling. Ved blandet erhverv/privat: Skoensmaessigt fradrag baseret paa erhvervsandel.",
+      "details": "Fradragsprocent = (Momspligtig omsaetning / Samlet omsaetning) x 100. Rundes altid op til naermeste hele tal. Loeobende acontofradrag baseret paa foregaaende aars procent. Endelig opgoerelse angives 6 maaneder efter regnskabsaarets afslutning. Fra 1. januar 2024: Foreloebig fradragsprocent og slutdato skal angives i TastSelv.",
+      "law_reference": "ML ss 38",
+      "keywords": ["delvist fradrag", "fradragsprocent", "omsaetningsfordeling", "acontofradrag", "blandet brug"],
+      "source": "pwc.dk, skat.dk"
+    },
+    {
+      "id": "rule_004",
+      "title": "Loensumsafgift for momsfritagne virksomheder",
+      "category": "loensumsafgift",
+      "description": "Momsfritagne virksomheder (sundhed, uddannelse, finans mv.) skal typisk betale loensumsafgift. Registreringspligt ved omsaetning over 80.000 kr. aarligt.",
+      "details": "Aviser med nulmoms: 3,54 % loensumsafgift. Gaelder aktiviteter naaevnt i ML ss 13, stk. 1, nr. 1, 3, 5, 6, 10-12, og 15.",
+      "law_reference": "Loensumsafgiftsloven",
+      "keywords": ["loensumsafgift", "momsfritaget", "80000 kr", "afgift"],
+      "source": "moms_research_2026.md"
+    },
+    {
+      "id": "rule_005",
+      "title": "Afregningsperioder",
+      "category": "afregning",
+      "description": "Halvaarlig afregning: Omsaetning under 5 mio. kr. Kvartalsvis: 5-50 mio. kr. eller nystartede. Maanedlig: Over 50 mio. kr. Man kan altid ansoege om kortere afregningsperiode.",
+      "details": "Halvaarlig kraever rettidig betaling. Fristen for indberetning og betaling er den samme. Falder fristen paa loerdag, soendag eller helligdag, flyttes den til kommende hverdag.",
+      "law_reference": "ML ss 57",
+      "keywords": ["afregningsperiode", "halvaar", "kvartal", "maaned", "indberetning", "omsaetning"],
+      "source": "skat.dk, pwc.dk, moms_research_2026.md"
+    },
+    {
+      "id": "rule_006",
+      "title": "Salgsfremmeordninger",
+      "category": "fradrag",
+      "description": "Fuldt momsfradrag for varer/ydelser udleveret som led i salgsfremmeordning (fx 'Koeb 5 faa den 6. gratis').",
+      "details": "Forudsaetning: Den 'gratis' vare indgaar som naturlig del af sortimentet. Dokumentation for udloesende koeb kraeves. Hvis varen IKKE indgaar i sortimentet: Vaerdi under 100 kr. ekskl. moms kraeves.",
+      "law_reference": "ML ss 37",
+      "keywords": ["salgsfremme", "gratis vare", "kampagne", "rabat", "salgsfremmende"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_007",
+      "title": "Fradragsrettens opstaaen",
+      "category": "fradrag",
+      "description": "Fradragsretten opstaaar paa tidspunktet for virksomhedens momsregistrering. Skattestyrelsen tillader ofte momsregistrering med tilbagevirkende kraft.",
+      "details": null,
+      "law_reference": "ML ss 37",
+      "keywords": ["fradragsret", "registrering", "tilbagevirkende kraft"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_008",
+      "title": "Ansvar for korrekt faktura",
+      "category": "faktura",
+      "description": "Saelger har ansvaret for at udstede korrekt faktura. Skattemyndighederne kan naegte koeber fradrag, hvis det er en fejl, at der er paafoert moms.",
+      "details": null,
+      "law_reference": "ML ss 52",
+      "keywords": ["faktura", "ansvar", "korrekt faktura", "saelger"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_009",
+      "title": "Ny bygning definition ved salg",
+      "category": "fast ejendom",
+      "description": "En bygning anses som ny indtil foerste indflytning. Foerste salg inden for 5 aar efter faerdiggoerelse anses som salg af ny bygning. Til-/ombygning over 25 %/50 % af salgssummen medfoerer moms.",
+      "details": "25 %-kriteriet: Bygning med tilhoerende jord (inkl. ejerlejligheder). 50 %-kriteriet: Kun bygning (uden jord). Skattestyrelsens krav om 'funktionsdygtig' bygning for momsfrit salg er opgivet — det afgoerende er nu om grunden faktisk er bebygget.",
+      "law_reference": "ML ss 13, stk. 1, nr. 9",
+      "keywords": ["ny bygning", "5 aar", "25 procent", "50 procent", "byggegrund", "fast ejendom"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_010",
+      "title": "Udnyttelseskriteriet for ydelser",
+      "category": "international",
+      "description": "Visse ydelser beskattes efter et udnyttelseskriterium: Ingen dansk moms hvis udnyttet uden for EU; dansk moms hvis udnyttet i Danmark af koeber uden for EU.",
+      "details": "Gaeldende ydelser: Overdragelse af rettigheder, raadgivning, ingenioeorydelser, advokater, revisorer, bank/finans/forsikring, levering af arbejdskraft, udlejning af loesoere (undtagen transportmidler), gas/el-distributionssystemer, radio/tv-spredningstjenester.",
+      "law_reference": "ML ss 16, stk. 4",
+      "keywords": ["udnyttelseskriteriet", "ydelser", "internationalt", "raadgivning", "rettigheder"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_011",
+      "title": "Afhentningssalg til EU-koebere",
+      "category": "international",
+      "description": "Skaerpede dokumentationskrav naar koeber selv afhenter varen. Saelger skal modtage skriftlig erklaering fra koeber med detaljerede oplysninger.",
+      "details": "Erklaering skal indeholde: Koebers navn og adresse, maengde og art, dato og sted for ankomst, registreringsnummer ved transportmidler, identifikation af modtager, dokumentation for transport.",
+      "law_reference": "ML ss 34",
+      "keywords": ["afhentningssalg", "EU", "dokumentation", "erklaering"],
+      "source": "pwc.dk"
+    },
+    {
+      "id": "rule_012",
+      "title": "Moms i konkursboer",
+      "category": "konkurs",
+      "description": "Saerlige regler for momsfradragsret og tilbagebetalingsproces i konkursboer. Kurator skal vurdere om konkursboet har ret til fradrag.",
+      "details": null,
+      "law_reference": "ML ss 27, stk. 6",
+      "keywords": ["konkurs", "konkursbo", "kurator"],
+      "source": "skat.dk"
+    },
+    {
+      "id": "rule_013",
+      "title": "Virksomhedsoverdragelse uden moms",
+      "category": "overdragelse",
+      "description": "Ved overdragelse af hel eller selvstaendig del af virksomheden opkraeves INGEN moms. Salgsprisen indberettes til virk.dk. For aktiver over 100.000 kr.: Saerlige regler for investeringsgoder.",
+      "details": null,
+      "law_reference": "ML ss 8, stk. 1, nr. 3",
+      "keywords": ["virksomhedsoverdragelse", "overdragelse", "salg af virksomhed"],
+      "source": "skat.dk"
+    },
+    {
+      "id": "rule_014",
+      "title": "Momsdirektivet (2006/112/EF)",
+      "category": "EU-lovgivning",
+      "description": "Momsdirektivet er det juridiske fundament der harmoniserer momslove paa tvaers af EU-landene. Etablerer rammevaerk for momsanvendelse, satsrammer, leveringssted, saerlige ordninger, fakturakrav og fradragsprocedurer.",
+      "details": "Tilknyttede forordninger: Implementeringsforordning (EU 282/2011), Momssamarbejdsforordningen (EU 904/2010), Direktiv 2008/9/EF (momsrefusion for EU-virksomheder), Direktiv 86/560/EOEF (ikke-EU-virksomheder).",
+      "law_reference": "Momsdirektivet 2006/112/EF",
+      "keywords": ["momsdirektiv", "EU", "2006/112/EF", "harmonisering", "VAT directive"],
+      "source": "europa.eu"
+    },
+    {
+      "id": "rule_015",
+      "title": "Marketplace deemed supplier regler",
+      "category": "e-handel",
+      "description": "Online markedspladser kan anses for selv at have modtaget og solgt varerne (deemed supplier). Gaelder naar saelgere uden for EU saelger til EU-forbrugere via platformen, eller import under 150 EUR via platformen.",
+      "details": "Markedspladsen er ansvarlig for momsopkraevning og -afregning.",
+      "law_reference": "Momsdirektivet art. 14a",
+      "keywords": ["markedsplads", "platform", "deemed supplier", "e-handel", "Amazon", "eBay"],
+      "source": "europa.eu"
+    },
+    {
+      "id": "rule_016",
+      "title": "Forbrugerregler for moms ved EU-koeb",
+      "category": "forbruger",
+      "description": "Forbrugere betaler moms i det land, hvor koebet foretages. Varer kan medbringes frit til eget land. Ikke-EU-borgere kan faa momsrefusion for koeb under EU-ophold (varer fremvises ved graensen senest 3 maaneder efter koeb).",
+      "details": "Gaelder kun personligt brug/familiens brug — IKKE til videresalg. Ved onlinekoeb over 10.000 EUR aarligt salg: Moms betales i leveringslandet.",
+      "law_reference": "Momsdirektivet",
+      "keywords": ["forbruger", "onlinekoeb", "refusion", "turistkoeb"],
+      "source": "europa.eu"
+    },
+    {
+      "id": "rule_017",
+      "title": "Nye biler — moms i registreringslandet",
+      "category": "koeretoej",
+      "description": "Nye biler: Moms betales i det land, bilen importeres til og indregistreres i (typisk bopaelsland).",
+      "details": null,
+      "law_reference": "Momsdirektivet art. 2, stk. 1, litra b",
+      "keywords": ["ny bil", "registreringsland", "import", "bil"],
+      "source": "europa.eu"
+    }
+  ],
+  "key_amounts": {
+    "standard_vat_rate": "25 %",
+    "registration_threshold": "50.000 kr.",
+    "late_reporting_fee": "1.400 kr.",
+    "simplified_invoice_limit": "3.000 kr.",
+    "refund_to_nemkonto": "21 dage",
+    "halfyear_threshold": "Under 5 mio. kr.",
+    "quarterly_threshold": "5-50 mio. kr.",
+    "monthly_threshold": "Over 50 mio. kr.",
+    "eu_distance_selling_threshold": "10.000 EUR",
+    "eu_smv_threshold": "744.750 kr. (ca. 100.000 EUR)",
+    "correction_limitation": "3 aar (10 aar ved grov uagtsomhed)",
+    "record_retention": "5 aar (10 aar for ejendom og OSS)",
+    "investment_goods_threshold": "100.000 kr.",
+    "digital_bookkeeping_threshold": "300.000 kr.",
+    "vat_refund_deadline": "30. september",
+    "eu_sales_list_deadline": "25. i hver maaned",
+    "promo_item_threshold": "100 kr. ekskl. moms",
+    "used_goods_vat": "Avance x 20 %",
+    "charity_compensation_payout": "Ca. 30 % af ansoegt beloeb",
+    "fitness_tax_deduction": "Op til 1.750 kr. aarligt (voksne 30+)",
+    "eu_purchases_without_registration": "Under 80.000 EUR/aar (loensumsregistrerede)"
+  },
+  "contacts": {
+    "skat_moms_phone": "72 22 28 67",
+    "skat_moms_phone_hours": "Mandag 9-17, tirsdag-torsdag 9-16, fredag 9-14",
+    "carousel_fraud_email": "SK1@sktst.dk",
+    "pwc_contact_1": "Anders Strandet Jepsen, Partner, PhD, leder af indirekte skatter, PwC Denmark — Tlf: 3945 3381",
+    "pwc_contact_2": "Mathias Weje Knappmann, Partner, PwC Denmark — Tlf: 6017 1530"
+  }
+}

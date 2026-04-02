@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "year": 2026,
+    "description": "Alle vigtige deadlines for dansk bogfoering 2026"
+  },
+  "moms": {
+    "halvaar": {
+      "omsaetning": "Under 5 mio. kr.",
+      "perioder": [
+        { "periode": "1. halvaar 2026", "fra": "2026-01-01", "til": "2026-06-30", "frist": "2026-09-01" },
+        { "periode": "2. halvaar 2026", "fra": "2026-07-01", "til": "2026-12-31", "frist": "2027-03-01" }
+      ]
+    },
+    "kvartal": {
+      "omsaetning": "5-50 mio. kr.",
+      "perioder": [
+        { "periode": "Q1 2026", "fra": "2026-01-01", "til": "2026-03-31", "frist": "2026-06-01" },
+        { "periode": "Q2 2026", "fra": "2026-04-01", "til": "2026-06-30", "frist": "2026-09-01" },
+        { "periode": "Q3 2026", "fra": "2026-07-01", "til": "2026-09-30", "frist": "2026-12-01" },
+        { "periode": "Q4 2026", "fra": "2026-10-01", "til": "2026-12-31", "frist": "2027-03-01" }
+      ]
+    },
+    "maaned": {
+      "omsaetning": "Over 50 mio. kr.",
+      "perioder": [
+        { "periode": "Januar", "frist": "2026-02-25" },
+        { "periode": "Februar", "frist": "2026-03-25" },
+        { "periode": "Marts", "frist": "2026-04-27" },
+        { "periode": "April", "frist": "2026-05-25" },
+        { "periode": "Maj", "frist": "2026-06-25" },
+        { "periode": "Juni", "frist": "2026-07-27" },
+        { "periode": "Juli", "frist": "2026-08-25" },
+        { "periode": "August", "frist": "2026-09-25" },
+        { "periode": "September", "frist": "2026-10-26" },
+        { "periode": "Oktober", "frist": "2026-11-25" },
+        { "periode": "November", "frist": "2026-12-28" },
+        { "periode": "December", "frist": "2027-01-26" }
+      ]
+    }
+  },
+  "a_skat_am_bidrag": {
+    "smaa_mellemstore": {
+      "beskrivelse": "Den 10. i foelgende maaned",
+      "perioder": [
+        { "periode": "Januar", "frist": "2026-02-10" },
+        { "periode": "Februar", "frist": "2026-03-10" },
+        { "periode": "Marts", "frist": "2026-04-10" },
+        { "periode": "April", "frist": "2026-05-11" },
+        { "periode": "Maj", "frist": "2026-06-10" },
+        { "periode": "Juni", "frist": "2026-07-10" },
+        { "periode": "Juli", "frist": "2026-08-10" },
+        { "periode": "August", "frist": "2026-09-10" },
+        { "periode": "September", "frist": "2026-10-12" },
+        { "periode": "Oktober", "frist": "2026-11-10" },
+        { "periode": "November", "frist": "2026-12-10" },
+        { "periode": "December", "frist": "2027-01-12" }
+      ]
+    },
+    "store": {
+      "beskrivelse": "Sidste hverdag i maaneden"
+    }
+  },
+  "selskabsskat": [
+    { "opgave": "Frivillig indbetaling", "frist": "2026-02-01" },
+    { "opgave": "1. aconto-rate", "frist": "2026-03-20" },
+    { "opgave": "2. aconto-rate", "frist": "2026-11-20" }
+  ],
+  "b_skat": {
+    "beskrivelse": "10 rater den 20. i maaneden (jan-maj + aug-dec)",
+    "rater": [
+      { "rate": 1, "frist": "2026-01-20" },
+      { "rate": 2, "frist": "2026-02-20" },
+      { "rate": 3, "frist": "2026-03-20" },
+      { "rate": 4, "frist": "2026-04-20" },
+      { "rate": 5, "frist": "2026-05-20" },
+      { "rate": 6, "frist": "2026-08-20" },
+      { "rate": 7, "frist": "2026-09-21" },
+      { "rate": 8, "frist": "2026-10-20" },
+      { "rate": 9, "frist": "2026-11-20" },
+      { "rate": 10, "frist": "2026-12-21" }
+    ]
+  },
+  "loensumsafgift": [
+    { "periode": "Q1 2026", "frist": "2026-04-15" },
+    { "periode": "Q2 2026", "frist": "2026-07-15" },
+    { "periode": "Q3 2026", "frist": "2026-10-15" },
+    { "periode": "Q4 2026", "frist": "2027-01-15" },
+    { "opgave": "Aarsindberetning 2025", "frist": "2026-08-14" }
+  ],
+  "aarsafslutning": [
+    { "opgave": "Aarsrapport til Erhvervsstyrelsen (ApS/A/S)", "frist": "2026-05-31", "note": "5 mdr. efter regnskabsaarets afslutning" },
+    { "opgave": "Privat selvangivelse", "frist": "2026-05-01" },
+    { "opgave": "Udvidet selvangivelse (selvstaendige)", "frist": "2026-07-01" },
+    { "opgave": "Selskabsselvangivelse", "frist": "2026-06-30", "note": "6 mdr. efter regnskabsaarets afslutning" }
+  ],
+  "eu_salgsliste": {
+    "beskrivelse": "Maanedlig indberetning ved EU-salg",
+    "frist": "Den 25. i efterfoelgende maaned"
+  }
+}

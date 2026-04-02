@@ -1,0 +1,1100 @@
+{
+  "meta": {
+    "version": "2026",
+    "last_updated": "2026-04-02",
+    "sources": ["skat.dk", "skm.dk", "pwc.dk", "bdo.dk", "tax.dk", "grantthornton.dk"],
+    "notes": "Konsolideret fra 5 kildefiler. Ved uenighed mellem kilder er skat.dk/skm.dk brugt som autoritativ kilde. Alle beloeb er i danske kroner (DKK). Reguleringstal for 2026: 137,3 (4,8% stigning)."
+  },
+  "income_tax": {
+    "am_bidrag": {
+      "rate": 8,
+      "description": "Arbejdsmarkedsbidrag (AM-bidrag) beregnes af bruttoindkomsten og fratraekkes foer beregning af indkomstskat. Fra 2026 er unge under 18 aar fritaget for AM-bidrag.",
+      "am_bidragspligtig_indkomst": [
+        "A-indkomst (loen, loentilskud)",
+        "Honorarer (fx foredragshonorar)",
+        "Bestyrelseshonorarer",
+        "Feriepenge og ferietillaeg",
+        "Firmabilfordel",
+        "Fri kost og logi",
+        "Fri telefon og andre personalegoder",
+        "Overskud af selvstaendig virksomhed",
+        "Drikkepenge",
+        "Udenlandsk indkomst"
+      ],
+      "am_bidragsfri_indkomst": [
+        "SU (Statens Uddannelsesstotte)",
+        "Pensioner",
+        "Efterloen",
+        "Kontanthjaelp",
+        "Revalideringsydelse",
+        "Ledighedsydelse",
+        "Fleksydelse",
+        "Dagpenge"
+      ],
+      "under_18_fritaget": true,
+      "under_18_note": "Fra 1. januar 2026 er unge under 18 aar fritaget for AM-bidrag. Gaelder indtil 31. december i det aar personen fylder 17 aar. Arbejdsgivere skal undlade at indberette og tilbageholde AM-bidrag for fritagne unge.",
+      "law_reference": "Arbejdsmarkedsbidragslovens paragraf 1, 2 og 4",
+      "keywords": ["am-bidrag", "arbejdsmarkedsbidrag", "bruttoskat", "8 procent", "under 18", "unge fritaget"]
+    },
+    "bundskat": {
+      "rate": 12.01,
+      "threshold": 0,
+      "christiansoe_rate": 4.01,
+      "description": "Bundskat beregnes af personlig indkomst samt positiv nettokapitalindkomst over grundbeloeb efter fradrag af AM-bidrag.",
+      "law_reference": "Personskattelovens paragraf 6, stk. 2",
+      "keywords": ["bundskat", "indkomstskat", "personlig indkomst", "12 procent"]
+    },
+    "mellemskat": {
+      "rate": 7.5,
+      "threshold": 641200,
+      "threshold_before_am": 696956,
+      "description": "Ny mellemskat fra 2026. Beregnes af personlig indkomst over 641.200 kr. (efter AM-bidrag). Der kan IKKE overfoeres uudnyttet bundfradrag til aegtefaelle. Positiv nettokapitalindkomst over bundfradraget indgaar i beregningsgrundlaget. Begraenset af det skraa skatteloft.",
+      "spouse_transfer": false,
+      "law_reference": "Personskattelovens paragraf 7, stk. 2; paragraf 7, stk. 5; paragraf 19, stk. 1",
+      "keywords": ["mellemskat", "ny skat 2026", "7,5 procent", "641200", "mellembund"]
+    },
+    "topskat": {
+      "rate": 7.5,
+      "threshold": 777900,
+      "threshold_before_am": 845543,
+      "threshold_2025": 611800,
+      "description": "Topskat fra 2026 er aendret fra 15% til 7,5% og grensen er haevet til 777.900 kr. (efter AM-bidrag). Den tidligere topskat paa 15% med graense 611.800 kr. er erstattet af mellemskat + ny topskat. Der kan IKKE overfoeres uudnyttet bundfradrag til aegtefaelle.",
+      "spouse_transfer": false,
+      "law_reference": "Personskattelovens paragraf 7, stk. 2; paragraf 7a, stk. 2; paragraf 19, stk. 1",
+      "keywords": ["topskat", "hoej skat", "7,5 procent", "777900", "topskattegranse"]
+    },
+    "top_topskat": {
+      "rate": 5,
+      "threshold": 2592700,
+      "threshold_before_am": 2818152,
+      "description": "Ny top-topskat fra 2026. Beregnes af personlig indkomst over 2.592.700 kr. (efter AM-bidrag). Der kan IKKE overfoeres uudnyttet bundfradrag til aegtefaelle. Giver en marginalbeskatning paa ca. 60,5% inkl. AM-bidrag for indkomster over grensen.",
+      "spouse_transfer": false,
+      "law_reference": "Personskattelovens paragraf 8, stk. 2",
+      "keywords": ["top-topskat", "toptopskat", "millionaerskat", "5 procent", "2592700", "hoejeste skat"]
+    },
+    "skatteloft": {
+      "personal_income": 44.57,
+      "personal_income_2025": 52.07,
+      "capital_income": 42,
+      "description": "Skatteloftet sikrer at den samlede indkomstskat af personlig indkomst ikke kan overstige 44,57% (ekskl. kirkeskat og AM-bidrag). For positiv kapitalindkomst er loftet 42%. Skatteloftet for personlig indkomst er saenket fra 52,07% i 2025 til 44,57% i 2026.",
+      "note": "Skatteloftet begraenser summen af bundskat + mellemskat + topskat + kommuneskat",
+      "law_reference": "Personskattelovens paragraf 19, stk. 1-2",
+      "keywords": ["skatteloft", "skraat skatteloft", "maksimal skat", "44,57", "42 procent"]
+    },
+    "personfradrag": {
+      "amount": 54100,
+      "amount_2025": 51600,
+      "under_18": "Fra 2026 er der ikke laengere reduceret personfradrag for personer under 18 aar",
+      "spouse_transfer": true,
+      "description": "Personfradraget er 54.100 kr. i 2026 (op fra 51.600 kr. i 2025). Gaelder alle skattepligtige. Uudnyttet personfradrag kan overfoeres til aegtefaelle. Personfradragets skattevaerdi modregnes i bundskat og kommuneskat.",
+      "law_reference": "Personskattelovens paragraf 10, stk. 1 og paragraf 10, stk. 3",
+      "keywords": ["personfradrag", "skattefradrag", "bundfradrag", "54100", "frikort"]
+    },
+    "kommuneskat": {
+      "average": 25.0,
+      "range_low": 22.5,
+      "range_high": 27.8,
+      "kirkeskat_average": 0.87,
+      "kirkeskat_low": 0.38,
+      "kirkeskat_high": 1.30,
+      "description": "Kommuneskat fastsaettes individuelt af kommunalbestyrelsen. Gennemsnitlig sats er ca. 25,0%. Kirkeskat betales kun af medlemmer af folkekirken og varierer fra 0,38% (Gentofte) til 1,30% (Laesoe).",
+      "keywords": ["kommuneskat", "kirkeskat", "kommune", "folkekirken", "lokalskat"]
+    },
+    "sundhedsbidrag": {
+      "rate": 0,
+      "description": "Sundhedsbidraget er helt udfaset og er 0% i 2026.",
+      "keywords": ["sundhedsbidrag", "afskaffet"]
+    },
+    "kompensationsprocent": {
+      "rate": 8,
+      "threshold": 50000,
+      "law_reference": "Personskattelovens paragraf 11, stk. 1-2",
+      "keywords": ["kompensation", "nedslag"]
+    },
+    "cfc_indkomst": {
+      "rate": 22,
+      "law_reference": "Personskattelovens paragraf 8b, stk. 1",
+      "keywords": ["cfc", "kontrolleret udenlandsk selskab"]
+    },
+    "marginal_tax_overview_2026": {
+      "tier_1": {
+        "label": "Bundskat, kommuneskat og sundhedsbidrag",
+        "income_range": "Op til 696.956 kr. (foer AM-bidrag)",
+        "effective_rate_incl_am": 42
+      },
+      "tier_2": {
+        "label": "Bundskat mv. + mellemskat",
+        "income_range": "696.956 - 845.543 kr. (foer AM-bidrag)",
+        "effective_rate_incl_am": 49
+      },
+      "tier_3": {
+        "label": "Bundskat mv. + mellemskat og topskat",
+        "income_range": "845.543 - 2.818.152 kr. (foer AM-bidrag)",
+        "effective_rate_incl_am": 56
+      },
+      "tier_4": {
+        "label": "Bundskat mv. + mellemskat, topskat og top-topskat",
+        "income_range": "Over 2.818.152 kr. (foer AM-bidrag)",
+        "effective_rate_incl_am": 60.5
+      },
+      "keywords": ["marginalskat", "skattetrin", "effektiv skat", "skatteberegning"]
+    }
+  },
+  "deductions": [
+    {
+      "id": "deduction_beskaeftigelse",
+      "name": "Beskaeftigelsesfradrag",
+      "rate_percent": 12.75,
+      "rate_percent_2025": 12.30,
+      "max_amount": 63300,
+      "max_amount_2025": 55600,
+      "min_income_full_deduction": 496471,
+      "description": "Beskaeftigelsesfradraget beregnes automatisk som 12,75% af bruttoindkomsten (inkl. AM-bidrag) eller overskud af virksomhed, med et maksimum paa 63.300 kr. Fuldt fradrag opnaas ved en indkomst paa ca. 496.471 kr.",
+      "conditions": "Automatisk beregnet for alle med loenindkomst eller overskud af virksomhed",
+      "law_reference": "Ligningslovens paragraf 9 J",
+      "keywords": ["beskaeftigelsesfradrag", "arbejdsfradrag", "loenmodtagerfradrag", "12,75 procent", "63300"]
+    },
+    {
+      "id": "deduction_beskaeftigelse_senior",
+      "name": "Ekstra beskaeftigelsesfradrag for seniorer",
+      "rate_percent": 1.4,
+      "max_amount": 6100,
+      "description": "Nyt fra 2026. Ekstra beskaeftigelsesfradrag paa 1,4% af AM-bidragspligtig indkomst for seniorer (1-2 aar til folkepension). Maksimalt 6.100 kr. Indfases gradvist frem til 2030.",
+      "conditions": "Gaelder for personer 1-2 aar fra folkepensionsalderen",
+      "law_reference": "Ligningslovens paragraf 9 J",
+      "keywords": ["seniorfradrag", "ekstra beskaeftigelsesfradrag", "aeldre", "6100"]
+    },
+    {
+      "id": "deduction_beskaeftigelse_enlig",
+      "name": "Ekstra beskaeftigelsesfradrag for enlige forsoergere",
+      "rate_percent": 11.50,
+      "max_amount": 50600,
+      "max_amount_2025": 48300,
+      "description": "Enlige forsoergere der modtager supplerende boernetilskud fra Udbetaling Danmark kan faa et ekstra beskaeftigelsesfradrag paa 11,50% af AM-bidragspligtig indkomst, maks. 50.600 kr.",
+      "conditions": "Modtager supplerende boernetilskud fra Udbetaling Danmark",
+      "law_reference": "Ligningslovens paragraf 9 J",
+      "keywords": ["enlige forsoergere", "ekstra fradrag", "boernetilskud", "50600"]
+    },
+    {
+      "id": "deduction_job",
+      "name": "Jobfradrag",
+      "rate_percent": 4.50,
+      "threshold": 235200,
+      "threshold_2025": 224500,
+      "max_amount": 3100,
+      "max_amount_2025": 2900,
+      "min_income_full_deduction": 304089,
+      "description": "Jobfradraget beregnes som 4,5% af indkomst over 235.200 kr. (foer fradrag af AM-bidrag), med et maksimum paa 3.100 kr. Alle der betaler AM-bidrag er berettiget.",
+      "conditions": "Alle der betaler AM-bidrag",
+      "law_reference": "Ligningslovens paragraf 9 K, stk. 1",
+      "keywords": ["jobfradrag", "4,5 procent", "3100", "235200"]
+    },
+    {
+      "id": "deduction_befordring",
+      "name": "Befordringsfradrag (koerselsfradrag)",
+      "rates": {
+        "0_24_km": 0,
+        "25_120_km": 2.28,
+        "25_120_km_2025": 2.23,
+        "over_120_km": 1.14,
+        "over_120_km_2025": 1.12,
+        "udkantskommune_25_120_km": 2.53,
+        "udkantskommune_over_120_km": 2.53
+      },
+      "brotakster": {
+        "storebaelt_bil": 110,
+        "storebaelt_kollektiv": 15,
+        "oeresund_bil": 50,
+        "oeresund_kollektiv": 8
+      },
+      "lavindkomst_tillaeg": {
+        "indkomstgraense": 341500,
+        "aftrapningsgraense": 391500,
+        "max_ekstra_fradrag": 15400
+      },
+      "invalide": "Varigt nedsat funktionsevne: Faktiske udgifter med fradrag af 2.000 kr.",
+      "description": "Befordringsfradrag gives for daglig transport mellem hjem og arbejdsplads. De foerste 24 km dagligt giver intet fradrag. Fra 25-120 km er satsen 2,28 kr./km, over 120 km er satsen 1,14 kr./km. Udkantskommuner har forhoejet sats. Lavindkomstgruppen faar ekstra fradrag.",
+      "conditions": "Over 12 km til arbejde (mindst 24 km daglig transport tur/retur). Betalt beskaeftigelse med AM-bidrag. Selv betaler transport. Ikke firmabil eller arbejdsgiverbetalt transport.",
+      "skattevaerdi_pct": 26,
+      "law_reference": "Ligningslovens paragraf 9 C og 9 D; Bekendtgoerelse 578/2009 og 1044/2012",
+      "keywords": ["befordringsfradrag", "koerselsfradrag", "pendler", "transport", "km-fradrag", "storebaelt", "oeresund", "udkantskommune"]
+    },
+    {
+      "id": "deduction_service",
+      "name": "Servicefradrag (haandvaerker- og servicefradrag)",
+      "service_max": 18300,
+      "service_max_2025": 17500,
+      "haandvaerker_max": 9000,
+      "haandvaerker_max_2025": 8600,
+      "description": "Fradrag for serviceydelser (rengoering, vinduespudsning, havearbejde, reparation af haardevarer) og haandvaerkerydelser (isolering, udskiftning af ruder, afmontering af braendeovn). Kun fradrag for arbejdsloen (IKKE materialer). Krav om elektronisk betaling og momsregistreret virksomhed for haandvaerkerfradrag.",
+      "conditions": "18+ aar, skattepligtig i Danmark, elektronisk betaling, boligen skal vaere primaer bopael. Kontant betaling diskvalificerer fradrag.",
+      "law_reference": "Ligningslovens paragraf 8 V",
+      "keywords": ["servicefradrag", "haandvaerkerfradrag", "boligjob", "rengoering", "havearbejde", "isolering"]
+    },
+    {
+      "id": "deduction_rente",
+      "name": "Rentefradrag",
+      "skattevaerdi_under_50000": 33,
+      "skattevaerdi_over_50000": 25,
+      "aegtefaelle_graense": 100000,
+      "description": "Rentefradrag gives for renteudgifter. Op til 50.000 kr. i aarlige renteudgifter har en skattevaerdi paa ca. 33%, over 50.000 kr. er vaerdien ca. 25%. For aegtefaeller er graensen 100.000 kr.",
+      "automatiske_fradrag": ["Realkreditrenter (rubrik 41)", "Bankrenter og finansieringsselskabers renter (rubrik 42)"],
+      "ikke_fradragsberettiget": ["Skatte-, AM-bidrags-, SP- og told-/afgiftsrenter", "Renter paa gaeld overtaget som arveforskud/gaver", "Ejendomsskattelaansrenter", "Boligsikringslaansrenter", "Inkassorenter efter overgang til Gaeldsstyrelsen"],
+      "keywords": ["rentefradrag", "renter", "realkreditrenter", "bankrenter", "renteudgifter"]
+    },
+    {
+      "id": "deduction_fagforening",
+      "name": "Fagforeningsfradrag",
+      "max_amount": 7000,
+      "a_kasse_loft": null,
+      "description": "Maksimalt fradrag for fagforeningskontingent er 7.000 kr. A-kasse kontingent er IKKE omfattet af begraensningen og har intet loft. Fagforeningsfradraget er uafhaengigt af bundgraensen for loenmodtagerfradrag (7.600 kr.).",
+      "covered_items": ["Normalt kontingent", "Strejkekontingenter", "Klubkontingenter", "Saerlige bidrag til pensionisttilskud"],
+      "law_reference": "Ligningsloven paragraf 13, stk. 1; lov 1534/2014 paragraf 1, nr. 1",
+      "keywords": ["fagforening", "fagforeningsfradrag", "a-kasse", "efterloen", "kontingent", "7000"]
+    },
+    {
+      "id": "deduction_gave_velgoerenhed",
+      "name": "Fradrag for gaver til velgoerenhed",
+      "max_amount": 20000,
+      "max_amount_2025": 19000,
+      "forskningsbidrag_loft": null,
+      "binding_10_aar": "Op til 15.000 kr. eller 15% af personlig indkomst",
+      "skattevaerdi_pct": 26,
+      "description": "Fradrag for gaver til godkendte velgoerende organisationer. Organisationen indberetter med CPR-nummer. Kontingenter og varekoeb giver IKKE fradrag.",
+      "law_reference": "Ligningslovens paragraf 8 A",
+      "keywords": ["gavefradrag", "velgoerenhed", "donation", "almennyttig", "20000"]
+    },
+    {
+      "id": "deduction_loenmodtager_bundgraense",
+      "name": "Loenmodtagerfradrag bundgraense",
+      "threshold": 7600,
+      "threshold_2025": 7300,
+      "description": "Kun fradrag for den del af samlede loenmodtagerudgifter der overstiger bundgraensen paa 7.600 kr. Befordring, fagforening og pensionsindskud er IKKE omfattet af bundgraensen.",
+      "not_subject_to_threshold": ["Befordring mellem hjem og arbejde", "Erhvervsmaessig transport", "Fagforeningskontingent", "Indskud paa pensionsordninger"],
+      "deductible_over_threshold": ["Computere og IT-udstyr", "Erhvervsmaessige telefonudgifter", "Faglitteratur", "Arbejdsvaerelse i hjemmet"],
+      "law_reference": "Ligningslovens paragraf 9",
+      "keywords": ["loenmodtagerfradrag", "bundgraense", "7600", "faglitteratur", "arbejdsvaerelse"]
+    },
+    {
+      "id": "deduction_ekstra_pension",
+      "name": "Ekstra pensionsfradrag",
+      "max_grundlag": 87800,
+      "max_grundlag_2025": 83800,
+      "rate_15_aar_eller_mindre": 32,
+      "max_fradrag_15_aar": 28069,
+      "rate_over_15_aar": 12,
+      "max_fradrag_over_15_aar": 10536,
+      "description": "Ekstra pensionsfradrag beregnes af bidrag til privatejede og arbejdsgiveradministrerede pensionsordninger. Saerligt fordelagtigt for personer med hoejst 15 aar til folkepension (32% sats). Over 15 aar til folkepension: 12% sats.",
+      "law_reference": "Ligningslovens paragraf 9 L, stk. 1; Pensionsbeskatningsloven paragraf 18 og 19",
+      "keywords": ["ekstra pensionsfradrag", "pensionsfradrag", "87800", "folkepension"]
+    },
+    {
+      "id": "deduction_groen_check",
+      "name": "Groen check",
+      "grundbeloeb": 875,
+      "grundbeloeb_2025": 1005,
+      "aftrapning_pct": 7.5,
+      "aftrapning_indkomst": 498200,
+      "supplement": 280,
+      "supplement_indkomstgraense": 291100,
+      "forsoergercheck_pr_barn": 240,
+      "forsoergercheck_max_boern": 2,
+      "description": "Groen check paa 875 kr. i 2026 (ned fra 1.005 kr. i 2025). Aftrappes med 7,5% af indkomst over 498.200 kr. Supplement paa 280 kr. for indkomst under 291.100 kr. Forsoergercheck paa 240 kr. pr. barn (maks. 2 boern = 480 kr.), deles ligeligt mellem foraeldre.",
+      "law_reference": "Kompensationsloven paragraf 2",
+      "keywords": ["groen check", "klimacheck", "875", "supplement", "aftrapning"]
+    }
+  ],
+  "capital_income": {
+    "positive": {
+      "bundfradrag": 55000,
+      "bundfradrag_aegtepar": 110000,
+      "bundfradrag_2025": 52400,
+      "skatteloft": 42,
+      "description": "Positiv nettokapitalindkomst beskattes med bundskat (12,01%) plus kommuneskat. Over bundfradraget paa 55.000 kr. (110.000 kr. for aegtefaeller) indgaar kapitalindkomsten i beregningsgrundlaget for mellemskat. Skatteloft for kapitalindkomst er 42%.",
+      "law_reference": "Personskattelovens paragraf 7, stk. 1",
+      "keywords": ["positiv kapitalindkomst", "renteindtaegt", "bundfradrag", "55000", "kapitalindkomstskat"]
+    },
+    "negative": {
+      "nedslag": 8,
+      "skattevaerdi_under_50000": 33,
+      "skattevaerdi_over_50000": 25,
+      "aegtefaelle_graense": 100000,
+      "description": "Negativ nettokapitalindkomst giver fradrag i skatten med et nedslag paa 8%. Op til 50.000 kr. (100.000 kr. for aegtefaeller) er skattevaerdien ca. 33%, over 50.000 kr. er vaerdien ca. 25%.",
+      "keywords": ["negativ kapitalindkomst", "renteudgift", "nedslag", "fradragsvaerdi"]
+    },
+    "types": [
+      "Renteindtaegter",
+      "Renteudgifter (negativ)",
+      "Kursgevinster og -tab paa obligationer",
+      "Lejeindtaegter (visse tilfaelde)",
+      "Udbytte fra visse investeringsforeninger",
+      "Ejendomsavance (ved skattepligtigt salg)"
+    ],
+    "keywords": ["kapitalindkomst", "renter", "kursgevinst", "obligationer"]
+  },
+  "share_income": {
+    "low_rate": 27,
+    "high_rate": 42,
+    "threshold": 79400,
+    "threshold_2025": 67500,
+    "threshold_aegtepar": 158800,
+    "threshold_aegtepar_2025": 135000,
+    "description": "Aktieindkomst (udbytte og aktieavance) op til 79.400 kr. beskattes med 27%, over 79.400 kr. med 42%. For aegtefaeller er progressionsgraensen det dobbelte (158.800 kr.). Uudnyttet grundbeloeb kan overfoeres til aegtefaelle.",
+    "beregningsmetode": "Gennemsnitsmetoden: Gevinst/tab beregnes ud fra gennemsnitlig anskaffelseskurs for alle aktier i samme selskab.",
+    "tabsfradrag_boersnoteret": "Tab kan modregnes i aktieudbytte, gevinster paa andre boersnoterede aktier. Uudnyttet tab overfoeres til aegtefaelle, derefter fremfoeres. Frist: 1. juli aaret efter koebsaaret.",
+    "tabsfradrag_unoteret": "Tab modregnes i oevrig aktieindkomst. Ved negativ aktieindkomst beregnes skattevaerdien og fratraekkes oevrig skat.",
+    "law_reference": "Personskattelovens paragraf 8a; Aktieavancebeskatningslovens paragraf 45 A",
+    "aktiesparekonto": {
+      "rate": 17,
+      "max_deposit": 174200,
+      "max_deposit_2025": 166200,
+      "beskatningsprincip": "Lagerprincippet - aarlig beskatning af afkast",
+      "fraflytning_rate": 15,
+      "straffe_overindskud_pct": 3,
+      "tilladte_investeringer": [
+        "Aktier optaget til handel paa regulerede markeder",
+        "Investeringsbeviser i minimumsbeskattede investeringsinstitutter (min. 50% i aktier)",
+        "Aktiebaserede investeringsselskaber registreret hos Skattestyrelsen (fra 1. jan. 2020)"
+      ],
+      "regler": "Kun en konto pr. person. Boern under 18 kan eje konto. Kun fuldt skattepligtige til Danmark. Virksomheder kan ikke oprette.",
+      "keywords": ["aktiesparekonto", "17 procent", "174200", "lagerbeskatning"]
+    },
+    "medarbejderaktier": {
+      "par_7p": "Beskatning som aktieindkomst paa salgstidspunktet",
+      "par_28": "Beskatning som loenindkomst ved udnyttelse af koebs-/tegningsretter",
+      "par_16": "Beskatning som loenindkomst ved retserhvervelse",
+      "par_7n": "Medarbejderinvesteringsselskaber: Op til 7,5% af aarslon (maks. 30.000 kr. aarligt) kan indskydes skattefrit"
+    },
+    "kryptovaluta": {
+      "skattepligtige_aktiviteter": ["Kursgevinster/-tab ved koeb og salg", "Kryds-handler mellem kryptovalutaer", "Staking og mining", "Airdrops og hard forks", "Stablecoins (behandles som finansielle kontrakter)", "Renter paa krypto", "NFT-handel", "Krypto-udlaan"],
+      "indberetning_gevinst_rubrik": 20,
+      "indberetning_tab_rubrik": 58,
+      "note": "Kun realiserede gevinster. INGEN automatisk indberetning.",
+      "keywords": ["kryptovaluta", "bitcoin", "crypto", "NFT", "staking", "mining"]
+    },
+    "keywords": ["aktieindkomst", "aktieskat", "udbytte", "aktieavance", "27 procent", "42 procent", "79400"]
+  },
+  "pension": [
+    {
+      "id": "pension_rate",
+      "type": "Ratepension og ophoerende livrente",
+      "max_deduction": 68700,
+      "max_deduction_2025": 65500,
+      "fradrag": true,
+      "fradrag_type": "personlig indkomst",
+      "beskatning_udbetaling": "Personlig indkomst (fuld skat)",
+      "afgift_ophaevelse": 60,
+      "udbetaling_regler": "Udbetaling i rater over mindst 10 aar, senest 30 aar efter pensionsudbetalingsalderen",
+      "description": "Ratepension og ophoerende livrente har et samlet fradragsloft paa 68.700 kr. i 2026. Bade privat- og arbejdsgivertegnede bidrag indgaar. Hvis arbejdsgiver bidrager under loftet, kan man selv bidrage med differencen.",
+      "law_reference": "Pensionsbeskatningsloven paragraf 16, 18, 20 og 30; Personskatteloven paragraf 3",
+      "keywords": ["ratepension", "ophoerende livrente", "68700", "pensionsfradrag", "pensionsindbetaling"]
+    },
+    {
+      "id": "pension_livsvarig",
+      "type": "Livsvarig livrente",
+      "max_deduction": null,
+      "fradrag": true,
+      "fradrag_type": "personlig indkomst - fuldt fradrag, intet loft",
+      "beskatning_udbetaling": "Personlig indkomst",
+      "description": "Ingen maks. indbetaling. Fuldt fradrag i personlig indkomst. Loebende ydelser til doed.",
+      "ordning_30_pct": "Selvstaendige kan indbetale op til 30% af virksomhedens regulerede overskud paa en livsvarig livrente med fuld fradragsret (30%-ordningen).",
+      "keywords": ["livrente", "livsvarig", "pension", "ubegroenset fradrag", "30-procent-ordning"]
+    },
+    {
+      "id": "pension_alder",
+      "type": "Aldersopsparing / Aldersforsikring",
+      "max_deposit_grundbeloeb": 9900,
+      "max_deposit_grundbeloeb_2025": 9400,
+      "max_deposit_forhoejet": 64200,
+      "max_deposit_forhoejet_2025": 61200,
+      "forhoejet_betingelse": "Fra 7 aar foer folkepensionsalderen",
+      "fradrag": false,
+      "beskatning_udbetaling": "Skattefri",
+      "pal_skat": 15.3,
+      "straffe_overindskud_under_7_aar": 20,
+      "straffe_overindskud_over_7_aar": 40,
+      "foertid_afgift": 20,
+      "foertid_undtagelser": ["Foertidspension", "Invaliditet", "Aegtefaelle-/samleverpensionsret", "Boernepensionsret", "Livstruende sygdom"],
+      "description": "Aldersopsparing har intet skattefradrag men skattefri udbetaling. Grundbeloeb 9.900 kr. for alle. Forhoejet beloeb 64.200 kr. for personer maks. 7 aar fra folkepension. PAL-skat paa 15,3% af afkast.",
+      "law_reference": "Pensionsbeskatningsloven paragraf 16 og paragraf 25a",
+      "keywords": ["aldersopsparing", "aldersforsikring", "9900", "64200", "skattefri pension", "PAL-skat"]
+    },
+    {
+      "id": "pension_kapital",
+      "type": "Kapitalpension (ophort 1. jan. 2013)",
+      "max_deposit": 64200,
+      "beskatning_udbetaling_pct": 40,
+      "foertid_afgift": 52,
+      "description": "Kan ikke modtage nye indskud med fradragsret (ophort 2013). Foertidige udbetalinger: 52% afgift. Engangsbeloeb fra pensionsudbetalingsalderen.",
+      "keywords": ["kapitalpension", "40 procent", "ophort", "engangsbeloeb"]
+    },
+    {
+      "id": "pension_pal",
+      "type": "PAL-skat (Pensionsafkastskat)",
+      "rate": 15.3,
+      "princip": "Lagerprincippet - aarlig beskatning af vaerdiandringer",
+      "negativt_afkast": "Negativ skat fremfoeres ubegraenset til modregning",
+      "betalingsfrist_bank": "22. januar",
+      "betalingsfrist_forsikring": "31. maj",
+      "description": "Pensionsafkastskat paa 15,3% beregnes aarligt af vaerdiandringer i pensionsopsparinger efter lagerprincippet.",
+      "keywords": ["PAL-skat", "pensionsafkastskat", "15,3 procent", "lagerprincippet"]
+    },
+    {
+      "id": "pension_ophoer",
+      "type": "Ophoerspension",
+      "max_indskud": 3443400,
+      "max_indskud_2025": 3285400,
+      "description": "Reglerne om ophoerspension giver mulighed for at eliminere skatten af fortjenester ved virksomhedssalg via fradrag for indskud paa traditionelle pensionsordninger. Provenuet fra virksomhedssalget anvendes til indskud paa pensionsordninger, hvorved beskatningen reelt udskydes.",
+      "law_reference": "Pensionsbeskatningsloven paragraf 15 A",
+      "keywords": ["ophoerspension", "virksomhedssalg", "ophorsordning", "3443400"]
+    }
+  ],
+  "property_tax": {
+    "ejendomsvaerdiskat": {
+      "rate_low": 0.51,
+      "rate_low_promille": 5.1,
+      "rate_high": 1.4,
+      "rate_high_promille": 14.0,
+      "threshold": 9200000,
+      "beskatningsgrundlag": "80% af den ansatte ejendomsvaerdi (20% forsigtighedsnedslag)",
+      "description": "Ejendomsvaerdiskat beregnes som 0,51% (5,1 promille) af ejendomsvaerdien op til 9.200.000 kr. og 1,4% (14 promille) af vaerdien derover. Beskatningsgrundlaget er 80% af ejendomsvaerdien.",
+      "gaelder_for": ["Enfamiliehuse", "Tofamiliehuse", "Ejerlejligheder", "Sommerhuse"],
+      "undtagelser": ["Perioder hvor ejendommen ikke tjener til bolig for ejeren", "Naar boligen udlejes hele aaret", "Vaerelsesudlejning: Forholdsmaessig nedsaettelse"],
+      "law_reference": "Ejendomsskatteloven paragraf 4, stk. 1; paragraf 17, stk. 2; paragraf 28, stk. 1",
+      "keywords": ["ejendomsvaerdiskat", "boligskat", "0,51 procent", "1,4 procent", "9200000", "ejendomsvaerdi"]
+    },
+    "grundskyld": {
+      "description": "Grundskyld beregnes som en promille af ejendommens grundvaerdi fastsat af kommunalbestyrelsen. Beskatningsgrundlag er 80% af grundvaerdien. Maksimal sats: 30 promille. Grundvaerdien er den laveste af ejendommens grundvaerdi efter fradrag for forbedringer eller den afgiftspligtige grundvaerdi fra foregaaende skatteaar forhoejet med en reguleringsprocent.",
+      "beskatningsgrundlag": "80% af grundvaerdien",
+      "max_promille": 30,
+      "law_reference": "Lov om kommunal ejendomsskat paragraf 1, stk. 2; paragraf 2, stk. 1",
+      "keywords": ["grundskyld", "grundvaerdi", "ejendomsskat", "kommunal", "promille"]
+    },
+    "parcelhusreglen": {
+      "description": "Skattefrit salg af ejerbolig naar ejeren eller aegtefaelle har boet i ejendommen og grundarealet er under 1.400 m2. Undtagelse for stoerre grunde: Hvis udstykning er umulig eller ville medfoere vaerditab over 20%.",
+      "max_grundareal_m2": 1400,
+      "vaerditab_undtagelse_pct": 20,
+      "keywords": ["parcelhusreglen", "skattefrit salg", "ejerbolig", "1400 m2"]
+    },
+    "ejendomsavance": {
+      "bundfradrag": 368800,
+      "bundfradrag_2025": 351900,
+      "reguleringsprocent": 4.8,
+      "description": "Ejendomsavancebeskatning ved skattepligtigt salg. Bundfradrag 368.800 kr. Avancen beskattes som kapitalindkomst.",
+      "beregning": "Reguleret salgspris minus reguleret anskaffelsessum. Tillgeg paa 10.000 kr. per ejeraar plus forbedringer over 10.000 kr. aarligt.",
+      "law_reference": "Ejendomsavancebeskatningslovens paragraf 5 A og paragraf 6",
+      "keywords": ["ejendomsavance", "avancebeskatning", "boligsalg", "368800"]
+    },
+    "udlejning_vaerelse": {
+      "bundfradrag_platform_2026": 35100,
+      "bundfradrag_uden_platform_2026": 13800,
+      "lang_udlejning_ejerbolig": "1 1/3 procent af ejendomsvaerdi (minimum 24.000 kr.)",
+      "lang_udlejning_lejer": "2/3 af aarlig husleje",
+      "beregning": "Fratraek bundfradrag, derefter 40% af restbeloeb",
+      "keywords": ["vaerelsesudlejning", "udlejning", "bundfradrag", "platform", "airbnb"]
+    },
+    "udlejning_sommerhus": {
+      "bundfradrag_privat_2026": 13800,
+      "bundfradrag_platform_2026": 50200,
+      "beskatning": "60% af beloeb over bundfradrag",
+      "keywords": ["sommerhusudlejning", "fritidsbolig", "udlejning"]
+    },
+    "boligskaettelan": {
+      "description": "Fra 2026 kan boligejere indefryse dele af grundskyld og ejendomsvaerdiskat som laan. Mulighed for fravalg inden 31. december 2026.",
+      "keywords": ["boligskaettelan", "indefrysning", "boligskat"]
+    },
+    "pensionistnedslag": {
+      "indkomstgraense_enlige": 239800,
+      "indkomstgraense_aegtepar": 368800,
+      "law_reference": "Ejendomsskatteloven paragraf 26",
+      "keywords": ["pensionistnedslag", "ejendomsskat", "aeldre"]
+    },
+    "keywords": ["ejendomsskat", "boligskat", "grundskyld", "ejendomsvaerdiskat", "ejerbolig", "parcelhusregel"]
+  },
+  "corporate_tax": {
+    "rate": 22,
+    "andelsforeninger_rate": 14.3,
+    "finansiel_multiplikator": "26/22",
+    "udenlandske_selskaber_rate": 22,
+    "tillaeg_kulbrinte": 1.5,
+    "kommunal_andel": 14.24,
+    "acontoskat": {
+      "beregning": "Halvdelen af gennemsnittet af selskabets faktiske skat for indkomstaarene 2022, 2023 og 2024",
+      "rate_1_dato": "20. marts 2026",
+      "rate_2_dato": "20. november 2026",
+      "frivillig_dato": "1. februar 2027",
+      "mindstebeloeb": 2000,
+      "rate_pct": 50,
+      "description": "Ordinaer acontoskat beregnes af Skattestyrelsen. Frivillig acontoskat bestemmes af selskabet selv. Ved sambeskatning betaler administrationsselskabet.",
+      "law_reference": "Selskabsskatteloven paragraf 29 A og 30 A",
+      "keywords": ["acontoskat", "selskab", "20. marts", "20. november", "frivillig acontoskat"]
+    },
+    "underskud": {
+      "fremfoersel": "Uden tidsbegraensning",
+      "bundgraense_fuld_modregning": 21830700,
+      "bundgraense_fuld_modregning_2025": 20829000,
+      "modregning_over_bundgraense_pct": 60,
+      "tillaeg_manglende_indberetning": 5000,
+      "description": "Underskud kan fremfoeres uden tidsbegraensning. De foerste 21.830.700 kr. kan modregnes fuldt ud. Udover dette kan 60% af det resterende overskud modregnes. Saerregler ved ejerskifte.",
+      "law_reference": "Selskabsskatteloven paragraf 12, stk. 2",
+      "keywords": ["underskud", "fremfoersel", "underskudsbegraensning", "21830700", "60 procent"]
+    },
+    "udbytteskat": {
+      "rates": {
+        "privatpersoner": 27,
+        "selskaber_skattepligtige": 22,
+        "investeringsinstitutter": 15,
+        "moderselskaber_fritagelse": 0,
+        "skattefri_portefoeljeaktier": 0,
+        "hovedaktionaer_visse_lande": 44,
+        "udenlandske_privatpersoner": 27,
+        "moderselskaber_eu": 0
+      },
+      "indberetningsfrist": "10. i maaneden efter udlodningsmaaneden (17. i januar)",
+      "portefoeljeaktier_note": "Fra 15. feb. 2025: Ingen udbytteskat paa unoterede aktier hvor ejeren har under 10% af kapitalen",
+      "description": "Udbytteskat indeholdes ved udlodning. Satsen afhaenger af modtageren. Privatpersoner: 27%. Skattepligtige selskaber: 22%. Moderselskaber med fritagelsescertifikat: 0%.",
+      "law_reference": "Selskabsskatteloven paragraf 2, stk. 3",
+      "keywords": ["udbytteskat", "udbytte", "kildeskat", "27 procent", "22 procent", "moderselskab"]
+    },
+    "rentefradragsbegraensning": {
+      "nettofinansieringsudgifter_graense": 21300000,
+      "standardrente_2026": 4.2,
+      "standardrente_2025": 5.8,
+      "indkomst_nedsaettelse_pct": 30,
+      "laaneomkostninger_graense": 22313400,
+      "law_reference": "Selskabsskatteloven paragraf 11 B og 11 C",
+      "keywords": ["rentefradragsbegraensning", "tynd kapitalisering", "EBITDA"]
+    },
+    "datterselskabsaktier_ejerandel": 10,
+    "sambeskatning_stemmevaerdi": 50,
+    "law_reference": "Selskabsskatteloven paragraf 17, stk. 1",
+    "keywords": ["selskabsskat", "22 procent", "selskab", "ApS", "A/S", "aktieselskab", "anpartsselskab"]
+  },
+  "virksomhedsordningen": {
+    "opsparingsskat": 22,
+    "kapitalafkastsats": "Fastlaegges senere for 2026 (2025: 2%)",
+    "kapitalafkastsats_2025": 2,
+    "rentekorrektionssats_2025": 5,
+    "konjunkturudligning_max_pct": 25,
+    "konjunkturudligningsskat": 22,
+    "bunden_konto_pct": 78,
+    "min_konjunkturudligning": 5000,
+    "maks_kapitalafkast_personlig_indkomst": 63200,
+    "maks_kapitalafkast_personlig_indkomst_2025": 60300,
+    "haeveraekkefoelge": [
+      "1. Kapitalafkast (beskattes som kapitalindkomst uden AM-bidrag)",
+      "2. Resterende overskud (beskattes som personlig indkomst)",
+      "3. Opsparet overskud fra tidligere aar (beskattes som personlig indkomst, med modregning af virksomhedsskat)",
+      "4. Indskudskonto (skattefri)"
+    ],
+    "fordele": [
+      "Virksomhedens renteudgifter fradrages fuldt ud som personlig indkomst (vaerdi op til ca. 56,5%)",
+      "Opsparede overskud beskattes med foreloebig skat paa 22%",
+      "Reduceret AM-bidrag (betales ikke paa kapitalindkomst)",
+      "Mulighed for firmabil",
+      "Opsparing af overskud med udskudt beskatning"
+    ],
+    "krav": [
+      "Privat og virksomhedsokonomi skal adskilles fra skatteaarets start",
+      "Selvstaendigt erhvervsdrivende eller udlejere af fast ejendom",
+      "Regnskabsmaessig adskillelse af privatoekonomi og virksomhedsokonomi"
+    ],
+    "fortrydelse": "Mulighed for at fortryde valg helt frem til 30. juni i det andet kalenderaar efter udloebet af indkomstaaret",
+    "aendringer_2026": "Med indfoerslen af mellemskat og top-topskat bor opsparingens stoerrelse overvejes. Marginalbeskatningen stiger for indkomster over 2.592.700 kr. til 60,5%, saa opsparing der haeves over dette niveau beskattes haardere.",
+    "description": "Virksomhedsskatteordningen (VSO) muliggoer at personligt ejede erhvervsvirksomheder beskattes svarende til selskaber. Tre hovedfordele: kapitalindkomstbeskatning, opsparingsskat paa 22%, og fuldt rentefradrag.",
+    "law_reference": "Virksomhedsskatteloven paragraf 6, 7, 10; Personskatteloven paragraf 4, stk. 1, nr. 3; Arbejdsmarkedsbidragslovens paragraf 5, stk. 1",
+    "keywords": ["virksomhedsordningen", "VSO", "virksomhedsskat", "opsparing", "22 procent", "kapitalafkast", "haeveraekkefoelge", "selvstaendig"]
+  },
+  "kapitalafkastordningen": {
+    "opsparingsskat": 22,
+    "max_opsparing_pct": 25,
+    "description": "Forenklet udgave af virksomhedsskatteordningen med mindre bogfoeringsmaessige krav. Fuldt fradrag af renteudgifter. Maks. 25% af aarets overskud kan opspares (begraensning ift. VSO). En del af overskuddet beskattes som kapitalafkast (kapitalindkomst).",
+    "keywords": ["kapitalafkastordningen", "forenklet VSO", "25 procent opsparing"]
+  },
+  "employee_benefits": [
+    {
+      "id": "benefit_fri_bil",
+      "name": "Fri bil (firmabil)",
+      "rate": "22,5%",
+      "min_value": 160000,
+      "after_36_months_reduction": 75,
+      "miljoe_tillaeg": "700% af den aarlige groenne ejerafgift/vaegtafgift/CO2-ejerafgift",
+      "description": "Beskatningsvaerdi er 22,5% af bilens vaerdi (min. 160.000 kr.). Efter 36 maaneder reduceres beskatningsgrundlaget til 75% af nyvognsprisen. Miljoetilaeg tillaegges. Kan ikke undgaas med tro-og-love-erklring.",
+      "law_reference": "Ligningslovens paragraf 16, stk. 4",
+      "keywords": ["fri bil", "firmabil", "22,5 procent", "160000", "miljoetilaeg", "bilbeskatning"]
+    },
+    {
+      "id": "benefit_fri_telefon",
+      "name": "Fri telefon og/eller internet",
+      "taxable_amount": 3500,
+      "taxable_amount_2025": 3300,
+      "aegtefaelle_rabat_pct": 25,
+      "min_aegtepar_beloeb": 4600,
+      "description": "Beskatningsvaerdi 3.500 kr. aarligt i 2026 (3.300 kr. i 2025). Fri telefon OG internet er samlet 3.500 kr. (IKKE kumulativt). Skattefri med tro-og-love-erklring kun til arbejdsbrug. Aegtefaellerabat: 25% reduktion. Smartphones taeller som telefoner.",
+      "law_reference": "Ligningslovens paragraf 16, stk. 12",
+      "keywords": ["fri telefon", "fri internet", "3500", "smartphone", "tro-og-love"]
+    },
+    {
+      "id": "benefit_fri_kost",
+      "name": "Fri kost og logi",
+      "fuld_kost_logi_maaned": 4174.17,
+      "fuld_kost_dagligt": 105,
+      "to_maaltider_dagligt": 90,
+      "et_maaltid_dagligt": 60,
+      "skattefri": ["Kaffe", "Te", "Frugtordninger", "Kantinetilskud"],
+      "description": "Beskatning af fri kost og logi varierer efter omfang. Kaffe, te, frugtordninger og kantinetilskud er skattefri.",
+      "keywords": ["fri kost", "fri logi", "kantine", "maaltid", "personalegoder"]
+    },
+    {
+      "id": "benefit_gaver",
+      "name": "Gaver fra arbejdsgiver",
+      "bagatelgraense_uden_arbejdstilknytning": 1400,
+      "bagatelgraense_med_arbejdstilknytning": 7600,
+      "bagatelgraense_med_arbejdstilknytning_2025": 7300,
+      "julegaver_skattefri": 1000,
+      "jubilaeumsgratiale_skattefri": 8000,
+      "fratraedelsesgodtgoerelse_skattefri": 8000,
+      "description": "Personalegoder under 1.400 kr./aar er skattefri (samlet fra alle arbejdsgivere). Overskrides graensen, beskattes HELE beloebet. Julegaver op til 1.000 kr. er saerskilt skattefri. Jubilaeumsgratiale 8.000 kr. skattefrit ved 25, 35, 40, 45, 50 aars ansaettelse.",
+      "gavekort_skattepligtige": ["Kontanter (altid)", "Digitale gavekort", "Bredtfavnende gavekort (stormagasiner, supermarkeder)", "Indloeselige til kontanter"],
+      "law_reference": "Ligningslovens paragraf 16, stk. 3",
+      "keywords": ["personalegoder", "gaver", "julegave", "1400", "7600", "jubilaeumsgratiale", "bagatelgraense"]
+    },
+    {
+      "id": "benefit_fri_sommerbolig",
+      "name": "Fri sommerbolig og lystbaad",
+      "sommerbolig_hoejsaeson_pct_pr_uge": 0.50,
+      "sommerbolig_lavsaeson_pct_pr_uge": 0.25,
+      "hoejsaeson": "Uge 22-34",
+      "description": "Fri sommerbolig beskattes med 0,50% af ejendomsvaerdien pr. uge i hoejsaesonen (uge 22-34) og 0,25% i lavsaesonen.",
+      "keywords": ["fri sommerbolig", "lystbaad", "personalegode", "sommerbolig"]
+    },
+    {
+      "id": "benefit_sundhedsforsikring",
+      "name": "Sundhedsforsikring",
+      "skattepligtig": true,
+      "undtagelse": "Skattefri hvis der er en konkret arbejdsmaessig begrundelse",
+      "description": "Arbejdsgiverbetalt sundhedsforsikring er som hovedregel skattepligtig. Skattevaerdien er det beloeb forsikringen ville koste i fri handel.",
+      "keywords": ["sundhedsforsikring", "sundhed", "personalegode", "forsikring"]
+    }
+  ],
+  "travel_allowances": {
+    "koerselsgodtgoerelse": {
+      "rate_low": 3.94,
+      "rate_low_2025": 3.81,
+      "rate_high": 2.28,
+      "threshold_km": 20000,
+      "cykel_knallert_rate": 0.64,
+      "description": "Skattefri koerselsgodtgoerelse for erhvervsmaessig koersel i egen bil: 3,94 kr./km for de foerste 20.000 km, derefter 2,28 kr./km. Cykel/knallert/el-loebehjul: 0,64 kr./km.",
+      "betingelser": "Arbejdsgiver skal foere fornoeden kontrol. Bilen skal vaere indregistreret i medarbejderens navn. Koerselsregnskab med dato, formaal, start/slutadresse og antal km.",
+      "keywords": ["koerselsgodtgoerelse", "kilometerpenge", "3,94", "2,28", "skattefri koersel", "egen bil"]
+    },
+    "kostgodtgoerelse": {
+      "rate": 625,
+      "rate_2025": 597,
+      "tillaeg": 195,
+      "tillaeg_2025": 187,
+      "unit": "kr/doegn",
+      "smaudgifter_pct": 25,
+      "smaudgifter_beloeb": 156.25,
+      "description": "Skattefri kostgodtgoerelse paa 625 kr./doegn i 2026. Tillaeg 195 kr./doegn. Hvis arbejdsgiver betaler maaltidet: 25% af kostsatsen (156,25 kr.) kan udbetales skattefrit for smaudgifter.",
+      "betingelser": "Rejsen skal vaere erhvervsmaessig, minimum 24 timers varighed, midlertidigt arbejdssted.",
+      "law_reference": "Ligningslovens paragraf 9 A, stk. 2",
+      "keywords": ["kostgodtgoerelse", "diaeter", "625", "rejsegodtgoerelse", "kost", "skattefri"]
+    },
+    "logigodtgoerelse": {
+      "rate": 268,
+      "rate_2025": 256,
+      "unit": "kr/doegn",
+      "description": "Skattefri logigodtgoerelse paa 268 kr./doegn i 2026.",
+      "law_reference": "Ligningslovens paragraf 9 A, stk. 2 og stk. 12",
+      "keywords": ["logigodtgoerelse", "logi", "268", "overnatning", "skattefri"]
+    },
+    "rejsefradrag_max": {
+      "amount": 34400,
+      "amount_2025": 32800,
+      "law_reference": "Ligningslovens paragraf 9 A, stk. 7",
+      "keywords": ["rejsefradrag", "maksimalt", "34400"]
+    },
+    "turistchauffoer_kost": {
+      "danmark": 75,
+      "udland": 150,
+      "keywords": ["turistchauffoer", "kost", "chauffoer"]
+    },
+    "keywords": ["rejsegodtgoerelse", "koerselsgodtgoerelse", "diaeter", "logi", "kost", "transport"]
+  },
+  "inheritance_gift": {
+    "boafgift": {
+      "rate": 15,
+      "rate_andre": 36.25,
+      "bundfradrag": 392300,
+      "bundfradrag_2025": 346000,
+      "aegtefaelle": "Fritaget for boafgift",
+      "naermeste_familie": "Boern, boerneboern, foraeldre, eks-aegtefaelle, samlevende 2+ aar: 15%",
+      "andre_arvinger": "15% + 25% (samlet ca. 36,25%)",
+      "description": "Boafgift (arveafgift): Bundfradrag 392.300 kr. pr. doedsfald. Naermeste familie betaler 15% af arv over bundfradraget. Andre arvinger betaler ca. 36,25%. Aegtefaelle er fritaget.",
+      "law_reference": "Boafgiftsloven paragraf 6",
+      "keywords": ["boafgift", "arveafgift", "arv", "392300", "15 procent", "doedsfald", "bundfradrag"]
+    },
+    "gaveafgift": {
+      "fribeloeb_naer_familie": 80600,
+      "fribeloeb_naer_familie_2025": 76900,
+      "fribeloeb_svigerboern": 28200,
+      "fribeloeb_svigerboern_2025": 26900,
+      "rates": {
+        "naer_familie": 15,
+        "bedsteforaeldre": 36.25,
+        "aegtefaeller": 0
+      },
+      "aegtefaeller": "Ubegroenset skattefri gavegivning",
+      "indberetningsfrist": "1. maj i det efterfoelgende aar",
+      "indberetningsfrist_doedsfald": "8 uger efter doedsfald",
+      "afgiftsfrie_gaver": "Lejlighedsgaver (foedselsdage, daab, konfirmation, bryllupper, jubilaeer) af beskedent omfang",
+      "description": "Afgiftsfri gavegraense til boern og boerneboern: 80.600 kr. pr. aar. Svigerboern: 28.200 kr. Aegtefaeller: Ubegroenset. Gaver over graensen: 15% gaveafgift (naer familie) eller 36,25% (bedsteforaeldre).",
+      "law_reference": "Boafgiftsloven paragraf 22; Skattekontrolloven paragraf 23",
+      "keywords": ["gaveafgift", "gave", "80600", "28200", "fribeloeb", "boern", "svigerboern", "aegtefaelle"]
+    },
+    "doedsboskattefrihed_graense": 3563100,
+    "doedsboskattefrihed_graense_2025": 3399600,
+    "keywords": ["arv", "gave", "boafgift", "gaveafgift", "doedsfald", "generationsskifte"]
+  },
+  "moms": {
+    "rate": 25,
+    "registreringsgraense": 50000,
+    "fritagne_ydelser": ["Sundhedssektoren", "Uddannelsessektoren"],
+    "boede_sen_indberetning": 1400,
+    "nulmomsindberetning": "Obligatorisk selv ved nul-omsaetning",
+    "description": "Moms (VAT) er 25% paa varer og ydelser. Momsregistrering er obligatorisk ved omsaetning over 50.000 kr. aarligt.",
+    "keywords": ["moms", "VAT", "25 procent", "momsregistrering", "50000", "momsfritaget"]
+  },
+  "loenssumsafgift": {
+    "description": "Afgift for virksomheder der saelger momsfrie ydelser. Baseres paa virksomhedens loenninger og/eller skattelaessige overskud. 4 beregningsmetoder afhaengigt af virksomhedstype.",
+    "relevante_sektorer": ["Sundhedssektor", "Uddannelsessektor", "Finansiel sektor", "Personbefordring", "Andre momsfritagne ydelser"],
+    "keywords": ["loensumsafgift", "momsfri", "sundhed", "uddannelse", "finansiel"]
+  },
+  "forskerordningen": {
+    "rate": 27,
+    "am_bidrag": 8,
+    "samlet_skat": 33,
+    "minimumslon_2026": 65400,
+    "minimumslon_2025": 78000,
+    "varighed": "Op til 7 aar",
+    "bruttobeskatning": true,
+    "description": "Forskerordningen (27%-beskatning) for hoetloennede udenlandske medarbejdere og forskere. Skat paa kun 27% plus 8% AM-bidrag (samlet ca. 33%). Minimumslon 65.400 kr./maaned i 2026 (aendret fra 78.000 kr. i 2025). Ingen personfradrag eller fradrag i indkomsten.",
+    "law_reference": "Kildeskatteloven paragraf 48 E og F",
+    "keywords": ["forskerordningen", "27 procent", "ekspertbeskatning", "udenlandsk", "hoetloennet", "65400"]
+  },
+  "deadlines": [
+    {
+      "id": "deadline_aarsopgoerelse",
+      "type": "Aarsopgoerelse",
+      "deadline": "20. maj 2026",
+      "description": "Frist for rettelse af 2025-aarsopgooerelse. Adgang via TastSelv med MitID.",
+      "keywords": ["aarsopgoerelse", "selvangivelse", "frist", "20. maj", "TastSelv"]
+    },
+    {
+      "id": "deadline_restskat",
+      "type": "Restskat frivillig",
+      "deadline": "1. juli 2026",
+      "description": "Frivillig betaling af restskat inden 1. juli 2026 giver lavere renter og sparer procenttillaeg.",
+      "keywords": ["restskat", "frivillig betaling", "1. juli"]
+    },
+    {
+      "id": "deadline_acontoskat_1",
+      "type": "Acontoskat selskaber 1. rate",
+      "deadline": "20. marts 2026",
+      "description": "Foerste rate af ordinaer acontoskat for selskaber.",
+      "keywords": ["acontoskat", "1. rate", "20. marts", "selskab"]
+    },
+    {
+      "id": "deadline_acontoskat_2",
+      "type": "Acontoskat selskaber 2. rate",
+      "deadline": "20. november 2026",
+      "description": "Anden rate af ordinaer acontoskat for selskaber.",
+      "keywords": ["acontoskat", "2. rate", "20. november", "selskab"]
+    },
+    {
+      "id": "deadline_acontoskat_frivillig",
+      "type": "Frivillig acontoskat selskaber",
+      "deadline": "1. februar 2027",
+      "description": "Seneste frist for frivillig indbetaling af acontoskat for selskaber.",
+      "keywords": ["frivillig acontoskat", "1. februar", "selskab"]
+    },
+    {
+      "id": "deadline_gaveafgift",
+      "type": "Gaveafgift indberetning",
+      "deadline": "1. maj (aaret efter)",
+      "description": "Indberetningsfrist for gaveafgift er 1. maj i det efterfoelgende aar. Ved doedsfald: 8 uger efter.",
+      "keywords": ["gaveafgift", "indberetning", "1. maj"]
+    },
+    {
+      "id": "deadline_aktietab",
+      "type": "Aktietab dokumentation",
+      "deadline": "1. juli (aaret efter koebsaaret)",
+      "description": "Skattestyrelsen skal have koebsdokumentation for boersnoterede aktier senest 1. juli aaret efter koebsaaret for at opnaa tabsfradrag.",
+      "keywords": ["aktietab", "dokumentation", "1. juli", "koebsoplysninger"]
+    },
+    {
+      "id": "deadline_b_skat",
+      "type": "B-skat rater",
+      "deadline": "10 maanedlige betalinger (undtagen juni og december)",
+      "description": "B-skat betales i 10 maanedlige rater. Der er ikke betaling i juni og december.",
+      "keywords": ["b-skat", "rater", "maanedlig", "selvstaendig"]
+    },
+    {
+      "id": "deadline_ejendomsskat",
+      "type": "Ejendomsskat betaling",
+      "deadline": "1. maj og 1. oktober",
+      "description": "Erhvervsejendomme: To aarlige rater for ejendomsskat. Tidligst 5 hverdage foer frist.",
+      "keywords": ["ejendomsskat", "betaling", "1. maj", "1. oktober"]
+    }
+  ],
+  "changes_2026": [
+    {
+      "id": "change_skattestruktur",
+      "title": "Ny skattestruktur med fire trin",
+      "effective_date": "1. januar 2026",
+      "description": "Den tidligere topskat paa 15% med graense 611.800 kr. erstattes af tre nye satser: Mellemskat 7,5% (over 641.200 kr.), Topskat 7,5% (over 777.900 kr.) og Top-topskat 5% (over 2.592.700 kr.).",
+      "law_reference": "Personskattelovens paragraf 7, 7a og 8",
+      "keywords": ["skattereform", "fire trin", "mellemskat", "top-topskat", "ny skattestruktur"]
+    },
+    {
+      "id": "change_skatteloft",
+      "title": "Skatteloft saenket",
+      "effective_date": "1. januar 2026",
+      "description": "Skatteloftet for personlig indkomst saenkes fra 52,07% til 44,57%.",
+      "law_reference": "Personskattelovens paragraf 19, stk. 1",
+      "keywords": ["skatteloft", "44,57", "saenket"]
+    },
+    {
+      "id": "change_am_bidrag_unge",
+      "title": "AM-bidragsfritagelse for unge under 18 aar",
+      "effective_date": "1. januar 2026",
+      "description": "Fra 2026 er unge under 18 aar fritaget for AM-bidrag. Arbejdsgivere skal undlade at indberette og tilbageholde AM-bidrag for fritagne unge medarbejdere.",
+      "law_reference": "Arbejdsmarkedsbidragslovens paragraf 1",
+      "keywords": ["am-bidrag", "unge", "under 18", "fritagelse"]
+    },
+    {
+      "id": "change_personfradrag",
+      "title": "Forhoejet personfradrag",
+      "effective_date": "1. januar 2026",
+      "description": "Personfradraget stiger fra 51.600 kr. til 54.100 kr. Der er ikke laengere reduceret personfradrag for unge under 18.",
+      "keywords": ["personfradrag", "54100", "forhoejet"]
+    },
+    {
+      "id": "change_beskaeftigelsesfradrag",
+      "title": "Hoejere beskaeftigelsesfradrag",
+      "effective_date": "1. januar 2026",
+      "description": "Beskaeftigelsesfradraget stiger fra 12,30% / maks. 55.600 kr. til 12,75% / maks. 63.300 kr.",
+      "keywords": ["beskaeftigelsesfradrag", "63300", "12,75"]
+    },
+    {
+      "id": "change_seniorfradrag",
+      "title": "Nyt ekstra beskaeftigelsesfradrag for seniorer",
+      "effective_date": "1. januar 2026",
+      "description": "Nyt fradrag paa 1,4% af AM-bidragspligtig indkomst, maks. 6.100 kr. Gaelder for seniorer 1-2 aar fra folkepension. Indfases gradvist til 2030.",
+      "keywords": ["seniorfradrag", "6100", "folkepension", "nyt fradrag"]
+    },
+    {
+      "id": "change_aktiesparekonto",
+      "title": "Hoejere aktiesparekonto-loft",
+      "effective_date": "1. januar 2026",
+      "description": "Indskudsloft for aktiesparekonto stiger fra 166.200 kr. til 174.200 kr.",
+      "keywords": ["aktiesparekonto", "174200", "hoejere loft"]
+    },
+    {
+      "id": "change_aktieindkomst",
+      "title": "Hoejere progressionsgraense for aktieindkomst",
+      "effective_date": "1. januar 2026",
+      "description": "Progressionsgraensen for aktieindkomst stiger fra 67.500 kr. til 79.400 kr.",
+      "keywords": ["aktieindkomst", "79400", "progressionsgraense"]
+    },
+    {
+      "id": "change_regulering",
+      "title": "Generel regulering af beloebsgraenser",
+      "effective_date": "1. januar 2026",
+      "description": "Alle beloebsgraenser er reguleret med 4,8% for 2026 (reguleringstal 137,3).",
+      "keywords": ["regulering", "4,8 procent", "beloebsgraenser", "reguleringstal"]
+    },
+    {
+      "id": "change_forskerordning",
+      "title": "Nedsat minimumslon for forskerordningen",
+      "effective_date": "1. januar 2026",
+      "description": "Minimumloen for 27%-beskatning under forskerordningen saenkes fra 78.000 kr. til 65.400 kr. pr. maaned.",
+      "law_reference": "Kildeskatteloven paragraf 48 E og F",
+      "keywords": ["forskerordningen", "65400", "minimumslon", "nedsat"]
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule_skatteberegning",
+      "title": "Skatteberegning raekkefoelge",
+      "category": "personskat",
+      "description": "Skatten beregnes i foelgende raekkefoelge: 1) Bruttoindkomst, 2) Fratraek AM-bidrag (8%), 3) Beregn bundskat (12,01%), 4) Beregn mellemskat (7,5% over 641.200 kr.), 5) Beregn topskat (7,5% over 777.900 kr.), 6) Beregn top-topskat (5% over 2.592.700 kr.), 7) Tillaeg kommuneskat og evt. kirkeskat, 8) Fratraek personfradragets skattevaerdi, 9) Samlet skat kan ikke overstige skatteloftet.",
+      "keywords": ["skatteberegning", "raekkefoelge", "beregning"]
+    },
+    {
+      "id": "rule_skattekort",
+      "title": "Skattekorttyper",
+      "category": "administration",
+      "description": "Tre typer skattekort: Hovedkort (primaer indkomstkilde, viser traekprocent OG personfradrag), Bikort (sekundaere indkomstkilder, kun traekprocent), Frikort (naar forventet indkomst er under skattefrigraense, oprettes automatisk ved 13 aar).",
+      "keywords": ["skattekort", "hovedkort", "bikort", "frikort", "traekprocent"]
+    },
+    {
+      "id": "rule_aegtefaelle",
+      "title": "Aegtefaelleregler",
+      "category": "personskat",
+      "description": "Uudnyttet personfradrag kan overfoeres til aegtefaelle. Uudnyttet grundbeloeb for aktieindkomst kan overfoeres. Positiv nettokapitalindkomst beregnes hos aegtefaellen med hoejest indkomst. Mellemskat/topskat bundfradrag kan IKKE overfoeres.",
+      "keywords": ["aegtefaelle", "overfoersel", "gift", "sambeskatning"]
+    },
+    {
+      "id": "rule_deleoekonomi",
+      "title": "Deleokonomi beskatning",
+      "category": "saerlige regler",
+      "description": "Indtjening ved udlejning eller salg af private ejendele, havearbejde, boernepasning mv. er som hovedregel skattepligtig. Omfatter bil-/baad-/autocamperudlejning, opgavetjenester, salg/bytte/udlejning af genstande, crowdfunding, fragkoersel, boligudlejning.",
+      "keywords": ["deloekonomi", "udlejning", "airbnb", "crowdfunding", "skattepligt"]
+    },
+    {
+      "id": "rule_internationale",
+      "title": "Internationale skatteforhold",
+      "category": "international",
+      "description": "Skattestyrelsen skal informeres om al udenlandsk indkomst, selv om der allerede er betalt skat i udlandet. Scenarier: udenlandsk indkomst, arbejde i udlandet, fraflytning, tilflytning, udenlandsk borger med dansk indkomst, pendlere (Oeresundsaftalen).",
+      "keywords": ["international", "udenlandsk indkomst", "dobbeltbeskatning", "fraflytning", "tilflytning", "oeresundsaftalen"]
+    },
+    {
+      "id": "rule_influencer_moms",
+      "title": "Influencere og momspligt",
+      "category": "moms",
+      "description": "Samarbejder paa sociale medier, hvor influenceren mod vederlag poster aftalte reklameopslag, udgoer momspligtige reklameydelser. Naturaliegoder (varer) indgaar i momsgrundlaget medmindre varerne er udlaante og returneret. Momsfritagelsen for kunstnerisk virksomhed gaelder IKKE for kommerciel reklame.",
+      "law_reference": "Momsloven paragraf 4; paragraf 13, stk. 1, nr. 7",
+      "keywords": ["influencer", "moms", "reklame", "sociale medier", "instagram", "youtube"]
+    },
+    {
+      "id": "rule_bruttotraek",
+      "title": "Bruttotraekordninger",
+      "category": "personalegoder",
+      "description": "Loenmodtager accepterer loennedgang for personalegoder. Fordelagtigt naar godet beskattes med lavere beloeb end den vaerdi det repraesenterer. Ikke alle goder er fordelagtige i bruttotraek.",
+      "keywords": ["bruttotraek", "loennedgang", "personalegoder", "loenkonvertering"]
+    },
+    {
+      "id": "rule_dagsbeviser",
+      "title": "Dagsbeviser til gulpladebiler",
+      "category": "koersel",
+      "description": "Biler paa gule plader (op til 4 ton) kan frikobes til privat brug med dagsbeviser. Maks. 20 dagsbeviser pr. bil pr. kalenderaar.",
+      "keywords": ["dagsbeviser", "gule plader", "privat koersel", "varebil"]
+    },
+    {
+      "id": "rule_etableringskonto",
+      "title": "Etableringskonto og ivaerksaetteropsparing",
+      "category": "virksomhed",
+      "description": "Skattefradrag for opsparing til start af virksomhed. To ordninger: etableringskontoordningen og ivaerksaetterordningen. Etableringsgraense 2026: 109.900 kr.",
+      "law_reference": "Etableringskontoloven paragraf 5",
+      "keywords": ["etableringskonto", "ivaerksaetter", "opsparing", "opstart", "109900"]
+    },
+    {
+      "id": "rule_familielaan",
+      "title": "Familielaan og skat",
+      "category": "gave og arv",
+      "description": "Familielaan er tilladte men kraever dokumentation. De fleste er rentefrie. Stoerre beloeb kraever saerlig opmeksomhed paa gaveafgiftsregler. Et skriftligt gaeldsbrev anbefales.",
+      "keywords": ["familielaan", "laan", "rentefrit", "gaeldsbrev"]
+    },
+    {
+      "id": "rule_skattefri_tjenester",
+      "title": "Skattefri tjenester",
+      "category": "saerlige regler",
+      "description": "Fire kategorier: 1) Haandvaerks- og serviceydelser i private hjem, 2) Familie- og vennetjenester, 3) Pensionister og skattefrit arbejde i private hjem, 4) Unge under 16 aar kan arbejde skattefrit i private hjem.",
+      "keywords": ["skattefri tjenester", "hushjlp", "vennetjenester", "unge", "pensionister"]
+    },
+    {
+      "id": "rule_finansielle_kontrakter",
+      "title": "Finansielle kontrakter (terminsforretninger, swaps, optioner)",
+      "category": "investering",
+      "description": "Beskattes efter lagerprincippet med aarlig beskatning af urealiserede gevinster/tab. Pengeinstitutter indberetter IKKE - investor skal selv beregne. Tab kan kun fratraekkes op til skattepligtige nettogevinster fra 2002. Erhvervsmaessige kontrakter (hedging) har fuldt tabsfradrag.",
+      "indberetning": {
+        "gevinst_rubrik": 346,
+        "tab_aktiebaseret_rubrik": 86,
+        "tab_andre_rubrik": 85,
+        "udenlandsk_rubrik": 434
+      },
+      "keywords": ["finansielle kontrakter", "terminsforretning", "swap", "option", "lagerprincip", "hedging"]
+    },
+    {
+      "id": "rule_global_minimumsskat",
+      "title": "Global minimumsskat (GloBE)",
+      "category": "selskabsskat",
+      "description": "Regler for store koncerner med land-for-land-rapportering (CbC).",
+      "keywords": ["GloBE", "global minimumsskat", "pillar 2", "CbC", "koncern"]
+    },
+    {
+      "id": "rule_social_sikring",
+      "title": "Dansk social sikring - arbejdsgiverbidrag",
+      "category": "arbejdsgiver",
+      "description": "Danske arbejdsgivere betaler bidrag til syv typer af sociale sikringsordninger. I gennemsnit ca. 16.000 DKK pr. aar pr. fuldtidsansat.",
+      "keywords": ["social sikring", "arbejdsgiverbidrag", "ATP", "barsel", "AES"]
+    },
+    {
+      "id": "rule_pensionistindkomst",
+      "title": "Saerlige regler for pensionistindkomst",
+      "category": "pension",
+      "description": "Forskudsopgoerelse skal opdateres TO gange: ved pensionering og igen i november for naeste aar. Koerselsfradrag ophoerer ved fuld pension. Aegtefaelles arbejdsindkomst paavirker ikke pension (fra 1. jan. 2023).",
+      "keywords": ["pensionist", "folkepension", "forskudsopgoerelse", "koerselsfradrag"]
+    },
+    {
+      "id": "rule_30_pct_ordningen",
+      "title": "30%-ordningen for selvstaendige pensionsopsparing",
+      "category": "pension",
+      "description": "Selvstaendige kan med fuld fradragsret indbetale op til 30% af virksomhedens regulerede overskud paa en livsvarig livrente uden fradragsbegrensning.",
+      "keywords": ["30 procent", "selvstaendig", "pension", "livrente", "fradrag"]
+    }
+  ],
+  "key_amounts": {
+    "personfradrag": 54100,
+    "mellemskattegranse": 641200,
+    "topskattegranse": 777900,
+    "top_topskattegranse": 2592700,
+    "beskaeftigelsesfradrag_max": 63300,
+    "beskaeftigelsesfradrag_pct": 12.75,
+    "jobfradrag_max": 3100,
+    "jobfradrag_bundgranse": 235200,
+    "loenmodtagerfradrag_bundgranse": 7600,
+    "fagforeningsfradrag_max": 7000,
+    "servicefradrag_max": 18300,
+    "haandvaerkerfradrag_max": 9000,
+    "gavefradrag_max": 20000,
+    "aktieindkomst_progressionsgranse": 79400,
+    "aktiesparekonto_max_indskud": 174200,
+    "bundfradrag_kapitalindkomst": 55000,
+    "ratepension_max": 68700,
+    "aldersopsparing_grundbeloeb": 9900,
+    "aldersopsparing_forhoejet": 64200,
+    "ekstra_pensionsfradrag_max_grundlag": 87800,
+    "befordring_25_120_km": 2.28,
+    "befordring_over_120_km": 1.14,
+    "koerselsgodtgoerelse_lav": 3.94,
+    "koerselsgodtgoerelse_hoej": 2.28,
+    "kostgodtgoerelse_doegn": 625,
+    "logigodtgoerelse_doegn": 268,
+    "rejsefradrag_max": 34400,
+    "fri_telefon": 3500,
+    "fri_bil_min_vaerdi": 160000,
+    "personalegoder_bagatel_uden_arbejde": 1400,
+    "personalegoder_bagatel_med_arbejde": 7600,
+    "julegave_skattefri": 1000,
+    "jubilaeumsgratiale_skattefri": 8000,
+    "groen_check": 875,
+    "selskabsskat_pct": 22,
+    "moms_pct": 25,
+    "momsregistrering_granse": 50000,
+    "boafgift_bundfradrag": 392300,
+    "gaveafgift_fribeloeb_naer_familie": 80600,
+    "gaveafgift_fribeloeb_svigerboern": 28200,
+    "ejendomsvaerdiskat_granse": 9200000,
+    "forskerordning_minimumslon": 65400,
+    "underskud_selskab_bundgranse": 21830700,
+    "ophoerspension_max_indskud": 3443400,
+    "etableringskonto_granse": 109900,
+    "PAL_skat_pct": 15.3,
+    "skatteloft_personlig": 44.57,
+    "skatteloft_kapital": 42,
+    "keywords": ["beloebsgraenser", "satser", "oversigt", "2026", "noegletal"]
+  }
+}
