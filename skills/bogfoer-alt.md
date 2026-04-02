@@ -5,22 +5,24 @@ description: "Komplet bogføring — matcher bilag fra Billy + Gmail med banklin
 
 # /bogfoer-alt — Komplet bogføring
 
+## ⛔ HUSK: Aldrig bogfør uden bilag (undtagen gebyrer/privat/renter)
+
 ## Flow
 
 ```
-1. BILAG    → Find uknyttede bilag i Billy (sendt via Shine)
-2. BANK     → Hent uafstemte banklinjer
+1. BILAG    → Find uknyttede bilag i Billy (billy_bilag_uknyttede)
+2. BANK     → Hent uafstemte banklinjer (billy_banklinjer_uafstemte)
 3. MATCH    → Match bilag med banklinjer (beløb + leverandør + dato)
-4. AFSTEM   → Afstem dem der matcher (med korrekt moms/konto)
-5. GMAIL    → Søg efter fakturaer for resterende banklinjer
-6. LOG      → Gem alt i afventer_bilag.json
+4. AFSTEM   → KUN banklinjer MED matchende bilag + undtagne typer
+5. GMAIL    → Søg fakturaer for resterende (uden bilag)
+6. LOG      → Gem i afventer_bilag.json
 7. RAPPORT  → Vis opsummering
 ```
 
 ## Trin 1: Find bilag i Billy
 
-Brug `billy_bilag_uknyttede` — finder bilag sendt til Shine der ikke er matchet endnu.
-Hvert bilag har: leverandør, beløb, dato.
+Brug `billy_bilag_uknyttede` — finder bilag sendt til Shine der ikke er matchet.
+Hvert bilag har: leverandør, beløb, dato, valuta.
 
 ## Trin 2: Hent uafstemte banklinjer
 
@@ -29,59 +31,63 @@ Brug `billy_banklinjer_uafstemte` med bankens accountId.
 ## Trin 3: Match bilag med banklinjer
 
 For hvert uknyttet bilag — find den banklinje der matcher:
-- **Beløb matcher** (inden for 1 kr. tolerance pga. valutakurs)
-- **Dato matcher** (±3 dage)
-- **Leverandør matcher** (bilag.supplier ≈ banklinje.description)
+- Beløb matcher (±1 kr. tolerance pga. valutakurs)
+- Dato matcher (±5 dage)
+- Leverandør matcher (bilag.supplier ≈ banklinje.description)
 
-Når en match findes:
+## Trin 4: Afstem — KUN med bilag eller undtagne typer
+
+**A) Banklinje HAR matchende bilag:**
 1. Kør igennem konterer-agenten (bilag_klassificer → konto + momskode)
-2. Vis kontering → spørg bruger om godkendelse
-3. Opret regning (bill) i Billy → knyt bilag → afstem banklinje
-4. Opdater memory/leverandoerer.json
+2. Spørg bruger om godkendelse (ÉT spørgsmål ad gangen)
+3. Opret regning (bill) → knyt bilag → afstem banklinje
+4. Opdater memory
 
-## Trin 4: Afstem simple banklinjer (uden bilag)
+**B) Banklinje er UNDTAGET type (OK uden bilag):**
+- Privathævning → konto 7130, direkte afstem
+- Bankgebyr → konto 7200, direkte afstem
+- Rente → konto 7000/6000, direkte afstem
+- Moms/skat-betaling → direkte afstem
 
-Banklinjer der IKKE kræver bilag — afstem direkte:
-- Privathævning (Transfer/Overførsel til privat) → konto 7130
-- Bankgebyrer (Lunar Plan, gebyr) → konto 7200, momsfri
-- Renter → konto 7000/6000, momsfri
-- Moms/skat-betaling → konto 15200/15300/15400
+**C) Banklinje HAR IKKE bilag og er IKKE undtaget:**
+- ⛔ BOGFØR IKKE
+- Søg i Gmail (trin 5)
+- Gem i afventer_bilag.json (trin 6)
 
 ## Trin 5: Gmail-søgning for resterende
 
-For banklinjer der kræver bilag men IKKE har et match i Billy:
+For banklinjer UDEN bilag og IKKE undtaget:
 1. Søg i Gmail: `from:leverandør subject:(faktura OR invoice OR receipt)`
-2. Fundet → gem Gmail-link i `afventer_bilag.json` med status `email_fundet`
-3. Ikke fundet → gem med status `mangler_bilag` + konkret instruktion
+2. Fundet → gem med status `email_fundet` + Gmail-link
+3. Ikke fundet → gem med status `mangler_bilag` + instruktion
 
 ## Trin 6: Gem i afventer_bilag.json
 
-Se CLAUDE.md for format. To statusser:
-- `email_fundet`: Gmail-link klar, brugeren videresender til Shine
-- `mangler_bilag`: konkret instruktion om hvor faktura kan downloades
+Se CLAUDE.md for format og statusser.
 
 ## Trin 7: Vis rapport
 
 ```
 ═══ Bogføring ═══
 
-Afstemt (med bilag fra Billy):
+Afstemt (med bilag):
   ✓ Apify 237,96 kr. — konto 4400, EU reverse charge
   ✓ Simply.com 972,73 kr. — konto 4400, fuld moms
 
-Afstemt (uden bilag):
+Afstemt (uden bilag — undtagne):
   ✓ Privathævning 5.000 kr. → konto 7130
   ✓ Lunar gebyr 289 kr. → konto 7200
 
-Afventer bilag — videresend til Shine:
-  ○ Amazon 1.177 kr. — https://mail.google.com/...
-  ○ Adobe 237 kr. — https://mail.google.com/...
+⛔ IKKE afstemt — afventer bilag:
+  Videresend til Shine:
+    ○ Amazon 1.177 kr. — [Gmail-link]
+    ○ Adobe 237 kr. — [Gmail-link]
 
-Mangler bilag — find manuelt:
-  ✗ GitHub 499 kr. — github.com/settings/billing → marts
-  ✗ Apple 779 kr. — appleid.apple.com → purchase history
+  Find manuelt:
+    ✗ GitHub 499 kr. — github.com/settings/billing
+    ✗ Apple 779 kr. — appleid.apple.com/purchase-history
 
-Shine: [din Shine-email]
+Shine: [fra memory/regler.json]
 Sig "bilag klar" når du har videresendt/fundet dem.
 ```
 
