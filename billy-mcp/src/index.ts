@@ -59,12 +59,34 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_kontoplan",
-    "Hent kontoplan fra Billy. Viser alle konti med grupper og momskoder.",
-    { pageSize: z.number().optional().describe("Antal konti (standard 200)") },
-    async ({ pageSize }) => {
-      const { data, error } = await safeCall(() => getAccounts({ pageSize }));
+    "Hent kontoplan fra Billy. Viser konti kompakt (nr, navn, type, bank). Brug søg-parameter for at filtrere.",
+    {
+      search: z.string().optional().describe("Søg på kontonavn eller -nummer"),
+      bankOnly: z.boolean().optional().describe("Kun bankkonti?"),
+    },
+    async ({ search, bankOnly }) => {
+      const { data, error } = await safeCall(() => getAccounts({ pageSize: 500 }));
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Kontoplan:**\n\n${jsonText(data)}`);
+
+      const result = data as Record<string, unknown>;
+      let accounts = (result.accounts ?? []) as Array<Record<string, unknown>>;
+
+      if (bankOnly) {
+        accounts = accounts.filter((a) => a.isBankAccount === true);
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        accounts = accounts.filter((a) =>
+          String(a.name ?? "").toLowerCase().includes(q) ||
+          String(a.accountNo ?? "").includes(q),
+        );
+      }
+
+      const compact = accounts.map((a) =>
+        `${a.accountNo ?? "—"} | ${a.name ?? "—"} | ${a.isBankAccount ? "BANK" : ""} | ID: ${a.id}`,
+      ).join("\n");
+
+      return textResult(`**Kontoplan (${accounts.length} konti):**\n\n${compact}`);
     },
   );
 
@@ -193,29 +215,54 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_banklinjer",
-    "Hent banklinjer fra Billy. KRÆVER accountId (brug billy_kontoplan for at finde bankkonti med isBankAccount=true).",
+    "Hent banklinjer fra Billy (kompakt format). KRÆVER accountId (brug billy_kontoplan med bankOnly=true).",
     {
-      accountId: z.string().describe("Bank-konto-ID (påkrævet — brug billy_kontoplan for at finde bankkonti)"),
-      page: z.number().optional().describe("Sidetal"),
+      accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan med bankOnly=true)"),
+      page: z.number().optional().describe("Sidetal (20 linjer pr. side)"),
       sortDirection: z.string().optional().describe("'ASC' (ældste først) eller 'DESC' (nyeste først)"),
     },
     async ({ accountId, page, sortDirection }) => {
       const { data, error } = await safeCall(() =>
-        getBankLines({ accountId, page, sortProperty: "entryDate", sortDirection: sortDirection ?? "DESC" }),
+        getBankLines({ accountId, page, pageSize: 20, sortProperty: "entryDate", sortDirection: sortDirection ?? "DESC" }),
       );
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Banklinjer:**\n\n${jsonText(data)}`);
+
+      const result = data as Record<string, unknown>;
+      const lines = (result.bankLines ?? []) as Array<Record<string, unknown>>;
+      const paging = (result.meta as Record<string, unknown>)?.paging as Record<string, unknown> | undefined;
+
+      const compact = lines.map((l) =>
+        `${l.entryDate} | ${String(l.amount).padStart(10)} | ${String(l.side).padStart(6)} | ${String(l.description ?? "").slice(0, 50)} | ID:${l.id} matchId:${l.matchId}`,
+      ).join("\n");
+
+      return textResult(
+        `**Banklinjer** (side ${paging?.page ?? "?"} af ${paging?.pageCount ?? "?"}, total: ${paging?.total ?? "?"}):\n\n${compact}`,
+      );
     },
   );
 
   server.tool(
     "billy_banklinjer_uafstemte",
-    "Hent uafstemte banklinjer (matches med isApproved=false). Brug denne til bankafstemning.",
-    { accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan for at finde bankkonti)") },
-    async ({ accountId }) => {
+    "Hent uafstemte banklinjer (kompakt format, maks 30). Brug denne til bankafstemning.",
+    {
+      accountId: z.string().describe("Bank-konto-ID (brug billy_kontoplan med bankOnly=true)"),
+      limit: z.number().optional().describe("Maks antal (standard 30)"),
+    },
+    async ({ accountId, limit }) => {
       const { data, error } = await safeCall(() => getUnreconciledBankLines(accountId));
       if (error) return textResult(`Fejl: ${error}`);
-      return textResult(`**Uafstemte banklinjer:**\n\n${jsonText(data)}`);
+
+      const result = data as { bankLines: Array<Record<string, unknown>>; total: number; allTotal: number };
+      const maxLines = limit ?? 30;
+      const lines = result.bankLines.slice(0, maxLines);
+
+      const compact = lines.map((l) =>
+        `${l.entryDate} | ${String(l.amount).padStart(10)} | ${String(l.side).padStart(6)} | ${String(l.description ?? "").slice(0, 50)} | ID:${l.id} matchId:${l.matchId}`,
+      ).join("\n");
+
+      return textResult(
+        `**Uafstemte banklinjer** (${result.total} af ${result.allTotal} total)${result.total > maxLines ? ` — viser første ${maxLines}` : ""}:\n\n${compact}`,
+      );
     },
   );
 
