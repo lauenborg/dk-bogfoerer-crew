@@ -589,7 +589,7 @@ async function main(): Promise<void> {
       }
 
       const compact = result.attachments.map((a) =>
-        `${a.documentDate ?? "—"} | ${a.amount ?? "—"} ${a.currencyId ?? ""} | ${a.supplier ?? "ukendt"} | ${a.comment ?? ""} | ID:${a.id}`,
+        `${a.documentDate ?? "—"} | ${a.amount ?? "—"} ${a.currencyId ?? ""} | ${a.supplier ?? "ukendt"} | bilagID:${a.id} | fileID:${a.fileId ?? "—"}`,
       ).join("\n");
 
       return textResult(`**Uknyttede bilag** (${result.total} af ${result.allTotal} total):\n\n${compact}`);
@@ -612,8 +612,8 @@ async function main(): Promise<void> {
 
   server.tool(
     "billy_bilag_hent_pdf",
-    "Hent download-URL for et bilags PDF/fil. Bruges til at læse fakturaindhold (leverandør, beløb, moms, CVR).",
-    { fileId: z.string().describe("File-ID fra bilaget (feltet fileId)") },
+    "Hent download-URL for et bilags PDF/fil. VIGTIGT: brug fileID (IKKE bilagID) fra billy_bilag_uknyttede.",
+    { fileId: z.string().describe("fileID fra billy_bilag_uknyttede (lang streng, IKKE bilagID)") },
     async ({ fileId }) => {
       const { data, error } = await safeCall(() => getFile(fileId));
       if (error) return textResult(`Fejl: ${error}`);

@@ -1,6 +1,6 @@
 {
   "name": "dk-bogfoerer",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "AI Bogfoerer for danske virksomheder — CLI + MCP servere til Claude Code med Billy.dk og Gmail integration",
   "type": "module",
   "bin": {
