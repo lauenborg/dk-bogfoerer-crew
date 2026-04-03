@@ -297,6 +297,11 @@ For ALLE andre banklinjer (køb, abonnementer, leverandører):
 - `currencyId` hører på bill-niveau, IKKE på linjer
 - Udelad `paymentDate` (kræver `paymentAccountId`)
 
+**PDF-læsning fra bilag:**
+- Brug `billy_bilag_hent_pdf` med **fileID** (IKKE bilagID) → hent download-URL
+- Download PDF til /tmp → læs indhold → slet filen bagefter (`rm /tmp/fil.pdf`)
+- Slet ALTID downloadede filer efter læsning — de tager plads
+
 ### Momssatser i Billy — brug `billy_momssatser` til at slå op (KRITISK)
 
 Gæt ALDRIG momssats. Slå den op med `billy_momssatser` og vælg den korrekte:
