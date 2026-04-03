@@ -67,7 +67,20 @@ For banklinjer UDEN bilag og IKKE undtaget:
 
 ## Trin 6: Gem i memory/afventer_bilag.json
 
-Se CLAUDE.md for format og statusser.
+Format:
+```json
+{
+  "afventer": [{
+    "banklinje_id": "abc", "match_id": "def", "dato": "2026-03-27",
+    "beloeb": 1177.67, "side": "credit", "beskrivelse": "Amazon",
+    "konto": "4400", "momskode": "koeb_25",
+    "status": "email_fundet",
+    "gmail_link": "https://mail.google.com/mail/u/0/#inbox/MSG_ID",
+    "instruktion": "Videresend til Shine"
+  }]
+}
+```
+Statusser: `email_fundet` (har Gmail-link) eller `mangler_bilag` (med konkret instruktion).
 
 ## Trin 7: Vis rapport
 
@@ -102,7 +115,16 @@ Shine: [fra memory/regler.json]
 Sig "bilag klar" når du har videresendt/fundet dem.
 ```
 
-Opdater `memory/referat.md` med alt der blev gjort.
+Opdater `memory/referat.md` med alt der blev gjort:
+```markdown
+## 2026-04-03
+### Afstemt
+- Apify 237,96 kr. → 4400, KYE (EU services) — begrundelse: software-abonnement
+### Afventer bilag
+- Simply.com 972,73 kr. → email fundet, videresendes til Shine
+### Afklaret med bruger
+- Apple 779 kr. → iCloud, erhverv (bruger svarede via AskUserQuestion)
+```
 
 ## Trin 8: Moms- og skatteafstemning
 
