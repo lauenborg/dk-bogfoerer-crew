@@ -12,7 +12,7 @@ Kør dette ved starten af hver session. Læser al hukommelse og giver et komplet
 ### 1. Vis velkomst
 ```
 ╔══════════════════════════════════════════════════╗
-║  dk-bogfoerer-crew v1.0.11                       ║
+║  dk-bogfoerer-crew                               ║
 ║  AI Bogfører for danske virksomheder             ║
 ╚══════════════════════════════════════════════════╝
 ```

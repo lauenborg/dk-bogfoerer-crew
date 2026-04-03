@@ -305,6 +305,8 @@ export async function getUnreconciledBankLines(accountId: string): Promise<unkno
     params: { accountId, pageSize: 50, sortProperty: "entryDate", sortDirection: "DESC" },
   }) as Record<string, unknown>;
   const allLines = (result.bankLines ?? []) as Array<Record<string, unknown>>;
+  const paging = (result.meta as Record<string, unknown>)?.paging as Record<string, unknown> | undefined;
+  const grandTotal = paging?.total as number ?? allLines.length;
 
   // Tjek matches i batches af 5
   const matchCache = new Map<string, boolean>();
@@ -334,7 +336,9 @@ export async function getUnreconciledBankLines(accountId: string): Promise<unkno
   return {
     bankLines: unreconciled,
     total: unreconciled.length,
-    allTotal: allLines.length,
+    checked: allLines.length,
+    allTotal: grandTotal,
+    note: grandTotal > 50 ? `Viser nyeste 50 af ${grandTotal} banklinjer. Brug billy_banklinjer med page-parameter for ældre.` : undefined,
   };
 }
 

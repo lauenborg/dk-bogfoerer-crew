@@ -286,7 +286,7 @@ async function main(): Promise<void> {
       const { data, error } = await safeCall(() => getUnreconciledBankLines(accountId));
       if (error) return textResult(`Fejl: ${error}`);
 
-      const result = data as { bankLines: Array<Record<string, unknown>>; total: number; allTotal: number };
+      const result = data as { bankLines: Array<Record<string, unknown>>; total: number; checked: number; allTotal: number; note?: string };
       const maxLines = limit ?? 30;
       const lines = result.bankLines.slice(0, maxLines);
 
@@ -295,7 +295,7 @@ async function main(): Promise<void> {
       ).join("\n");
 
       return textResult(
-        `**Uafstemte banklinjer** (${result.total} af ${result.allTotal} total)${result.total > maxLines ? ` — viser første ${maxLines}` : ""}:\n\n${compact}`,
+        `**Uafstemte banklinjer** (${result.total} af ${result.checked} tjekket, ${result.allTotal} total i banken)${result.total > maxLines ? ` — viser første ${maxLines}` : ""}${result.note ? `\n${result.note}` : ""}:\n\n${compact}`,
       );
     },
   );

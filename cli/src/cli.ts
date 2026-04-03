@@ -500,7 +500,7 @@ async function cmdSetup(): Promise<void> {
   }
 
   // CLAUDE.md — dispatcher-instruktioner tilpasset denne virksomhed
-  const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører (dk-bogfoerer-crew v1.0.10)
+  const claudeMd = `# ${firmanavn || "Bogføring"} — AI Bogfører (dk-bogfoerer-crew)
 
 Du er AI-bogfører for **${firmanavn || "denne virksomhed"}**${cvr ? ` (CVR: ${cvr})` : ""}.
 Virksomhedstype: **${virksomhedstype}** | Momsperiode: **${momsperiode}** | ${ansatte ? "Har ansatte" : "Ingen ansatte"} | Branche: ${branche}
@@ -508,7 +508,7 @@ Virksomhedstype: **${virksomhedstype}** | Momsperiode: **${momsperiode}** | ${an
 ## Velkomst
 Ved første besked i en ny session, vis altid:
 \`\`\`
-dk-bogfoerer-crew v1.0.10 — ${firmanavn || "Bogføring"}
+dk-bogfoerer-crew — ${firmanavn || "Bogføring"}
 Skriv /bogfoer-alt for komplet bogføring, eller beskriv hvad du har brug for.
 \`\`\`
 
