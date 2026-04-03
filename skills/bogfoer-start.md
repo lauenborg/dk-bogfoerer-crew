@@ -29,7 +29,7 @@ Læs disse filer og opsummer:
 
 ### 3. Tjek Billy-status
 - `billy_kontoplan` med `bankOnly=true` → find bankkonto
-- `billy_banklinjer_uafstemte` → antal uafstemte banklinjer
+- `billy_banklinjer_status` → hurtig optælling (uafstemte/afstemte/total) — BRUG DETTE, ikke billy_banklinjer_uafstemte (for langsom til overblik)
 - `billy_moms` → åbne momsperioder
 
 ### 4. Tjek frister

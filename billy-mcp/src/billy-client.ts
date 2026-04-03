@@ -297,6 +297,21 @@ export async function approveDaybookTransaction(id: string): Promise<unknown> {
   });
 }
 
+// ─── Tæl uafstemte banklinjer (hurtigt — 1 API-kald) ───
+export async function countUnreconciledBankLines(accountId: string): Promise<{ unapproved: number; approved: number; total: number }> {
+  const result = await billyFetch("/bankLineMatches", {
+    params: { accountId, isApproved: false, pageSize: 1 },
+  }) as Record<string, unknown>;
+  const unapproved = ((result.meta as Record<string, unknown>)?.paging as Record<string, unknown>)?.total as number ?? 0;
+
+  const approvedResult = await billyFetch("/bankLineMatches", {
+    params: { accountId, isApproved: true, pageSize: 1 },
+  }) as Record<string, unknown>;
+  const approved = ((approvedResult.meta as Record<string, unknown>)?.paging as Record<string, unknown>)?.total as number ?? 0;
+
+  return { unapproved, approved, total: unapproved + approved };
+}
+
 // ─── Find uafstemte banklinjer ───
 // Hent banklinjer + tjek matches i batches af 5 parallelt.
 // Billy's isApproved filter virker ikke — vi tjekker individuelt.

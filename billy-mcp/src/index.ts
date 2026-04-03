@@ -6,7 +6,7 @@ import {
   getContacts, getContact, createContact,
   getInvoices, getInvoice, createInvoice,
   getBills, getBill, voidBill,
-  getBankLines, getUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, createBill, getFile,
+  getBankLines, getUnreconciledBankLines, countUnreconciledBankLines, updateBankLineMatch, unapproveMatch, getBankLineMatches, getBankLineMatch, createSubjectAssociation, getSubjectAssociations, deleteSubjectAssociation, getUnlinkedAttachments, linkAttachmentToBill, createBill, getFile,
   getDaybookTransactions, createDaybookTransaction, approveDaybookTransaction, voidDaybookTransaction, getDaybooks,
   getPostings,
   getSalesTaxReturns, getSalesTaxReturn, getTaxRates,
@@ -296,6 +296,23 @@ async function main(): Promise<void> {
 
       return textResult(
         `**Uafstemte banklinjer** (${result.total} af ${result.checked} tjekket, ${result.allTotal} total i banken)${result.total > maxLines ? ` — viser første ${maxLines}` : ""}${result.note ? `\n${result.note}` : ""}:\n\n${compact}`,
+      );
+    },
+  );
+
+  server.tool(
+    "billy_banklinjer_status",
+    "Hurtig optælling af afstemte vs. uafstemte banklinjer (2 API-kald). Brug til /bogfoer-start overblik.",
+    { accountId: z.string().describe("Bank-konto-ID") },
+    async ({ accountId }) => {
+      const { data, error } = await safeCall(() => countUnreconciledBankLines(accountId));
+      if (error) return textResult(`Fejl: ${error}`);
+      const counts = data as { unapproved: number; approved: number; total: number };
+      return textResult(
+        `**Banklinjer status:**\n` +
+        `  Uafstemte: ${counts.unapproved}\n` +
+        `  Afstemte: ${counts.approved}\n` +
+        `  Total: ${counts.total}`,
       );
     },
   );
